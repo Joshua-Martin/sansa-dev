@@ -1,0 +1,143 @@
+networks:
+  sansa-dev:
+    driver: bridge
+
+services:
+  app:
+    privileged: true
+    platform: linux/arm64/v8
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/arm64/v8
+
+    # Add memory limits and shared memory to prevent bus errors
+    mem_limit: 8g
+    shm_size: 4g
+
+    volumes:
+      - ..:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker.sock # Docker-in-Docker support
+      # Keep node_modules separate from host to prevent architecture/version conflicts
+      # Root node_modules for shared dependencies
+      - pnpm_root_node_modules:/workspace/node_modules
+      # Individual package node_modules
+      - pnpm_nest_node_modules:/workspace/packages/nest/node_modules
+      - pnpm_frontend_node_modules:/workspace/packages/frontend/node_modules
+      - pnpm_shared_node_modules:/workspace/packages/shared/node_modules
+
+    environment:
+      # Increase Node.js memory limits
+      - NODE_OPTIONS=--max_old_space_size=8192
+      - DOCKER_HOST=unix:///var/run/docker.sock # Docker socket access
+      - MINIO_ENDPOINT=http://minio:9000 # MinIO object storage (internal)
+      - MINIO_EXTERNAL_ENDPOINT=http://localhost:9100 # MinIO object storage (external)
+      - REGISTRY_ENDPOINT=http://registry:5000 # Container registry (internal)
+      - REGISTRY_EXTERNAL_ENDPOINT=http://localhost:5100 # Container registry (external)
+      # Database configuration
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=sansa-dev
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=A79Vm5D4p2VQHOp2gd5
+      # Redis configuration
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+    # Connect the app to the same network as db and redis
+    networks:
+      - sansa-dev
+
+    # Expose ports for development
+    ports:
+      - '3000:3000' # NestJS backend
+      - '4200:4200' # Vite dev server
+      # Preview container ports will be dynamically allocated by the workspace service
+
+    depends_on:
+      - db
+      - redis
+      - minio
+      - registry
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  db:
+    image: postgres:14.4
+    platform: linux/arm64/v8
+    environment:
+      POSTGRES_DB: sansa-dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: A79Vm5D4p2VQHOp2gd5
+    networks:
+      - sansa-dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  redis:
+    image: redis:7.0.7
+    platform: linux/arm64/v8
+    networks:
+      - sansa-dev
+    volumes:
+      - redis_data:/data
+    ports:
+      - '6379:6379'
+
+  minio:
+    image: minio/minio:latest
+    platform: linux/arm64/v8
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    ports:
+      - '9100:9000'
+      - '9101:9001'
+    volumes:
+      - minio_data:/data
+    networks:
+      - sansa-dev
+
+  registry:
+    image: registry:2.8
+    platform: linux/arm64/v8
+    ports:
+      - '5100:5000'
+    volumes:
+      - registry_data:/var/lib/registry
+    networks:
+      - sansa-dev
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    platform: linux/arm64/v8
+    ports:
+      - '8200:8080'
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - sansa-dev
+    privileged: true
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+  registry_data:
+  # pnpm monorepo node_modules volumes
+  pnpm_root_node_modules:
+  pnpm_nest_node_modules:
+  pnpm_frontend_node_modules:
+  pnpm_shared_node_modules:

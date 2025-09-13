@@ -1,0 +1,16 @@
+# Ignore artifacts
+node_modules
+dist
+build
+coverage
+
+# Ignore lockfiles
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+gantt-jay/node_modules
+gantt-jay/dist
+
+# Ignore config files if desired (often formatted manually)
+# .eslintrc.cjs
+# .prettierrc.cjs 

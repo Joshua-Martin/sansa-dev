@@ -1,0 +1,1 @@
+- Ensure workspaces are not saved with node_modules, and run install on load (or more efficent, insert the node_moduels form a tempalte, and then run npm isntall in the dir?)

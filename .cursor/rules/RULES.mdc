@@ -1,0 +1,32 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+<most_important_rule>
+NEVER MAKE ANY CHANGES TO THE CODE, UNLESS EXPLICITLY TOLD TO DO SO
+</most_important_rule>
+
+- When Making Changes: do not mark things as depreciated or legacy - just delete them unless the user asks for somethgin to be depreciated.
+
+- Use precise, explicit types - Prefer string, number, enums, interfaces, and custom types.
+
+- Refer to source types - When unsure, locate and import types from existing files instead of recreating them.
+
+- Write complete JSDoc comments - Document purpose, parameters, return values, and edge cases for each function.
+
+- Break large logic into typed helpers - Compose clean, modular functions with clearly typed inputs/outputs.
+
+- Surface complex errors - If unsure how to fix a type issue, pause and prompt the user.
+
+- On type mismatch, investigate first - Trace the source of the type error before suggesting a fix.
+
+- Explain type assertions - If unavoidable, accompany each assertion (as) with a clear comment on why it's safe.
+
+- Always prioritize clarity and safety - Favor readable, maintainable code over clever tricks.
+
+- Use inference when helpful - Let the compiler infer types when context makes them obvious and safe.
+
+- Mirror project conventions - Follow existing patterns for naming, file structure, and generics.
+

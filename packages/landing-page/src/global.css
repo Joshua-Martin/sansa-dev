@@ -1,0 +1,139 @@
+/**
+ * Tailwind CSS v4 Configuration
+ * Import Tailwind CSS and configure content sources for monorepo
+ */
+@import 'tailwindcss';
+
+/**
+ * Content sources for Tailwind CSS v4
+ * These tell Tailwind where to look for class usage across the monorepo
+ */
+@source "./src/**/*.{js,jsx,ts,tsx}";
+@source "../../**/*.{js,jsx,ts,tsx}";
+@source "../../../**/*.{js,jsx,ts,tsx}";
+
+/**
+ * Tailwind v4 Theme Configuration
+ * Define custom colors and design tokens
+ */
+@theme {
+  --color-background: hsl(0, 0%, 100%);
+  --color-foreground: hsl(210, 12%, 18%);
+  --color-muted: hsl(0, 10%, 98%);
+  --color-muted-foreground: hsl(215.4, 16.3%, 46.9%);
+  --color-popover: hsl(0, 0%, 100%);
+  --color-popover-foreground: hsl(210, 12%, 18%);
+  --color-card: hsl(0, 0%, 100%);
+  --color-card-foreground: hsl(210, 12%, 18%);
+  --color-border: hsl(214.3, 31.8%, 91.4%);
+  --color-input: hsl(214.3, 31.8%, 91.4%);
+  --color-primary: hsl(257, 100%, 68%);
+  --color-primary-foreground: hsl(0, 0%, 100%);
+  --color-secondary: hsl(210, 40%, 98%);
+  --color-secondary-foreground: hsl(210, 12%, 18%);
+  --color-accent: hsl(210, 40%, 98%);
+  --color-accent-foreground: hsl(210, 12%, 18%);
+  --color-destructive: hsl(0, 84.2%, 60.2%);
+  --color-destructive-foreground: hsl(0, 0%, 100%);
+  --color-ring: hsl(210, 12%, 18%);
+  --radius: 0.5rem;
+}
+
+body {
+  font-family: 'Montserrat', 'ui-sans-serif', 'system-ui', sans-serif;
+  overflow-x: hidden;
+}
+
+.aviator-font {
+  font-family: 'Montserrat', 'ui-sans-serif', 'system-ui', sans-serif;
+}
+
+/* Dark mode overrides - class-based */
+.dark {
+  --color-background: hsl(0, 0%, 8%);
+  --color-foreground: hsl(0, 0%, 85%);
+  --color-muted: hsl(0, 0%, 6%);
+  --color-muted-foreground: hsl(0, 0%, 70%);
+  --color-popover: hsl(0, 0%, 12%);
+  --color-popover-foreground: hsl(0, 0%, 100%);
+  --color-card: hsl(0, 0%, 7%);
+  --color-card-foreground: hsl(0, 0%, 85%);
+  --color-border: hsla(0, 0%, 20%);
+  --color-input: hsl(0, 0%, 30%);
+  --color-primary: hsl(257, 100%, 68%);
+  --color-primary-foreground: hsl(0, 0%, 100%);
+  --color-secondary: hsl(0, 0%, 6%);
+  --color-secondary-foreground: hsl(0, 0%, 100%);
+  --color-accent: hsl(0, 0%, 6%);
+  --color-accent-foreground: hsl(0, 0%, 100%);
+  --color-destructive: hsl(0, 84.2%, 60.2%);
+  --color-destructive-foreground: hsl(0, 0%, 100%);
+  --color-ring: hsl(0, 0%, 6%);
+}
+
+/* Example usage for backgrounds and borders */
+.dark .sidebar {
+  background-color: hsl(var(--sidebar-background));
+  border-right: 1px solid hsl(var(--border));
+}
+.dark .navbar {
+  background-color: hsl(var(--navbar-background));
+  border-bottom: 1px solid hsl(var(--border));
+}
+.dark .card {
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+}
+.dark body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--primary));
+}
+
+/* Custom Flow Component Styles */
+.ring-accent-500 {
+  --tw-ring-color: #d946ef;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/*
+ * Utility class to hide scrollbars across browsers.
+ *
+ * Usage: Add the `hide-scrollbar` class to any scrollable element to hide its scrollbar while retaining scroll functionality.
+ *
+ * This works for Webkit browsers (Chrome, Safari, Edge), Firefox, and IE/Edge (legacy).
+ */
+.hide-scrollbar {
+  /* Hide scrollbar for Webkit browsers */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/*
+ * Custom container shadow with subtle, even shadow on all four sides
+ * 
+ * Creates a gentle, balanced shadow effect for containers that need visual depth
+ * and emphasis. Applied equally to all four sides.
+ */
+.container-shadow {
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.22);
+}
+
+/*
+ * Selected card shadow with subtle shadows on all four sides
+ * 
+ * Creates a toned down shadow effect for selected or highlighted cards.
+ * Applied to all four sides with reduced opacity for a gentle highlight effect.
+ */
+.selected-card-shadow {
+  box-shadow:
+    -6px 0 12px -3px rgba(0, 0, 0, 0.15),
+    /* Left shadow */ 6px 0 12px -3px rgba(0, 0, 0, 0.15),
+    /* Right shadow */ 0 -6px 12px -3px rgba(0, 0, 0, 0.15),
+    /* Top shadow */ 0 6px 12px -3px rgba(0, 0, 0, 0.15); /* Bottom shadow */
+}
