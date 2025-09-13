@@ -3,7 +3,7 @@ import React from 'react';
 
 import { cn } from '../../lib/utils/utils';
 
-interface DashboardMetricProps {
+export type DashboardMetric = {
   title: string;
   value: string | number;
   icon?: LucideIcon;
@@ -24,7 +24,7 @@ const DashboardMetric = ({
   trend,
   suffix,
   className,
-}: DashboardMetricProps) => {
+}: DashboardMetric) => {
   const getTrendColor = () => {
     if (!trend) return '';
 
@@ -46,7 +46,7 @@ const DashboardMetric = ({
   };
 
   return (
-    <div className={cn('bg-card p-3 rounded-lg', className)}>
+    <div className={cn('bg-card p-3 rounded-lg border border-border', className)}>
       <p className="text-sm text-muted-foreground">{title}</p>
       <div className="flex items-center">
         <p className="text-xl font-semibold">
