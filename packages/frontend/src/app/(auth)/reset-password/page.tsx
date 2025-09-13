@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../../../components/common/card';
-import { AuthLayout } from '../../../components/custom/layout/auth-layout';
+import { AuthLayout } from '../layout';
 import { Button } from '../../../components/common/button';
 
 /**

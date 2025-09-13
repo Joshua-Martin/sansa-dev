@@ -6,10 +6,8 @@ import { useAuth } from '../../../hooks/useAuth';
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from '../../../components/common/card';
+import PageTitle from '../../../components/custom/ui/page-title';
 
 /**
  * Profile Page Component
@@ -21,30 +19,16 @@ const ProfilePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-background shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <h1 className="text-xl font-semibold text-foreground">Profile</h1>
-          </div>
-        </div>
-      </header>
-
       {/* Main content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-foreground">
-              User Profile
-            </h2>
+            <PageTitle
+              title="User Profile"
+              subtitle="Your account details and settings"
+            />
 
             <Card>
-              <CardHeader>
-                <CardTitle>Profile Information</CardTitle>
-                <CardDescription>
-                  Your account details and settings
-                </CardDescription>
-              </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-muted-foreground">

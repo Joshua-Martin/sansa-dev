@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../hooks/useAuth';
 import { LoadingSpinner } from '../../components/common/spinner';
+import SidebarNav from '../../components/custom/ui/sidebar-nav';
 
 /**
  * App Layout Component
@@ -55,15 +56,20 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {showProfileError && (
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-          <div className="text-sm text-yellow-700">
-            Unable to load profile data. Some features may be limited.
+    <div className="min-h-screen bg-background">
+      <SidebarNav />
+      <div className="pl-16">
+        {showProfileError && (
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+            <div className="text-sm text-yellow-700">
+              Unable to load profile data. Some features may be limited.
+            </div>
           </div>
-        </div>
-      )}
-      {children}
+        )}
+        <main className="h-screen w-full p-4">
+          {children}
+        </main>
+      </div>
     </div>
   );
 };

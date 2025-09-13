@@ -9,7 +9,7 @@ import { z } from 'zod';
 import { useAuth } from '../../../hooks/useAuth';
 
 import { Button } from '../../../components/common/button';
-import { Input } from '../../../components/common/input';
+import { Input } from '../../../components/common/input'; 
 import {
   Card,
   CardContent,
@@ -27,7 +27,7 @@ import {
 } from '../../../components/common/form';
 import { Alert, AlertDescription } from '../../../components/common/alert';
 import { LoadingSpinner } from '../../../components/common/spinner';
-import { AuthLayout } from '../../../components/custom/layout/auth-layout';
+import { AuthLayout } from '../layout';
 
 /**
  * Forgot password form validation schema

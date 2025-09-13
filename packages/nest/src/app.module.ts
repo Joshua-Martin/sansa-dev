@@ -10,8 +10,6 @@ import { UnifiedLLMModule } from './shared/ai-providers/unified/unified-llm.modu
 import { CacheModule } from '@nestjs/cache-manager';
 import { AuthModule } from './modules/auth/auth.module';
 import { ChatAgentModule } from './modules/chat-agent/chat-agent.module';
-import { WorkspaceModule } from './modules/workspace/workspace.module';
-import { ContextModule } from './modules/context/context.module';
 import { JwtAuthGuard } from './shared/guards/jwt-auth.guard';
 import { RbacGuard } from './shared/guards/rbac.guard';
 
@@ -42,8 +40,6 @@ import { RbacGuard } from './shared/guards/rbac.guard';
     UnifiedLLMModule,
     AuthModule,
     ChatAgentModule,
-    WorkspaceModule,
-    ContextModule,
   ],
   controllers: [AppController],
   providers: [

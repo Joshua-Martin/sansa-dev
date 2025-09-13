@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from '../../../../components/common/card';
 import { Button } from '../../../../components/common/button';
-import { AuthLayout } from '../../../../components/custom/layout/auth-layout';
+import { AuthLayout } from '../../layout';
 import { Alert, AlertDescription } from '../../../../components/common/alert';
 
 /**

@@ -30,7 +30,7 @@ import {
 } from '../../../components/common/form';
 import { Alert, AlertDescription } from '../../../components/common/alert';
 import { LoadingSpinner } from '../../../components/common/spinner';
-import { AuthLayout } from '../../../components/custom/layout/auth-layout';
+import { AuthLayout } from '../layout'; 
 
 /**
  * Sign-in form validation schema

@@ -82,7 +82,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
 
           {/* Right panel - Sign in form */}
           <div className="w-1/2 flex items-center justify-center bg-background/80">
-            <div className="w-full max-w-md">{children}</div>
+            <div className="w-full p-4">{children}</div>
           </div>
         </div>
       </div>

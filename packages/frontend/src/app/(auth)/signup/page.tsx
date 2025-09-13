@@ -39,7 +39,7 @@ import {
 } from '../../../components/common/form';
 import { Alert, AlertDescription } from '../../../components/common/alert';
 import { LoadingSpinner } from '../../../components/common/spinner';
-import { AuthLayout } from '../../../components/custom/layout/auth-layout';
+import { AuthLayout } from '../layout';
 
 /**
  * Sign-up form validation schema
@@ -84,8 +84,9 @@ type SignUpFormData = z.infer<typeof signUpSchema>;
 /**
  * Password strength indicator
  */
-const PasswordStrengthIndicator: React.FC<{ password: string }> = ({
+const PasswordStrengthIndicator: React.FC<{ password: string; isVisible: boolean }> = ({
   password,
+  isVisible,
 }) => {
   const requirements = [
     { label: 'At least 8 characters', test: password.length >= 8 },
@@ -95,17 +96,17 @@ const PasswordStrengthIndicator: React.FC<{ password: string }> = ({
     { label: 'One special character', test: /[@$!%*?&]/.test(password) },
   ];
 
-  if (!password) return null;
+  if (!isVisible || !password) return null;
 
   return (
-    <div className="mt-2 space-y-1">
-      <p className="text-xs text-muted-foreground">Password requirements:</p>
+    <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-background border border-border rounded-md shadow-lg p-3 space-y-2">
+      <p className="text-xs font-medium text-muted-foreground">Password requirements:</p>
       {requirements.map((req, index) => (
         <div key={index} className="flex items-center gap-2 text-xs">
           {req.test ? (
-            <CheckCircle className="h-3 w-3 text-green-500" />
+            <CheckCircle className="h-3 w-3 text-green-500 flex-shrink-0" />
           ) : (
-            <div className="h-3 w-3 rounded-full border border-gray-300" />
+            <div className="h-3 w-3 rounded-full border border-gray-300 flex-shrink-0" />
           )}
           <span
             className={req.test ? 'text-green-600' : 'text-muted-foreground'}
@@ -136,6 +137,7 @@ const SignUpPage: React.FC = () => {
   const { signUp, signUpState, isAuthenticated, isLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
   // Initialize form with validation
   const form = useForm<SignUpFormData>({
@@ -336,6 +338,11 @@ const SignUpPage: React.FC = () => {
                           className="pl-10 pr-10 h-11 border-border focus:border-primary focus:ring-primary"
                           disabled={signUpState.isLoading}
                           autoComplete="new-password"
+                          onFocus={() => setIsPasswordFocused(true)}
+                          onBlur={() => {
+                            // Delay hiding to allow clicks on the password requirements
+                            setTimeout(() => setIsPasswordFocused(false), 150);
+                          }}
                         />
                         <Button
                           type="button"
@@ -351,10 +358,13 @@ const SignUpPage: React.FC = () => {
                             <Eye className="h-4 w-4 text-muted-foreground" />
                           )}
                         </Button>
+                        <PasswordStrengthIndicator
+                          password={watchPassword}
+                          isVisible={isPasswordFocused}
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />
-                    <PasswordStrengthIndicator password={watchPassword} />
                   </FormItem>
                 )}
               />
@@ -424,7 +434,7 @@ const SignUpPage: React.FC = () => {
           </Form>
         </CardContent>
 
-        <CardFooter className="pt-6">
+        <CardFooter className="flex flex-col justify-center items-center">
           <div className="text-center text-sm text-muted-foreground w-full">
             Already have an account?{' '}
             <Link
