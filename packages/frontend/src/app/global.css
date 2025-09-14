@@ -27,8 +27,8 @@
   --color-card-foreground: hsl(210, 12%, 18%);
   --color-border: hsl(214.3, 31.8%, 91.4%);
   --color-input: hsl(214.3, 31.8%, 91.4%);
-  --color-primary: #b3ff0f;
-  --color-primary-foreground: hsl(0, 0%, 100%);
+  --color-primary: hsl(86, 100%, 53%);
+  --color-primary-foreground: hsl(0, 0%, 15%);
   --color-secondary: hsl(210, 40%, 98%);
   --color-secondary-foreground: hsl(210, 12%, 18%);
   --color-accent: hsl(210, 40%, 98%);
@@ -65,8 +65,8 @@ body {
   --color-card-foreground: hsl(0, 0%, 85%);
   --color-border: hsla(0, 0%, 20%);
   --color-input: hsl(0, 0%, 30%);
-  --color-primary: #b3ff0f;
-  --color-primary-foreground: hsl(0, 0%, 100%);
+  --color-primary: hsl(86, 100%, 53%);
+  --color-primary-foreground: hsl(0, 0%, 15%);
   --color-secondary: hsl(0, 0%, 6%);
   --color-secondary-foreground: hsl(0, 0%, 100%);
   --color-accent: hsl(0, 0%, 6%);
@@ -74,11 +74,6 @@ body {
   --color-destructive: hsl(0, 84.2%, 60.2%);
   --color-destructive-foreground: hsl(0, 0%, 100%);
   --color-ring: hsl(0, 0%, 6%);
-  --color-chart-1: hsl(257, 100%, 68%);
-  --color-chart-2: hsl(210, 40%, 60%);
-  --color-chart-3: hsl(120, 60%, 50%);
-  --color-chart-4: hsl(45, 100%, 60%);
-  --color-chart-5: hsl(280, 60%, 60%);
 }
 
 /* Example usage for backgrounds and borders */

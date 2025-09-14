@@ -29,7 +29,7 @@ const DashboardMetric = ({
     if (!trend) return '';
 
     return trend === 'up'
-      ? 'text-green-500'
+      ? 'text-primary'
       : trend === 'down'
         ? 'text-red-500'
         : 'text-gray-500';

@@ -22,8 +22,8 @@ const PageTitle: React.FC<PageTitleProps> = ({
   className = ''
 }) => {
   return (
-    <div className={`mb-8 ${className}`}>
-      <h1 className="text-3xl font-bold text-foreground">
+    <div className={`flex items-center h-12 ${className}`}>
+      <h1 className="text-2xl font-bold text-foreground">
         {title}
       </h1>
       {subtitle && (

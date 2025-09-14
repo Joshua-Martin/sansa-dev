@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 /**
  * Props for the AuthLayout component
@@ -30,37 +30,23 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
   subtitle = 'Build amazing applications with our comprehensive platform. Join thousands of developers who trust our solution.',
   brandingContent,
 }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    // Function to check if dark mode is active
-    const checkDarkMode = () => {
-      const hasDarkClass = document.body.classList.contains('dark');
-      setIsDarkMode(hasDarkClass);
-    };
-
-    // Check dark mode on mount
-    checkDarkMode();
-
-    // Create a MutationObserver to watch for changes to the body's class list
-    const observer = new MutationObserver(checkDarkMode);
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
-    // Cleanup observer on unmount
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-background">
+      {/* Light mode background */}
       <Image
-        src={isDarkMode ? '/wave-white.png' : '/wave-blk.png'}
+        src="/wave-blk.png"
         alt="Aviator Logo"
         width={1920}
         height={1080}
-        className="absolute top-0 left-0 w-full h-full opacity-60"
+        className="absolute top-0 left-0 w-full h-full opacity-60 dark:hidden"
+      />
+      {/* Dark mode background */}
+      <Image
+        src="/wave-white.png"
+        alt="Aviator Logo"
+        width={1920}
+        height={1080}
+        className="absolute top-0 left-0 w-full h-full opacity-60 hidden dark:block"
       />
 
       <div className="w-full max-w-7xl mx-auto relative p-10">

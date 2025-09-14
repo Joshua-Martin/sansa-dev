@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { LayoutDashboard, User, LogOut } from 'lucide-react';
+import { LayoutDashboard, User, LogOut, TestTube } from 'lucide-react';
 import { useAuth } from '../../../hooks/useAuth';
 import { Avatar, AvatarFallback } from '../../common/avatar';
 
@@ -59,7 +59,27 @@ const SidebarNav: React.FC = () => {
               isActive('/dashboard')
                 ? 'text-primary-foreground'
                 : 'text-muted-foreground group-hover:text-foreground'
-            }`}
+            } transition-colors duration-200`}
+          />
+        </button>
+
+        {/* Lab Icon */}
+        <button
+          onClick={() => navigateTo('/lab')}
+          className={`p-3 rounded-lg transition-colors duration-200 group ${
+            isActive('/lab')
+              ? 'bg-primary text-primary-foreground'
+              : 'hover:bg-muted'
+          }`}
+          title="Lab"
+        >
+          <TestTube
+            size={24}
+            className={`${
+              isActive('/lab')
+                ? 'text-primary-foreground'
+                : 'text-muted-foreground group-hover:text-foreground'
+            } transition-colors duration-200`}
           />
         </button>
 
@@ -79,7 +99,7 @@ const SidebarNav: React.FC = () => {
               isActive('/profile')
                 ? 'text-primary-foreground'
                 : 'text-muted-foreground group-hover:text-foreground'
-            }`}
+            } transition-colors duration-200`}
           />
         </button>
       </div>

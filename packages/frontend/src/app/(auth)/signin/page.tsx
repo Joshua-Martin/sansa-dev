@@ -30,7 +30,6 @@ import {
 } from '../../../components/common/form';
 import { Alert, AlertDescription } from '../../../components/common/alert';
 import { LoadingSpinner } from '../../../components/common/spinner';
-import { AuthLayout } from '../layout'; 
 
 /**
  * Sign-in form validation schema
@@ -296,7 +295,7 @@ const SignInContent: React.FC = () => {
  */
 const SignInPage: React.FC = () => {
   return (
-    <AuthLayout>
+
       <Suspense
         fallback={
           <Card variant="ghost">
@@ -308,7 +307,7 @@ const SignInPage: React.FC = () => {
       >
         <SignInContent />
       </Suspense>
-    </AuthLayout>
+
   );
 };
 

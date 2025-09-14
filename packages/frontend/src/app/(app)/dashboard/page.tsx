@@ -3,9 +3,9 @@
 import React from 'react';
 import PageTitle from '../../../components/custom/ui/page-title';
 import {
-  CostOverviewChart,
-  TokenUsageChart,
   PerformanceMetricsWidget,
+  TimelineChart,
+  CostSavingsChart,
 } from '../../../components/custom/dashboard';
 
 /**
@@ -17,20 +17,19 @@ import {
 const DashboardPage: React.FC = () => {
 
   return (
-    <section className="h-full w-full space-y-6">
+    <section className="h-full w-full space-y-6 max-h-screen flex flex-col">
       {/* Header */}
       <PageTitle
-        title="Sansa Dashboard"
-        subtitle="Monitor your AI routing performance, costs, and optimization opportunities"
+        title="Good morning, Joshua"
       />
 
-      {/* Platform Overview */}
+      {/* KPI Grid with 2x2 System Reliability Score */}
       <PerformanceMetricsWidget />
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <CostOverviewChart />
-        <TokenUsageChart />
+      {/* Middle Charts - Half Width Each */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 min-h-0">
+        <CostSavingsChart />
+        <TimelineChart />
       </div>
     </section>
   );

@@ -11,8 +11,8 @@ interface AccentBordersProps {
   gridColumns?: number;
   /** Position of accent lines as percentage of grid (default: 0.2) */
   accentPositionPercent?: number;
-  /** Color of the accent borders (default: '#000000') */
-  accentColor?: string;
+  /** Variant of accent border color ('light' | 'dark', default: 'light') */
+  variant?: 'light' | 'dark';
   /** Stroke width in pixels (default: 1) */
   accentStrokeWidthPx?: number;
   /** Opacity of the accent borders (default: 0.45) */
@@ -29,13 +29,15 @@ export function AccentBorders({
   className,
   gridColumns = 24,
   accentPositionPercent = 0.2,
-  accentColor = '#000000',
+  variant = 'light',
   accentStrokeWidthPx = 1,
   accentOpacity = 0.45,
   enableFadeOut = false,
   fadeOutStartPercent = 0.0,
   fadeOutEndPercent = 0.25,
 }: AccentBordersProps) {
+  // Use CSS custom property based on variant
+  const borderColor = variant === 'dark' ? 'var(--color-dark-accent-border)' : 'var(--color-accent-border)';
   // Symmetric grid line indices based on single rounded left line
   const leftLine = Math.round(accentPositionPercent * gridColumns);
   const rightLine = gridColumns - leftLine + 2;
@@ -57,7 +59,7 @@ export function AccentBorders({
         <div
           style={{
             gridColumn: `1 / ${leftLine}`,
-            borderRight: `${accentStrokeWidthPx}px solid ${accentColor}`,
+            borderRight: `${accentStrokeWidthPx}px solid ${borderColor}`,
             opacity: enableFadeOut ? 1 : accentOpacity,
             mask: enableFadeOut ? fadeOutMask : undefined,
             WebkitMask: enableFadeOut ? fadeOutMask : undefined,
@@ -67,7 +69,7 @@ export function AccentBorders({
         <div
           style={{
             gridColumn: `${rightLine} / ${gridColumns + 1}`,
-            borderLeft: `${accentStrokeWidthPx}px solid ${accentColor}`,
+            borderLeft: `${accentStrokeWidthPx}px solid ${borderColor}`,
             opacity: enableFadeOut ? 1 : accentOpacity,
             mask: enableFadeOut ? fadeOutMask : undefined,
             WebkitMask: enableFadeOut ? fadeOutMask : undefined,
