@@ -168,10 +168,6 @@ const HowItWorksAnimation: React.FC = () => {
   const [saasEndpoints, setSaasEndpoints] = useState<{ start: Point; end: Point } | null>(null);
   const [zapPositions, setZapPositions] = useState<Array<Point>>([]);
 
-  // Absolute top offsets (px) within the row for each column
-  const [centerTop, setCenterTop] = useState<number>(0);
-  const [providersTop, setProvidersTop] = useState<number>(0);
-  const [saasTop, setSaasTop] = useState<number>(0);
 
   // Overlay path animation state (controlled per phase)
   const overlayPathRef = useRef<SVGPathElement | null>(null);
@@ -309,62 +305,6 @@ const HowItWorksAnimation: React.FC = () => {
   }, []);
 
 
-  /**
-   * Compute absolute top positions for the three columns inside the row container.
-   * - Centers the Product vertically within the row
-   * - Aligns the first Provider vertically so its center matches Unified APIs center
-   * - Aligns the SaaS column so its center matches Classifier center
-   */
-  useLayoutEffect(() => {
-    const computeAbsolutePositions = () => {
-      if (!rowRef.current) return;
-      const rowRect = rowRef.current.getBoundingClientRect();
-
-      // 1) Product vertical centering within the row (center the OUTER WRAPPER that includes padding)
-      if (productWrapperRef.current) {
-        const wrapperRect = productWrapperRef.current.getBoundingClientRect();
-        const top = Math.max(0, Math.round((rowRect.height - wrapperRect.height) / 2));
-        setCenterTop(top);
-      } else if (productRef.current) {
-        // Fallback if wrapper not yet mounted
-        const productRect = productRef.current.getBoundingClientRect();
-        const top = Math.max(0, Math.round((rowRect.height - productRect.height) / 2));
-        setCenterTop(top);
-      }
-
-      // 2) Providers: vertically center within the row
-      if (providersColumnRef.current) {
-        const providersRect = providersColumnRef.current.getBoundingClientRect();
-        const top = Math.max(0, Math.round((rowRect.height - providersRect.height) / 2));
-        setProvidersTop(top);
-      }
-
-      // 3) SaaS: vertically center within the row (keep x position unchanged)
-      if (saasColumnRef.current) {
-        const saasRect = saasColumnRef.current.getBoundingClientRect();
-        const top = Math.max(0, Math.round((rowRect.height - saasRect.height) / 2));
-        setSaasTop(top);
-      }
-    };
-
-    computeAbsolutePositions();
-    const onResize = () => computeAbsolutePositions();
-    window.addEventListener('resize', onResize);
-
-    const ro = new ResizeObserver(computeAbsolutePositions);
-    if (rowRef.current) ro.observe(rowRef.current);
-    if (productWrapperRef.current) ro.observe(productWrapperRef.current);
-    if (productRef.current) ro.observe(productRef.current);
-    if (unifiedRef.current) ro.observe(unifiedRef.current);
-    if (classifierRef.current) ro.observe(classifierRef.current);
-    if (saasColumnRef.current) ro.observe(saasColumnRef.current);
-    if (providerRefs.current[0]) ro.observe(providerRefs.current[0]!);
-
-    return () => {
-      window.removeEventListener('resize', onResize);
-      ro.disconnect();
-    };
-  }, []);
 
   const providerPaths = useMemo(() => {
     if (!productRightCenter || providerCenters.length === 0) return [] as string[];
@@ -536,9 +476,9 @@ const HowItWorksAnimation: React.FC = () => {
   }, [ready, cycleIndex, saasToProductLine, saasEndpoints, productRightCenter, providerCenters, providerPaths, messages.length]);
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div ref={rootRef} className="relative w-full max-w-7xl">
-        <div className='absolute -inset-12 rounded-3xl overflow-hidden border-1 border-gray-100/50 bg-gray-50'>
+    <div className="w-full h-full bg-background flex items-center justify-center">
+      <div ref={rootRef} className="relative w-full h-full">
+        <div className='absolute inset-0 rounded-3xl overflow-hidden border-1 border-gray-100/50 bg-gray-50'>
         <div className="absolute inset-2 rounded-2xl overflow-hidden">
         <DotsBg color="#cccccc70" />
         </div></div>
@@ -614,10 +554,10 @@ const HowItWorksAnimation: React.FC = () => {
           </div>
         ))}
 
-        <div ref={rowRef} className="relative h-[600px]">
+        <div ref={rowRef} className="relative h-full min-h-[300px] sm:min-h-[350px] md:min-h-[400px] xl:min-h-[400px] flex items-center justify-between px-4 sm:px-6 md:px-8 xl:px-8 gap-4 sm:gap-6 md:gap-8 xl:gap-8">
           {/* B2B SaaS Application */}
-          <div ref={saasColumnRef} className="absolute left-0" style={{ top: saasTop }}>
-            <div className="bg-white rounded-lg shadow-lg w-80 h-64 relative">
+          <div ref={saasColumnRef} className="flex-shrink-0 self-center">
+            <div className="bg-white rounded-lg shadow-lg w-64 sm:w-72 md:w-80 xl:w-80 h-48 sm:h-56 md:h-60 xl:h-64 relative">
               {/* Window controls */}
               <div className="flex items-center p-3 border-b border-gray-300">
                 <div className="flex space-x-2">
@@ -630,9 +570,9 @@ const HowItWorksAnimation: React.FC = () => {
                 </div>
               </div>
               {/* Content area */}
-              <div ref={saasRef} className="p-6 h-48 flex items-center justify-center">
-                <div className={`bg-white rounded-tl-xl rounded-tr-xl rounded-bl-xl p-4 shadow-md border border-gray-200 max-w-xs transition-opacity duration-500 ${isMessageVisible ? 'opacity-100' : 'opacity-0'}`}>
-                  <div className="text-gray-800 text-sm text-center">
+              <div ref={saasRef} className="p-3 sm:p-4 md:p-5 xl:p-6 h-36 sm:h-40 md:h-44 xl:h-48 flex items-center justify-center">
+                <div className={`bg-white rounded-tl-xl rounded-tr-xl rounded-bl-xl mb-10 p-2 sm:p-3 md:p-4 xl:p-4 shadow-md border border-gray-200 max-w-xs transition-opacity duration-500 ${isMessageVisible ? 'opacity-100' : 'opacity-0'}`}>
+                  <div className="text-gray-800 text-xs sm:text-sm xl:text-sm text-center">
                     {messages[currentMessageIndex]}
                   </div>
                 </div>
@@ -643,34 +583,33 @@ const HowItWorksAnimation: React.FC = () => {
             </div>
           </div>
 
-          {/* StackOne Integration Layer (Product) */}
-          <div ref={productWrapperRef} className="absolute p-3 rounded-xl bg-white/20 overflow-hidden"
-          style={{ top: centerTop, left: '50%', transform: 'translateX(-50%)' as const }}>
-            
-            <div ref={productRef} className="bg-background border-1 border-gray-100/30 rounded-lg w-96 h-64 relative overflow-hidden shadow-lg">
+          {/* Sansa AI API router Layer (Product) */}
+          <div ref={productWrapperRef} className="flex-shrink-0 self-center p-2 sm:p-3 xl:p-3 rounded-xl bg-white/20 overflow-hidden">
+
+            <div ref={productRef} className="bg-background border-1 border-gray-100/30 rounded-lg w-80 sm:w-88 md:w-96 xl:w-[26rem] h-48 sm:h-56 md:h-60 xl:h-64 relative overflow-hidden shadow-lg">
 
               {/* Content - Split into two sections vertically */}
-              <div className="p-6 h-full relative" style={{ zIndex: 2 }}>
+              <div className="p-3 sm:p-4 md:p-5 xl:p-6 h-full relative" style={{ zIndex: 2 }}>
                 <div className="flex flex-col h-full">
                   {/* API Router Section */}
-                  <div ref={apiRouterRef} className="flex-1 space-y-4">
-                    <div className="border-b border-border pb-2 text-2xl">
+                  <div ref={apiRouterRef} className="flex-1 space-y-2 sm:space-y-3 md:space-y-4 xl:space-y-4">
+                    <div className="border-b border-border pb-1 sm:pb-2 xl:pb-2 text-lg sm:text-xl md:text-2xl xl:text-2xl">
                       <SansaLogo />
                     </div>
 
                     {/* Unified APIs */}
-                    <div ref={unifiedRef} className={`bg-background rounded-lg p-2 ${unifiedHighlight ? 'border-primary border-2' : 'border-transparent border-2'}`}>
+                    <div ref={unifiedRef} className={`bg-background rounded-lg p-1 sm:p-2 xl:p-2 ${unifiedHighlight ? 'border-primary border-2' : 'border-transparent border-2'}`}>
                       <div className="flex items-center justify-start">
-                      <FileText className="w-4 h-4 text-foreground mr-2" />
-                        <span className="font-semibold text-foreground">Unified APIs</span>
+                      <FileText className="w-3 h-3 sm:w-4 sm:h-4 xl:w-4 xl:h-4 text-foreground mr-1 sm:mr-2 xl:mr-2" />
+                        <span className="font-semibold text-sm sm:text-base xl:text-base text-foreground">Unified APIs</span>
                       </div>
                     </div>
 
                     {/* Benchmark */}
-                    <div ref={classifierRef} className={`bg-background rounded-lg p-2 ${benchmarkHighlight ? 'border-primary border-2' : 'border-transparent border-2'}`}>
+                    <div ref={classifierRef} className={`bg-background rounded-lg p-1 sm:p-2 xl:p-2 ${benchmarkHighlight ? 'border-primary border-2' : 'border-transparent border-2'}`}>
                       <div className="flex items-center justify-start">
-                        <Compass className="w-4 h-4 text-foreground mr-2" />
-                        <span className="font-semibold text-foreground">Benchmark</span>
+                        <Compass className="w-3 h-3 sm:w-4 sm:h-4 xl:w-4 xl:h-4 text-foreground mr-1 sm:mr-2 xl:mr-2" />
+                        <span className="font-semibold text-sm sm:text-base xl:text-base text-foreground">Benchmark</span>
                       </div>
                     </div>
                   </div>
@@ -678,40 +617,36 @@ const HowItWorksAnimation: React.FC = () => {
               </div>
             </div>
 
-
-            <div className="text-center mt-4 hidden">
-              <span className="text-green-700 font-semibold text-lg">StackOne Integration Layer</span>
-            </div>
           </div>
 
           {/* Integration Categories */}
-          <div ref={providersColumnRef} className="absolute right-0" style={{ top: providersTop }}>
-            <div className="space-y-6">
+          <div ref={providersColumnRef} className="flex-shrink-0 self-center">
+            <div className="space-y-3 sm:space-y-4 md:space-y-5 xl:space-y-6">
               {/* Claude Opus */}
-              <div ref={(el) => { providerRefs.current[0] = el; }} className={`bg-background rounded-lg p-4 w-64 shadow-lg border ${providerHighlight[0] ? 'border-2 border-primary' : 'border-transparent border-2'}`}>
-                <div className="flex items-center space-x-3">
+              <div ref={(el) => { providerRefs.current[0] = el; }} className={`bg-background rounded-lg p-2 sm:p-3 md:p-4 xl:p-4 w-48 sm:w-56 md:w-60 xl:w-64 shadow-lg border ${providerHighlight[0] ? 'border-2 border-primary' : 'border-transparent border-2'}`}>
+                <div className="flex items-center space-x-2 sm:space-x-3 xl:space-x-3">
                   <Image
                     src="/assets/ai-logos/claude.png"
                     alt="Claude Opus"
-                    width={32}
-                    height={32}
-                    className="rounded"
+                    width={24}
+                    height={24}
+                    className="sm:w-8 sm:h-8 xl:w-8 xl:h-8 rounded"
                   />
-                  <span className="font-bold text-foreground">Claude Opus</span>
+                  <span className="font-bold text-sm sm:text-base xl:text-base text-foreground">Claude Opus</span>
                 </div>
               </div>
 
               {/* GPT-5-mini */}
-              <div ref={(el) => { providerRefs.current[1] = el; }} className={`bg-background rounded-lg p-4 w-64 shadow-lg border ${providerHighlight[1] ? 'border-2 border-primary' : 'border-transparent border-2'}`}>
-                <div className="flex items-center space-x-3">
+              <div ref={(el) => { providerRefs.current[1] = el; }} className={`bg-background rounded-lg p-2 sm:p-3 md:p-4 xl:p-4 w-48 sm:w-56 md:w-60 xl:w-64 shadow-lg border ${providerHighlight[1] ? 'border-2 border-primary' : 'border-transparent border-2'}`}>
+                <div className="flex items-center space-x-2 sm:space-x-3 xl:space-x-3">
                   <Image
                     src="/assets/ai-logos/openai.png"
                     alt="GPT-5-mini"
-                    width={32}
-                    height={32}
-                    className="rounded"
+                    width={24}
+                    height={24}
+                    className="sm:w-8 sm:h-8 xl:w-8 xl:h-8 rounded"
                   />
-                  <span className="font-bold text-foreground">GPT-5-mini</span>
+                  <span className="font-bold text-sm sm:text-base xl:text-base text-foreground">GPT-5-mini</span>
                 </div>
               </div>
 

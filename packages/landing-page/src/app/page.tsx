@@ -57,15 +57,9 @@ export default function Home() {
         rightLine={RIGHT_LINE}
       />
 
-      {/* Middle Separator */}
-      <MiddleSeparator />
-
       {/* Bottom Section (grid-aligned) */}
       <BottomSection
         gridColumns={GRID_COLUMNS}
-        accentPositionPercent={ACCENT_POSITION_PERCENT}
-        accentStrokeWidthPx={ACCENT_STROKE_WIDTH_PX}
-        accentOpacity={ACCENT_OPACITY}
         gridTemplateColumns={gridTemplateColumns24}
         leftLine={LEFT_LINE}
         rightLine={RIGHT_LINE}

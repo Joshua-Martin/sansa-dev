@@ -1,6 +1,7 @@
 import { FolderDip } from './folder-dip';
 import { AccentBorders } from './accent-borders';
 import { GridPattern } from './grid-bg';
+import { WaitlistForm } from './custom/waitlist-form';
 
 /**
  * Grid alignment constants shared across sections to match `GridPattern` accent lines.
@@ -122,19 +123,20 @@ export function DarkSection() {
           {/* Left column (empty on md+) */}
           <div className="hidden md:block" style={{ gridColumn: `1 / ${LEFT_LINE}` }} />
 
-          {/* Center content between accent lines */}
-          <div style={{ gridColumn: `${LEFT_LINE} / ${RIGHT_LINE}` }} className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Supercharge your marketing efforts</h2>
-            <p className="text-lg sm:text-xl text-white/70 mb-8">
-              See why Sansa is the collaboration platform of choice for modern teams.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-3 bg-white text-black rounded-lg font-semibold hover:bg-white/90 transition-colors">
-                Start for free
-              </button>
-              <button className="px-8 py-3 border border-white/20 text-white rounded-lg font-semibold hover:bg-white/10 transition-colors">
-                Get a demo
-              </button>
+          {/* Center content between accent lines - split into two columns */}
+          <div style={{ gridColumn: `${LEFT_LINE} / ${RIGHT_LINE}` }} className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left column - AI cost optimization messaging */}
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Optimize your AI pipeline costs</h2>
+              <p className="text-lg sm:text-xl text-white/70 mb-8">
+                Reduce AI API costs by up to 50% while maintaining performance.
+                Join the waitlist to be among the first to access intelligent routing.
+              </p>
+            </div>
+
+            {/* Right column - Waitlist form */}
+            <div className="flex justify-center lg:justify-end">
+              <WaitlistForm />
             </div>
           </div>
 
