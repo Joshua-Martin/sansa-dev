@@ -3,6 +3,7 @@ packages:
   - 'packages/nest'
   - 'packages/frontend'
   - 'packages/landing-page'
+  - 'packages/functions'
 
 catalog:
   # Build tools

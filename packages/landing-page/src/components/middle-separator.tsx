@@ -6,8 +6,7 @@ import { AccentBorders } from './accent-borders';
  * These ensure that borders and content alignment remain consistent with the SVG grid.
  */
 const GRID_COLUMNS = 24;
-const ACCENT_POSITION_PERCENT = 0.2;
-const ACCENT_COLOR = '#000000';
+const ACCENT_POSITION_PERCENT = 0.15;
 const ACCENT_STROKE_WIDTH_PX = 1;
 const ACCENT_OPACITY = 0.45;
 

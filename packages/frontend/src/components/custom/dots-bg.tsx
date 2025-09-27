@@ -5,9 +5,10 @@
 export default function DotsBg({ color }: { color: string }) {
   return (
     <svg
-      className="pointer-events-none w-full h-full text-neutral-200/80"
+      className="pointer-events-none w-full h-full"
       width="100%"
       height="100%"
+      fill={color}
       aria-hidden="true"
     >
       <defs>

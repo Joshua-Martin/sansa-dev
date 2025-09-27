@@ -4,6 +4,44 @@
  */
 @import 'tailwindcss';
 
+/* Local Sansation font definitions - normal and italic variants */
+@font-face {
+  font-family: 'Sansation';
+  font-style: normal;
+  font-weight: 300;
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjFdGPjnEg8DNA0z01YAVgPVA.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Sansation';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjAdGPjnEg8DNA0z01grQ.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Sansation';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjFdGPjnEg8DNA0z01YEV8PVA.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Sansation';
+  font-style: italic;
+  font-weight: 300;
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjbdGPjnEg8DNA0z01Qr0KDVv_f.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Sansation';
+  font-style: italic;
+  font-weight: 400;
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjGdGPjnEg8DNA0z01Qr3ov.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Sansation';
+  font-style: italic;
+  font-weight: 700;
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjbdGPjnEg8DNA0z01Qr0KTUf_f.ttf') format('truetype');
+}
+
 /**
  * Content sources for Tailwind CSS v4
  * These tell Tailwind where to look for class usage across the monorepo
@@ -44,16 +82,18 @@
   --color-chart-3: hsl(120, 60%, 50%);
   --color-chart-4: hsl(45, 100%, 60%);
   --color-chart-5: hsl(280, 60%, 60%);
+  --color-path-inactive: hsl(214.3, 31.8%, 85%);
+  --color-path-active: hsl(86, 100%, 53%);
+  --color-path-active-variant: hsl(86, 100%, 45%);
   --radius: 0.5rem;
 }
 
-body {
-  font-family: 'Montserrat', 'ui-sans-serif', 'system-ui', sans-serif;
-  overflow-x: hidden;
+.mono-text {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Consolas', 'Courier New', monospace;
 }
 
-.aviator-font {
-  font-family: 'Montserrat', 'ui-sans-serif', 'system-ui', sans-serif;
+.sansa-font {
+  font-family: 'Sansation', sans-serif;
 }
 
 /* Example usage for backgrounds and borders */

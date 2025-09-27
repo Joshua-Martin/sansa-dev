@@ -3,7 +3,9 @@
  *
  * Displays a grid of integration logos with a background grid pattern.
  * Uses a sprite sheet approach for efficient logo rendering.
+ * Grid sizing is responsive: cell size = window.innerWidth / gridColumns.
  */
+'use client';
 
 import React from 'react';
 
@@ -12,15 +14,10 @@ import React from 'react';
  * Each logo is positioned at a specific percentage offset.
  */
 const INTEGRATION_LOGOS = {
-  SLACK: 200, // 200%
-  SPLITBEE: 700, // 700%
-  GOOGLE_TAG_MANAGER: 900, // 900%
-  MUX: 600, // 600%
-  STRIPE: 100, // 100%
-  WORDPRESS: 500, // 500%
-  SHOPIFY: 800, // 800%
-  VERCEL: 400, // 400%
-  ZAPIER: 300, // 300%
+  CLAUDE: 0, // 0%
+  OPENAI: 100, // 100%
+  GEMINI: 200, // 200%
+  PERPLEXITY: 300, // 300%
 } as const;
 
 /**
@@ -33,10 +30,6 @@ interface IntegrationsProps {
    */
   logosImageUrl?: string;
   /**
-   * Custom CSS class name for the container.
-   */
-  className?: string;
-  /**
    * Whether to show the grid background pattern.
    * @default true
    */
@@ -46,6 +39,17 @@ interface IntegrationsProps {
    * @default "integrations-grid"
    */
   gridPatternId?: string;
+  /**
+   * Number of grid columns across the viewport. Cell size is computed as
+   * window.innerWidth / gridColumns so the column count stays fixed across screen sizes.
+   * @default 20
+   */
+  gridColumns?: number;
+  /**
+   * Stroke width of the grid lines.
+   * @default 2
+   */
+  strokeWidth?: number;
 }
 
 /**
@@ -72,25 +76,21 @@ interface IntegrationLogo {
 }
 
 /**
- * Predefined logo positions matching the original design.
+ * Creates logo positions based on grid size and predefined layout.
+ * @param gridSize - The current grid cell size in pixels
+ * @returns Array of logo positions
  */
-const LOGO_POSITIONS: IntegrationLogo[] = [
-  { backgroundPositionX: INTEGRATION_LOGOS.SLACK, top: 239, left: 599 },
-  { backgroundPositionX: INTEGRATION_LOGOS.SPLITBEE, top: 119, left: 659 },
-  { backgroundPositionX: INTEGRATION_LOGOS.GOOGLE_TAG_MANAGER, top: 359, left: 719 },
-  { backgroundPositionX: INTEGRATION_LOGOS.MUX, top: 59, left: 779 },
-  { backgroundPositionX: INTEGRATION_LOGOS.STRIPE, top: 179, left: 779 },
-  { backgroundPositionX: INTEGRATION_LOGOS.WORDPRESS, top: 299, left: 839 },
-  { backgroundPositionX: INTEGRATION_LOGOS.SHOPIFY, top: 239, left: 899 },
-  { backgroundPositionX: INTEGRATION_LOGOS.VERCEL, top: 119, left: 1019 },
-  { backgroundPositionX: INTEGRATION_LOGOS.ZAPIER, top: 359, left: 1079 },
-  // Faded logos for background effect
-  { backgroundPositionX: INTEGRATION_LOGOS.SLACK, top: 119, left: 539, isFaded: true },
-  { backgroundPositionX: INTEGRATION_LOGOS.SLACK, top: 359, left: 599, isFaded: true },
-  { backgroundPositionX: INTEGRATION_LOGOS.STRIPE, top: 299, left: 659, isFaded: true },
-  { backgroundPositionX: INTEGRATION_LOGOS.SHOPIFY, top: 119, left: 899, isFaded: true },
-  { backgroundPositionX: INTEGRATION_LOGOS.SHOPIFY, top: 359, left: 959, isFaded: true },
-  { backgroundPositionX: INTEGRATION_LOGOS.WORDPRESS, top: 299, left: 1019, isFaded: true },
+const createLogoPositions = (gridSize: number): IntegrationLogo[] => [
+  // Main logos - positioned at specific grid coordinates
+  { backgroundPositionX: INTEGRATION_LOGOS.CLAUDE, top: gridSize * 1, left: gridSize * 7 },
+  { backgroundPositionX: INTEGRATION_LOGOS.OPENAI, top: gridSize * 2, left: gridSize * 9 },
+  { backgroundPositionX: INTEGRATION_LOGOS.GEMINI, top: gridSize * 1, left: gridSize * 10 },
+  { backgroundPositionX: INTEGRATION_LOGOS.PERPLEXITY, top: gridSize * 3, left: gridSize * 11 },
+  // Faded logos for background effect (one shadow per regular logo, clustered within bounds)
+  { backgroundPositionX: INTEGRATION_LOGOS.CLAUDE, top: gridSize * 2, left: gridSize * 6, isFaded: true },
+  { backgroundPositionX: INTEGRATION_LOGOS.OPENAI, top: gridSize * 1, left: gridSize * 13, isFaded: true },
+  { backgroundPositionX: INTEGRATION_LOGOS.GEMINI, top: gridSize * 3, left: gridSize * 8, isFaded: true },
+  { backgroundPositionX: INTEGRATION_LOGOS.PERPLEXITY, top: gridSize * 2, left: gridSize * 12, isFaded: true },
 ];
 
 /**
@@ -100,41 +100,69 @@ const LOGO_POSITIONS: IntegrationLogo[] = [
  * @returns JSX element
  */
 export function Integrations({
-  logosImageUrl = '/integration-logos.png',
-  className = '',
+  logosImageUrl = '/assets/ai-integration-logos.png',
   showGrid = true,
   gridPatternId = 'integrations-grid',
+  gridColumns = 20,
+  strokeWidth = 2,
 }: IntegrationsProps) {
+  const [viewportWidth, setViewportWidth] = React.useState(
+    typeof window !== 'undefined' ? document.documentElement.clientWidth : 1920
+  );
+  const [cellSize, setCellSize] = React.useState(
+    typeof window !== 'undefined' ? document.documentElement.clientWidth / gridColumns : 60
+  );
+  React.useEffect(() => {
+    const updateViewportWidth = () => {
+      const width = document.documentElement.clientWidth;
+      setViewportWidth(width);
+      setCellSize(width / gridColumns);
+    };
+
+    updateViewportWidth();
+    window.addEventListener('resize', updateViewportWidth);
+    return () => window.removeEventListener('resize', updateViewportWidth);
+  }, [gridColumns]);
+
+  const gridHeight = cellSize * 5;
+
   return (
     <>
       {/* Height placeholder to influence parent container height */}
-      <div className="h-[360px] md:h-[480px] opacity-0 pointer-events-none" aria-hidden="true" />
+      <div className={`opacity-0 w-full pointer-events-none`} aria-hidden="true" style={{ height: `${gridHeight}px` }} />
 
       {/* Absolutely positioned integrations content */}
       <div
-        className={`absolute left-[-590px] h-[360px] w-[1600px] max-md:bottom-0 max-md:[mask-image:linear-gradient(black_80%,transparent)] md:-left-px md:top-1/2 md:h-[480px] md:-translate-y-1/2 ${className}`}
+        className={`absolute`}
+        style={{
+          left: `${0}px`,
+          height: `${gridHeight}px`,
+          width: `${viewportWidth}px`,
+        }}
       >
       {/* Grid background pattern */}
       {showGrid && (
         <svg
-          className="pointer-events-none absolute inset-0 text-neutral-200 [mask-image:linear-gradient(transparent,black,transparent)] md:[mask-image:linear-gradient(90deg,transparent,black_70%,transparent)]"
+          className="pointer-events-none absolute text-neutral-200 [mask-image:linear-gradient(transparent,black,transparent)] md:[mask-image:linear-gradient(90deg,transparent,black_70%,transparent)]"
           width="100%"
           height="100%"
+          viewBox={`0 0 ${viewportWidth} ${gridHeight}`}
+          preserveAspectRatio="xMidYMid slice"
         >
           <defs>
             <pattern
               id={gridPatternId}
-              x="-1"
-              y="-1"
-              width="60"
-              height="60"
+              x="0"
+              y="0"
+              width={cellSize}
+              height={cellSize}
               patternUnits="userSpaceOnUse"
             >
               <path
-                d="M 60 0 L 0 0 0 60"
+                d={`M ${cellSize} 0 L 0 0 0 ${cellSize}`}
                 fill="transparent"
-                stroke="currentColor"
-                strokeWidth="2"
+                stroke="#00000040"
+                strokeWidth={strokeWidth}
               />
             </pattern>
           </defs>
@@ -144,20 +172,20 @@ export function Integrations({
 
       {/* Integration logos container */}
       <div className="absolute inset-0">
-        {LOGO_POSITIONS.map((logo, index) => (
+        {createLogoPositions(cellSize).map((logo, index) => (
           <div
             key={index}
             className={`absolute rounded-lg bg-gradient-to-b from-neutral-100 to-white ${
               logo.isFaded ? 'opacity-30 shadow-[0_2px_6px_0_#0003_inset]' : 'shadow-md'
             }`}
             style={{
-              width: '61px',
-              height: '61px',
+              width: `${cellSize}px`,
+              height: `${cellSize}px`,
               top: `${logo.top}px`,
               left: `${logo.left}px`,
               ...(logo.isFaded ? {} : {
                 backgroundImage: `url(${logosImageUrl})`,
-                backgroundSize: '900%',
+                backgroundSize: '400%',
                 backgroundPositionX: `${logo.backgroundPositionX}%`,
               }),
             }}

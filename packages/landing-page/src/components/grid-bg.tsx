@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 
 /**
@@ -5,10 +6,11 @@ import React from 'react';
  */
 export interface GridPatternProps {
   /**
-   * Size of each grid cell in pixels
-   * @default 60
+   * Number of grid columns across the viewport. Cell size is computed as
+   * window.innerWidth / gridColumns so the column count stays fixed across screen sizes.
+   * @default 20
    */
-  size?: number;
+  gridColumns?: number;
   /**
    * Stroke width of the grid lines
    * @default 0.8
@@ -54,12 +56,7 @@ export interface GridPatternProps {
    * @default false
    */
   enableGradients?: boolean;
-  /**
-   * Fix the number of columns across the width. If provided, cell size is derived
-   * from the viewBox width so you always get exactly this many columns, regardless of screen size.
-   * @default undefined
-   */
-  columns?: number;
+  // Removed legacy pixel-based size/columns props in favor of gridColumns
   /**
    * Enable accent lines for visual emphasis on the grid
    * @default false
@@ -145,7 +142,7 @@ export interface GridPatternProps {
  * Inspired by Dub's grid pattern implementation.
  *
  * Features:
- * - Fully customizable size, color, opacity, and stroke width
+ * - Fully customizable color, opacity, and stroke width
  * - SVG-based for crisp scaling at any screen size
  * - Performance optimized with single SVG element
  * - Gradient masks for sophisticated fade effects
@@ -163,12 +160,12 @@ export interface GridPatternProps {
  *   enableGradients={true}
  *   enableTopArc={true}
  *   enableAccentLines={true}
+ *   gridColumns={20}
  *   accentLinePositionPercent={0.25}
  *   gridOpacity={0.12}
  *   accentOpacity={0.45}
  *   accentStrokeWidth={1.8}
  *   accentColor="#111827"
- *   columns={20}
  * />
  *
  * @example
@@ -194,7 +191,7 @@ export interface GridPatternProps {
  * @example
  * // Custom styling with dashed accent lines
  * <GridPattern
- *   size={80}
+ *   gridColumns={16}
  *   color="#374151"
  *   opacity={0.08}
  *   strokeWidth={1.2}
@@ -205,7 +202,7 @@ export interface GridPatternProps {
  * />
  */
 export const GridPattern: React.FC<GridPatternProps> = ({
-  size = 60,
+  gridColumns = 20,
   strokeWidth = 0.8,
   color = '#6b7280',
   opacity = 0.12,
@@ -215,7 +212,6 @@ export const GridPattern: React.FC<GridPatternProps> = ({
   className = '',
   style = {},
   enableGradients = false,
-  columns,
   enableAccentLines = false,
   accentLinePositionPercent,
   snapAccentToGrid = true,
@@ -231,12 +227,26 @@ export const GridPattern: React.FC<GridPatternProps> = ({
   centerFadeRadius = 0.3,
   centerFadeIntensity = 0.5,
 }) => {
-  const viewBoxWidth = size * 20; // base viewBox width in user units
-  const viewBoxHeight = size * 20; // base viewBox height in user units
+  // Always use content-based sizing driven by gridColumns
+  const [viewportWidth, setViewportWidth] = React.useState(
+    typeof window !== 'undefined' ? document.documentElement.clientWidth : 1920
+  );
 
-  // Derive the effective cell size: if columns specified, divide the width evenly
-  const cellSize: number =
-    typeof columns === 'number' && columns > 0 ? viewBoxWidth / columns : size;
+  React.useEffect(() => {
+    const updateViewportWidth = () => {
+      setViewportWidth(document.documentElement.clientWidth);
+    };
+
+    updateViewportWidth();
+    window.addEventListener('resize', updateViewportWidth);
+    return () => window.removeEventListener('resize', updateViewportWidth);
+  }, []);
+
+  // Derive the effective cell size from the content width
+  const cellSize: number = viewportWidth / gridColumns;
+  const viewBoxWidth = viewportWidth;
+  const viewBoxHeight = cellSize * gridColumns;
+
 
   // Calculate accent line positions based on percent
   const clamp01 = (v: number): number => (v < 0 ? 0 : v > 1 ? 1 : v);

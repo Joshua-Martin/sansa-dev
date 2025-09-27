@@ -6,6 +6,7 @@
  */
 
 import { Box } from "lucide-react";
+import SansaLogo from "./brand/sansa-logo";
 
 interface NavProps {
   /** Additional CSS classes to apply to the component */
@@ -17,21 +18,13 @@ export function Nav({ className }: NavProps) {
     <nav className={`relative z-50 bg-none px-4 sm:px-6 lg:px-8 py-4 ${className ?? ''}`}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo Section */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1">
           {/* Logo Icon */}
-            <Box className="w-6 h-6 text-black" />
-          {/* Logo Text */}
-          <span className="text-xl font-bold text-black">Sansa</span>
+          <SansaLogo />
         </div>
 
         {/* Navigation Links */}
         <div className="hidden md:flex items-center space-x-8 bg-gray-100 rounded-full px-8 py-3">
-          <a
-            href="#platform"
-            className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200"
-          >
-            Platform
-          </a>
           <a
             href="#solutions"
             className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200"
@@ -43,18 +36,6 @@ export function Nav({ className }: NavProps) {
             className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200"
           >
             Resources
-          </a>
-          <a
-            href="#plans"
-            className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200"
-          >
-            Plans
-          </a>
-          <a
-            href="#partnership"
-            className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200"
-          >
-            Partnership
           </a>
           <a
             href="#company"

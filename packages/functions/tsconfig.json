@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "noEmit": false,
+    "incremental": true,
+    "module": "NodeNext", // Updated to NodeNext
+    "moduleResolution": "nodenext", // Added to match module
+    "target": "ES2020",
+    "sourceMap": true, // Added back
+    "noImplicitReturns": true // Added back
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "lib", "**/*.test.*", "**/*.spec.*"]
+}

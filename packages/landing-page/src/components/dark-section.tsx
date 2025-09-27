@@ -8,7 +8,6 @@ import { GridPattern } from './grid-bg';
  */
 const GRID_COLUMNS = 24;
 const ACCENT_POSITION_PERCENT = 0.2;
-const ACCENT_COLOR = '#000000';
 const ACCENT_STROKE_WIDTH_PX = 1;
 const ACCENT_OPACITY = 0.45;
 
@@ -50,14 +49,13 @@ export function DarkSection() {
         className="hidden md:block z-30"
         gridColumns={GRID_COLUMNS}
         accentPositionPercent={ACCENT_POSITION_PERCENT}
-        accentColor={"#fff"}
         accentStrokeWidthPx={ACCENT_STROKE_WIDTH_PX}
         accentOpacity={0.2}
       />
 
       <GridPattern
         patternId="dark-section-grid-pattern"
-        columns={GRID_COLUMNS}
+        gridColumns={GRID_COLUMNS}  
         strokeWidth={0.8}
         color="#ffffff"
         gridOpacity={0.3}
@@ -69,8 +67,8 @@ export function DarkSection() {
         snapAccentToGrid={true}
         accentStrokeWidth={0}
         topCornerRadiusPercent={0.8}
-        topEdgeHeightPercent={0.2}
-        radialRadiusPercent={0.4}
+        topEdgeHeightPercent={0.6}
+        radialRadiusPercent={0.5}
         enableCenterFade={true}
         centerFadeRadius={0.25}
         centerFadeIntensity={0.5}

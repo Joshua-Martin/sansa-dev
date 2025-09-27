@@ -23,6 +23,7 @@
     "dev:landing-page": "pnpm --filter @sansa-dev/landing-page dev",
     "dev:clean": "./scripts/dev-cleanup.sh",
     "dev:restart": "./scripts/dev-cleanup.sh && pnpm dev",
+    "deploy:functions": "pnpm --filter @sansa-dev/functions run deploy",
     "build": "pnpm build:shared && pnpm build:ui && pnpm build:api",
     "build:all": "pnpm build:shared && pnpm build:ui && pnpm build:frontend && pnpm build:api",
     "build:shared": "pnpm --filter @sansa-dev/shared build",
@@ -69,5 +70,8 @@
     "vite": "^5.4.19",
     "vite-plugin-dts": "^4.5.4",
     "vitest": "^3.1.4"
+  },
+  "dependencies": {
+    "firebase-tools": "^14.17.0"
   }
 }

@@ -28,7 +28,7 @@ interface AccentBordersProps {
 export function AccentBorders({
   className,
   gridColumns = 24,
-  accentPositionPercent = 0.2,
+  accentPositionPercent = 0.1,
   variant = 'light',
   accentStrokeWidthPx = 1,
   accentOpacity = 0.45,
