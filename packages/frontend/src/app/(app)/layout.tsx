@@ -66,9 +66,7 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
           </div>
         )}
-        <main className="h-screen w-full p-4">
-          {children}
-        </main>
+        <main className="h-screen w-full p-4">{children}</main>
       </div>
     </div>
   );

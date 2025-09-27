@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import Image from 'next/image';
 import { FileText, Compass, Zap } from 'lucide-react';
 import DotsBg from '@/components/dots-bg';
@@ -40,7 +46,6 @@ const DURATION_PROVIDER_REVERSE_MS = 900;
 const HIGHLIGHT_PULSE_MS = 450;
 const DURATION_MAIN_REVERSE_MS = 1100;
 
-
 /**
  * Build a rounded orthogonal path from a start to an end point using two 90° corner arcs.
  *
@@ -66,7 +71,12 @@ const DURATION_MAIN_REVERSE_MS = 1100;
 function buildRoundedConnectorPath(
   start: Point,
   end: Point,
-  options?: { splitFraction?: number; radiusPx?: number; radiusFraction?: number; minRadius?: number }
+  options?: {
+    splitFraction?: number;
+    radiusPx?: number;
+    radiusFraction?: number;
+    minRadius?: number;
+  }
 ): string {
   const splitFraction = options?.splitFraction ?? 0.2;
   const radiusFraction = options?.radiusFraction ?? 0.05;
@@ -92,12 +102,18 @@ function buildRoundedConnectorPath(
   const proposedRadius = options?.radiusPx ?? fractionRadius;
   const maxRadiusFromVertical = Math.max(2, Math.abs(dy) / 2);
   const maxRadiusFromGeometry = Math.max(1, Math.abs(splitX - start.x) - 1);
-  const r = Math.max(1, Math.min(proposedRadius, maxRadiusFromVertical, maxRadiusFromGeometry));
+  const r = Math.max(
+    1,
+    Math.min(proposedRadius, maxRadiusFromVertical, maxRadiusFromGeometry)
+  );
 
   // Determine arc sweep based on BOTH horizontal and vertical travel directions.
   // We want quarter-arcs to flip correctly when moving left vs right.
   // First corner (horizontal -> vertical)
-  const sweepToVertical = (directionX > 0 && directionY > 0) || (directionX < 0 && directionY < 0) ? 1 : 0;
+  const sweepToVertical =
+    (directionX > 0 && directionY > 0) || (directionX < 0 && directionY < 0)
+      ? 1
+      : 0;
   // Second corner (vertical -> horizontal) is the opposite quarter-turn
   const sweepToHorizontal = 1 - sweepToVertical;
 
@@ -136,8 +152,8 @@ const HowItWorksAnimation: React.FC = () => {
 
   // Messages to cycle through
   const messages = [
-    "Summarize this contract and identify the payment terms",
-    "Thank You"
+    'Summarize this contract and identify the payment terms',
+    'Thank You',
   ];
 
   // Controlled messages via state machine (no auto-interval)
@@ -161,13 +177,22 @@ const HowItWorksAnimation: React.FC = () => {
   // Wrapper around the product card (includes padding) for correct vertical centering
   const productWrapperRef = useRef<HTMLDivElement | null>(null);
 
-  const [svgSize, setSvgSize] = useState<{ width: number; height: number }>({ width: 1200, height: 800 });
-  const [productRightCenter, setProductRightCenter] = useState<Point | null>(null);
+  const [svgSize, setSvgSize] = useState<{ width: number; height: number }>({
+    width: 1200,
+    height: 800,
+  });
+  const [productRightCenter, setProductRightCenter] = useState<Point | null>(
+    null
+  );
   const [providerCenters, setProviderCenters] = useState<Array<Point>>([]);
-  const [saasToProductLine, setSaasToProductLine] = useState<string | null>(null);
-  const [saasEndpoints, setSaasEndpoints] = useState<{ start: Point; end: Point } | null>(null);
+  const [saasToProductLine, setSaasToProductLine] = useState<string | null>(
+    null
+  );
+  const [saasEndpoints, setSaasEndpoints] = useState<{
+    start: Point;
+    end: Point;
+  } | null>(null);
   const [zapPositions, setZapPositions] = useState<Array<Point>>([]);
-
 
   // Overlay path animation state (controlled per phase)
   const overlayPathRef = useRef<SVGPathElement | null>(null);
@@ -176,13 +201,18 @@ const HowItWorksAnimation: React.FC = () => {
   const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
   const [overlayLength, setOverlayLength] = useState<number>(0);
   const [overlayKind, setOverlayKind] = useState<'main' | 'provider'>('main');
-  const [overlayDirection, setOverlayDirection] = useState<'forward' | 'reverse'>('forward');
+  const [overlayDirection, setOverlayDirection] = useState<
+    'forward' | 'reverse'
+  >('forward');
   const [dotPosition, setDotPosition] = useState<Point | null>(null);
 
   // Highlights
   const [unifiedHighlight, setUnifiedHighlight] = useState<boolean>(false);
   const [benchmarkHighlight, setBenchmarkHighlight] = useState<boolean>(false);
-  const [providerHighlight, setProviderHighlight] = useState<boolean[]>([false, false]);
+  const [providerHighlight, setProviderHighlight] = useState<boolean[]>([
+    false,
+    false,
+  ]);
 
   // Orchestrator
   const [cycleIndex, setCycleIndex] = useState<number>(0); // 0 -> Claude, 1 -> GPT-5-mini
@@ -204,7 +234,10 @@ const HowItWorksAnimation: React.FC = () => {
     if (!rootRef.current) return;
     const resize = () => {
       const rect = rootRef.current!.getBoundingClientRect();
-      setSvgSize({ width: Math.max(1, Math.round(rect.width)), height: Math.max(1, Math.round(rect.height)) });
+      setSvgSize({
+        width: Math.max(1, Math.round(rect.width)),
+        height: Math.max(1, Math.round(rect.height)),
+      });
     };
     resize();
     const ro = new ResizeObserver(resize);
@@ -226,14 +259,15 @@ const HowItWorksAnimation: React.FC = () => {
         setProductRightCenter({ x: rightX, y: midY });
       }
 
-
-
       // Provider endpoints at left edge center
       const centers: Array<Point> = [];
       providerRefs.current.forEach((el) => {
         if (!el) return;
         const r = el.getBoundingClientRect();
-        centers.push({ x: r.left - rootRect.left, y: r.top - rootRect.top + r.height / 2 });
+        centers.push({
+          x: r.left - rootRect.left,
+          y: r.top - rootRect.top + r.height / 2,
+        });
       });
       setProviderCenters(centers);
 
@@ -247,7 +281,6 @@ const HowItWorksAnimation: React.FC = () => {
         setSaasToProductLine(`M ${startX} ${y} L ${endX} ${y}`);
         setSaasEndpoints({ start: { x: startX, y }, end: { x: endX, y } });
       }
-
 
       // Calculate zap positions at path intersections
       const zapPos: Array<Point> = [];
@@ -277,10 +310,12 @@ const HowItWorksAnimation: React.FC = () => {
         providerRefs.current.forEach((el) => {
           if (!el) return;
           const r = el.getBoundingClientRect();
-          zapPos.push({ x: r.left - rootRect.left, y: r.top - rootRect.top + r.height / 2 });
+          zapPos.push({
+            x: r.left - rootRect.left,
+            y: r.top - rootRect.top + r.height / 2,
+          });
         });
       }
-
 
       setZapPositions(zapPos);
 
@@ -304,10 +339,9 @@ const HowItWorksAnimation: React.FC = () => {
     };
   }, []);
 
-
-
   const providerPaths = useMemo(() => {
-    if (!productRightCenter || providerCenters.length === 0) return [] as string[];
+    if (!productRightCenter || providerCenters.length === 0)
+      return [] as string[];
     return providerCenters.map((endPoint) =>
       buildRoundedConnectorPath(
         { x: productRightCenter.x, y: productRightCenter.y },
@@ -339,7 +373,9 @@ const HowItWorksAnimation: React.FC = () => {
   }, [overlayD]);
 
   const overlayStrokeWidth = useMemo(() => {
-    return overlayKind === 'main' ? CONNECTOR_STROKE_WIDTH_MAIN : CONNECTOR_STROKE_WIDTH;
+    return overlayKind === 'main'
+      ? CONNECTOR_STROKE_WIDTH_MAIN
+      : CONNECTOR_STROKE_WIDTH;
   }, [overlayKind]);
 
   // Helpers to manage timers/raf
@@ -373,7 +409,10 @@ const HowItWorksAnimation: React.FC = () => {
     setDotPosition(null);
     const start = performance.now();
     const tick = (now: number) => {
-      const t = Math.max(0, Math.min(1, (now - start) / Math.max(1, durationMs)));
+      const t = Math.max(
+        0,
+        Math.min(1, (now - start) / Math.max(1, durationMs))
+      );
       setOverlayProgress(t);
       // Drive dot along the same exact path geometry in the requested direction
       if (withDot && overlayPathRef.current) {
@@ -396,7 +435,12 @@ const HowItWorksAnimation: React.FC = () => {
     rafRef.current = requestAnimationFrame(tick);
   };
 
-  const ready = Boolean(saasToProductLine && saasEndpoints && productRightCenter && providerCenters.length >= 2);
+  const ready = Boolean(
+    saasToProductLine &&
+      saasEndpoints &&
+      productRightCenter &&
+      providerCenters.length >= 2
+  );
 
   // Orchestrate the full animation loop
   useEffect(() => {
@@ -411,79 +455,121 @@ const HowItWorksAnimation: React.FC = () => {
       // Main forward (SaaS -> Product)
       if (!saasToProductLine) return;
       setPhase('mainForward');
-      animatePath(saasToProductLine, 'main', DURATION_MAIN_FORWARD_MS, 'forward', true, () => {
-        // Pulse Unified APIs at the exact end
-        setUnifiedHighlight(true);
-        schedule(() => setUnifiedHighlight(false), HIGHLIGHT_PULSE_MS);
+      animatePath(
+        saasToProductLine,
+        'main',
+        DURATION_MAIN_FORWARD_MS,
+        'forward',
+        true,
+        () => {
+          // Pulse Unified APIs at the exact end
+          setUnifiedHighlight(true);
+          schedule(() => setUnifiedHighlight(false), HIGHLIGHT_PULSE_MS);
 
-        // Message out after brief pause
-        schedule(() => {
-          setPhase('msgOut');
-          setIsMessageVisible(false);
+          // Message out after brief pause
           schedule(() => {
-            // Provider forward
-            const targetProviderIndex = cycleIndex % providerCenters.length;
-            const forwardD = providerPaths[targetProviderIndex];
-            if (!forwardD) return;
-            setPhase('providerForward');
-            setProviderHighlight(prev => prev.map((_, idx) => idx === targetProviderIndex));
-            animatePath(forwardD, 'provider', DURATION_PROVIDER_FORWARD_MS, 'forward', true, () => {
-              // Provider reverse: animate forward along a reversed-geometry path
-              setPhase('providerReverse');
-              const providerCenter = providerCenters[targetProviderIndex];
-              const reverseProviderD = productRightCenter && providerCenter
-                ? buildRoundedConnectorPath(
-                    { x: providerCenter.x, y: providerCenter.y },
-                    { x: productRightCenter.x, y: productRightCenter.y },
-                    {
-                      splitFraction: CONNECTOR_SPLIT_FRACTION,
-                      radiusPx: CONNECTOR_ARC_RADIUS_PX,
-                      radiusFraction: 0.05,
-                      minRadius: CONNECTOR_MIN_RADIUS_PX,
+            setPhase('msgOut');
+            setIsMessageVisible(false);
+            schedule(() => {
+              // Provider forward
+              const targetProviderIndex = cycleIndex % providerCenters.length;
+              const forwardD = providerPaths[targetProviderIndex];
+              if (!forwardD) return;
+              setPhase('providerForward');
+              setProviderHighlight((prev) =>
+                prev.map((_, idx) => idx === targetProviderIndex)
+              );
+              animatePath(
+                forwardD,
+                'provider',
+                DURATION_PROVIDER_FORWARD_MS,
+                'forward',
+                true,
+                () => {
+                  // Provider reverse: animate forward along a reversed-geometry path
+                  setPhase('providerReverse');
+                  const providerCenter = providerCenters[targetProviderIndex];
+                  const reverseProviderD =
+                    productRightCenter && providerCenter
+                      ? buildRoundedConnectorPath(
+                          { x: providerCenter.x, y: providerCenter.y },
+                          { x: productRightCenter.x, y: productRightCenter.y },
+                          {
+                            splitFraction: CONNECTOR_SPLIT_FRACTION,
+                            radiusPx: CONNECTOR_ARC_RADIUS_PX,
+                            radiusFraction: 0.05,
+                            minRadius: CONNECTOR_MIN_RADIUS_PX,
+                          }
+                        )
+                      : forwardD;
+                  animatePath(
+                    reverseProviderD,
+                    'provider',
+                    DURATION_PROVIDER_REVERSE_MS,
+                    'forward',
+                    true,
+                    () => {
+                      // Clear provider highlight
+                      setProviderHighlight([false, false]);
+                      // Highlight both Unified APIs and Benchmark together
+                      setPhase('highlightBoth');
+                      setUnifiedHighlight(true);
+                      setBenchmarkHighlight(true);
+                      schedule(() => {
+                        setUnifiedHighlight(false);
+                        setBenchmarkHighlight(false);
+                        // Main reverse (Product -> SaaS): animate forward along reversed straight line
+                        if (!saasEndpoints) return;
+                        setPhase('mainReverse');
+                        const reverseMainD = `M ${saasEndpoints.end.x} ${saasEndpoints.end.y} L ${saasEndpoints.start.x} ${saasEndpoints.start.y}`;
+                        animatePath(
+                          reverseMainD,
+                          'main',
+                          DURATION_MAIN_REVERSE_MS,
+                          'forward',
+                          true,
+                          () => {
+                            setOverlayVisible(false);
+                            // Next cycle
+                            setCycleIndex((c) => (c + 1) % 2);
+                          }
+                        );
+                      }, HIGHLIGHT_PULSE_MS);
                     }
-                  )
-                : forwardD;
-              animatePath(reverseProviderD, 'provider', DURATION_PROVIDER_REVERSE_MS, 'forward', true, () => {
-                // Clear provider highlight
-                setProviderHighlight([false, false]);
-                // Highlight both Unified APIs and Benchmark together
-                setPhase('highlightBoth');
-                setUnifiedHighlight(true);
-                setBenchmarkHighlight(true);
-                schedule(() => {
-                  setUnifiedHighlight(false);
-                  setBenchmarkHighlight(false);
-                  // Main reverse (Product -> SaaS): animate forward along reversed straight line
-                  if (!saasEndpoints) return;
-                  setPhase('mainReverse');
-                  const reverseMainD = `M ${saasEndpoints.end.x} ${saasEndpoints.end.y} L ${saasEndpoints.start.x} ${saasEndpoints.start.y}`;
-                  animatePath(reverseMainD, 'main', DURATION_MAIN_REVERSE_MS, 'forward', true, () => {
-                    setOverlayVisible(false);
-                    // Next cycle
-                    setCycleIndex((c) => (c + 1) % 2);
-                  });
-                }, HIGHLIGHT_PULSE_MS);
-              });
-            });
-          }, DURATION_MSG_OUT_MS + PAUSE_AFTER_MSG_OUT_MS);
-        }, PAUSE_AFTER_MSG_IN_MS);
-      });
+                  );
+                }
+              );
+            }, DURATION_MSG_OUT_MS + PAUSE_AFTER_MSG_OUT_MS);
+          }, PAUSE_AFTER_MSG_IN_MS);
+        }
+      );
     }, DURATION_MSG_FADE_MS + PAUSE_AFTER_MSG_IN_MS);
 
     return () => {
       clearTimers();
     };
-  }, [ready, cycleIndex, saasToProductLine, saasEndpoints, productRightCenter, providerCenters, providerPaths, messages.length]);
+  }, [
+    ready,
+    cycleIndex,
+    saasToProductLine,
+    saasEndpoints,
+    productRightCenter,
+    providerCenters,
+    providerPaths,
+    messages.length,
+  ]);
 
   return (
     <div className="w-full h-full bg-background flex items-center justify-center">
       <div ref={rootRef} className="relative w-full h-full">
-        <div className='absolute inset-0 rounded-3xl overflow-hidden border-1 border-gray-100/50 bg-gray-50'>
-        <div className="absolute inset-2 rounded-2xl overflow-hidden">
-        <DotsBg color="#cccccc70" />
-        </div></div>
+        <div className="absolute inset-0 rounded-3xl overflow-hidden border-1 border-gray-100/50 bg-gray-50">
+          <div className="absolute inset-2 rounded-2xl overflow-hidden">
+            <DotsBg color="#cccccc70" />
+          </div>
+        </div>
         {/* SVG for connecting paths */}
-        <svg data-phase={phase}
+        <svg
+          data-phase={phase}
           ref={svgRef}
           className="absolute inset-0 w-full h-full pointer-events-none"
           viewBox={`0 0 ${svgSize.width} ${svgSize.height}`}
@@ -527,15 +613,20 @@ const HowItWorksAnimation: React.FC = () => {
                 strokeDasharray: `${Math.max(0.0001, overlayLength * overlayProgress)} ${overlayLength}`,
                 strokeDashoffset:
                   (overlayDirection === 'forward'
-                    ? (overlayLength * overlayProgress) // head = tail when moving forward
-                    : (overlayLength * (1 - overlayProgress)) // head moves from len -> 0 when reversing
-                  ) - (overlayLength * overlayProgress), // offset = head - tail
+                    ? overlayLength * overlayProgress // head = tail when moving forward
+                    : overlayLength * (1 - overlayProgress)) - // head moves from len -> 0 when reversing
+                  overlayLength * overlayProgress, // offset = head - tail
               }}
             />
           )}
 
           {dotPosition && overlayVisible && (
-            <circle cx={dotPosition.x} cy={dotPosition.y} r={5} fill="hsl(var(--color-path-active))" />
+            <circle
+              cx={dotPosition.x}
+              cy={dotPosition.y}
+              r={5}
+              fill="hsl(var(--color-path-active))"
+            />
           )}
         </svg>
 
@@ -554,7 +645,10 @@ const HowItWorksAnimation: React.FC = () => {
           </div>
         ))}
 
-        <div ref={rowRef} className="relative h-full min-h-[300px] sm:min-h-[350px] md:min-h-[400px] xl:min-h-[400px] flex items-center justify-between px-4 sm:px-6 md:px-8 xl:px-8 gap-4 sm:gap-6 md:gap-8 xl:gap-8">
+        <div
+          ref={rowRef}
+          className="relative h-full min-h-[300px] sm:min-h-[350px] md:min-h-[400px] xl:min-h-[400px] flex items-center justify-between px-4 sm:px-6 md:px-8 xl:px-8 gap-4 sm:gap-6 md:gap-8 xl:gap-8"
+        >
           {/* B2B SaaS Application */}
           <div ref={saasColumnRef} className="flex-shrink-0 self-center">
             <div className="bg-white rounded-lg shadow-lg w-64 sm:w-72 md:w-80 xl:w-80 h-48 sm:h-56 md:h-60 xl:h-64 relative">
@@ -570,8 +664,13 @@ const HowItWorksAnimation: React.FC = () => {
                 </div>
               </div>
               {/* Content area */}
-              <div ref={saasRef} className="p-3 sm:p-4 md:p-5 xl:p-6 h-36 sm:h-40 md:h-44 xl:h-48 flex items-center justify-center">
-                <div className={`bg-white rounded-tl-xl rounded-tr-xl rounded-bl-xl mb-10 p-2 sm:p-3 md:p-4 xl:p-4 shadow-md border border-gray-200 max-w-xs transition-opacity duration-500 ${isMessageVisible ? 'opacity-100' : 'opacity-0'}`}>
+              <div
+                ref={saasRef}
+                className="p-3 sm:p-4 md:p-5 xl:p-6 h-36 sm:h-40 md:h-44 xl:h-48 flex items-center justify-center"
+              >
+                <div
+                  className={`bg-white rounded-tl-xl rounded-tr-xl rounded-bl-xl mb-10 p-2 sm:p-3 md:p-4 xl:p-4 shadow-md border border-gray-200 max-w-xs transition-opacity duration-500 ${isMessageVisible ? 'opacity-100' : 'opacity-0'}`}
+                >
                   <div className="text-gray-800 text-xs sm:text-sm xl:text-sm text-center">
                     {messages[currentMessageIndex]}
                   </div>
@@ -579,51 +678,77 @@ const HowItWorksAnimation: React.FC = () => {
               </div>
             </div>
             <div className="text-center mt-4 hidden">
-              <span className="text-green-600 font-semibold text-lg">B2B SaaS</span>
+              <span className="text-green-600 font-semibold text-lg">
+                B2B SaaS
+              </span>
             </div>
           </div>
 
           {/* Sansa AI API router Layer (Product) */}
-          <div ref={productWrapperRef} className="flex-shrink-0 self-center p-2 sm:p-3 xl:p-3 rounded-xl bg-white/20 overflow-hidden">
-
-            <div ref={productRef} className="bg-background border-1 border-gray-100/30 rounded-lg w-80 sm:w-88 md:w-96 xl:w-[26rem] h-48 sm:h-56 md:h-60 xl:h-64 relative overflow-hidden shadow-lg">
-
+          <div
+            ref={productWrapperRef}
+            className="flex-shrink-0 self-center p-2 sm:p-3 xl:p-3 rounded-xl bg-white/20 overflow-hidden"
+          >
+            <div
+              ref={productRef}
+              className="bg-background border-1 border-gray-100/30 rounded-lg w-80 sm:w-88 md:w-96 xl:w-[26rem] h-48 sm:h-56 md:h-60 xl:h-64 relative overflow-hidden shadow-lg"
+            >
               {/* Content - Split into two sections vertically */}
-              <div className="p-3 sm:p-4 md:p-5 xl:p-6 h-full relative" style={{ zIndex: 2 }}>
+              <div
+                className="p-3 sm:p-4 md:p-5 xl:p-6 h-full relative"
+                style={{ zIndex: 2 }}
+              >
                 <div className="flex flex-col h-full">
                   {/* API Router Section */}
-                  <div ref={apiRouterRef} className="flex-1 space-y-2 sm:space-y-3 md:space-y-4 xl:space-y-4">
+                  <div
+                    ref={apiRouterRef}
+                    className="flex-1 space-y-2 sm:space-y-3 md:space-y-4 xl:space-y-4"
+                  >
                     <div className="border-b border-border pb-1 sm:pb-2 xl:pb-2 text-lg sm:text-xl md:text-2xl xl:text-2xl">
                       <SansaLogo />
                     </div>
 
                     {/* Unified APIs */}
-                    <div ref={unifiedRef} className={`bg-background rounded-lg p-1 sm:p-2 xl:p-2 ${unifiedHighlight ? 'border-primary border-2' : 'border-transparent border-2'}`}>
+                    <div
+                      ref={unifiedRef}
+                      className={`bg-background rounded-lg p-1 sm:p-2 xl:p-2 ${unifiedHighlight ? 'border-primary border-2' : 'border-transparent border-2'}`}
+                    >
                       <div className="flex items-center justify-start">
-                      <FileText className="w-3 h-3 sm:w-4 sm:h-4 xl:w-4 xl:h-4 text-foreground mr-1 sm:mr-2 xl:mr-2" />
-                        <span className="font-semibold text-sm sm:text-base xl:text-base text-foreground">Unified APIs</span>
+                        <FileText className="w-3 h-3 sm:w-4 sm:h-4 xl:w-4 xl:h-4 text-foreground mr-1 sm:mr-2 xl:mr-2" />
+                        <span className="font-semibold text-sm sm:text-base xl:text-base text-foreground">
+                          Unified APIs
+                        </span>
                       </div>
                     </div>
 
                     {/* Benchmark */}
-                    <div ref={classifierRef} className={`bg-background rounded-lg p-1 sm:p-2 xl:p-2 ${benchmarkHighlight ? 'border-primary border-2' : 'border-transparent border-2'}`}>
+                    <div
+                      ref={classifierRef}
+                      className={`bg-background rounded-lg p-1 sm:p-2 xl:p-2 ${benchmarkHighlight ? 'border-primary border-2' : 'border-transparent border-2'}`}
+                    >
                       <div className="flex items-center justify-start">
                         <Compass className="w-3 h-3 sm:w-4 sm:h-4 xl:w-4 xl:h-4 text-foreground mr-1 sm:mr-2 xl:mr-2" />
-                        <span className="font-semibold text-sm sm:text-base xl:text-base text-foreground">Benchmark</span>
+                        <span className="font-semibold text-sm sm:text-base xl:text-base text-foreground">
+                          Benchmark
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
 
           {/* Integration Categories */}
           <div ref={providersColumnRef} className="flex-shrink-0 self-center">
             <div className="space-y-3 sm:space-y-4 md:space-y-5 xl:space-y-6">
               {/* Claude Opus */}
-              <div ref={(el) => { providerRefs.current[0] = el; }} className={`bg-background rounded-lg p-2 sm:p-3 md:p-4 xl:p-4 w-48 sm:w-56 md:w-60 xl:w-64 shadow-lg border ${providerHighlight[0] ? 'border-2 border-primary' : 'border-transparent border-2'}`}>
+              <div
+                ref={(el) => {
+                  providerRefs.current[0] = el;
+                }}
+                className={`bg-background rounded-lg p-2 sm:p-3 md:p-4 xl:p-4 w-48 sm:w-56 md:w-60 xl:w-64 shadow-lg border ${providerHighlight[0] ? 'border-2 border-primary' : 'border-transparent border-2'}`}
+              >
                 <div className="flex items-center space-x-2 sm:space-x-3 xl:space-x-3">
                   <Image
                     src="/assets/ai-logos/claude.png"
@@ -632,12 +757,19 @@ const HowItWorksAnimation: React.FC = () => {
                     height={24}
                     className="sm:w-8 sm:h-8 xl:w-8 xl:h-8 rounded"
                   />
-                  <span className="font-bold text-sm sm:text-base xl:text-base text-foreground">Claude Opus</span>
+                  <span className="font-bold text-sm sm:text-base xl:text-base text-foreground">
+                    Claude Opus
+                  </span>
                 </div>
               </div>
 
               {/* GPT-5-mini */}
-              <div ref={(el) => { providerRefs.current[1] = el; }} className={`bg-background rounded-lg p-2 sm:p-3 md:p-4 xl:p-4 w-48 sm:w-56 md:w-60 xl:w-64 shadow-lg border ${providerHighlight[1] ? 'border-2 border-primary' : 'border-transparent border-2'}`}>
+              <div
+                ref={(el) => {
+                  providerRefs.current[1] = el;
+                }}
+                className={`bg-background rounded-lg p-2 sm:p-3 md:p-4 xl:p-4 w-48 sm:w-56 md:w-60 xl:w-64 shadow-lg border ${providerHighlight[1] ? 'border-2 border-primary' : 'border-transparent border-2'}`}
+              >
                 <div className="flex items-center space-x-2 sm:space-x-3 xl:space-x-3">
                   <Image
                     src="/assets/ai-logos/openai.png"
@@ -646,10 +778,11 @@ const HowItWorksAnimation: React.FC = () => {
                     height={24}
                     className="sm:w-8 sm:h-8 xl:w-8 xl:h-8 rounded"
                   />
-                  <span className="font-bold text-sm sm:text-base xl:text-base text-foreground">GPT-5-mini</span>
+                  <span className="font-bold text-sm sm:text-base xl:text-base text-foreground">
+                    GPT-5-mini
+                  </span>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -658,4 +791,4 @@ const HowItWorksAnimation: React.FC = () => {
   );
 };
 
-export default HowItWorksAnimation;  
+export default HowItWorksAnimation;

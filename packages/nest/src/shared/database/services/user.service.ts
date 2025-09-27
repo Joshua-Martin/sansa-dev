@@ -8,7 +8,11 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { User } from '../entities/user.entity';
-import { CreateUserParams, UpdateUserParams, UserRole } from '@sansa-dev/shared';
+import {
+  CreateUserParams,
+  UpdateUserParams,
+  UserRole,
+} from '@sansa-dev/shared';
 
 /**
  * Service for managing user operations

@@ -19,18 +19,12 @@ interface PageTitleProps {
 const PageTitle: React.FC<PageTitleProps> = ({
   title,
   subtitle,
-  className = ''
+  className = '',
 }) => {
   return (
     <div className={`flex items-center h-12 ${className}`}>
-      <h1 className="text-2xl font-bold text-foreground">
-        {title}
-      </h1>
-      {subtitle && (
-        <p className="mt-2 text-muted-foreground">
-          {subtitle}
-        </p>
-      )}
+      <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+      {subtitle && <p className="mt-2 text-muted-foreground">{subtitle}</p>}
     </div>
   );
 };

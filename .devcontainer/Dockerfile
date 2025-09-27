@@ -43,6 +43,9 @@ RUN apt-get update && apt-get install -y \
 RUN npm i -g pm2@5.3.0
 RUN npm i -g concurrently@8.2.0
 
+# Install Firebase CLI
+RUN npm i -g firebase-tools
+
 # Install Node.js 20.3.0 specifically using nvm
 # The base image only provides major/minor Node.js versions (e.g., 20.x),
 # so we use nvm to install the exact patch version required for this project.

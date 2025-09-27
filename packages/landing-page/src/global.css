@@ -9,37 +9,43 @@
   font-family: 'Sansation';
   font-style: normal;
   font-weight: 300;
-  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjFdGPjnEg8DNA0z01YAVgPVA.ttf') format('truetype');
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjFdGPjnEg8DNA0z01YAVgPVA.ttf')
+    format('truetype');
 }
 @font-face {
   font-family: 'Sansation';
   font-style: normal;
   font-weight: 400;
-  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjAdGPjnEg8DNA0z01grQ.ttf') format('truetype');
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjAdGPjnEg8DNA0z01grQ.ttf')
+    format('truetype');
 }
 @font-face {
   font-family: 'Sansation';
   font-style: normal;
   font-weight: 700;
-  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjFdGPjnEg8DNA0z01YEV8PVA.ttf') format('truetype');
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjFdGPjnEg8DNA0z01YEV8PVA.ttf')
+    format('truetype');
 }
 @font-face {
   font-family: 'Sansation';
   font-style: italic;
   font-weight: 300;
-  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjbdGPjnEg8DNA0z01Qr0KDVv_f.ttf') format('truetype');
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjbdGPjnEg8DNA0z01Qr0KDVv_f.ttf')
+    format('truetype');
 }
 @font-face {
   font-family: 'Sansation';
   font-style: italic;
   font-weight: 400;
-  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjGdGPjnEg8DNA0z01Qr3ov.ttf') format('truetype');
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjGdGPjnEg8DNA0z01Qr3ov.ttf')
+    format('truetype');
 }
 @font-face {
   font-family: 'Sansation';
   font-style: italic;
   font-weight: 700;
-  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjbdGPjnEg8DNA0z01Qr0KTUf_f.ttf') format('truetype');
+  src: url('https://fonts.gstatic.com/s/sansation/v1/LYjbdGPjnEg8DNA0z01Qr0KTUf_f.ttf')
+    format('truetype');
 }
 
 /**
@@ -54,7 +60,7 @@
  * Tailwind v4 Theme Configuration
  * Define custom colors and design tokens
  */
- @theme {
+@theme {
   --color-background: hsl(0, 0%, 100%);
   --color-dark-background: hsl(0, 0%, 8%);
   --color-accent-border: hsl(214.3, 31.8%, 85%);
@@ -89,7 +95,9 @@
 }
 
 .mono-text {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Consolas', 'Courier New', monospace;
+  font-family:
+    'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Consolas', 'Courier New',
+    monospace;
 }
 
 .sansa-font {

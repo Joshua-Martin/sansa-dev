@@ -44,9 +44,10 @@ export const FolderDip: React.FC<FolderDipProps> = ({
   const baseClasses = 'h-full w-full shrink-0';
 
   // Use different paths for left and right to avoid transform artifacts
-  const pathData = direction === 'left'
-    ? "M0 0 H85 V64 C71.2084 63.9997 57.3095 56.6952 50 45 L34 19 C26.6905 7.30481 13.7915 0 0 0 Z"
-    : "M85 0 H0 V64 C13.7915 63.9997 27.3095 56.6952 35 45 L51 19 C58.6905 7.30481 71.2084 0 85 0 Z";
+  const pathData =
+    direction === 'left'
+      ? 'M0 0 H85 V64 C71.2084 63.9997 57.3095 56.6952 50 45 L34 19 C26.6905 7.30481 13.7915 0 0 0 Z'
+      : 'M85 0 H0 V64 C13.7915 63.9997 27.3095 56.6952 35 45 L51 19 C58.6905 7.30481 71.2084 0 85 0 Z';
 
   const svgClasses = `${baseClasses} ${className}`.trim();
 
@@ -59,10 +60,7 @@ export const FolderDip: React.FC<FolderDipProps> = ({
       style={{ color }}
       preserveAspectRatio="none"
     >
-      <path
-        d={pathData}
-        fill="currentColor"
-      />
+      <path d={pathData} fill="currentColor" />
     </svg>
   );
 };

@@ -11,15 +11,16 @@ import Image from 'next/image';
 export function BelowFold() {
   return (
     <div className="flex items-center justify-center border border-border/10 bg-white/5 p-4 rounded-xl">
-    <div className="w-full max-w-4xl h-auto rounded-xl overflow-hidden">
-      <Image
-        src="/assets/sansa-dash.png"
-        alt="Sansa Dashboard"
-        width={2400}
-        height={1600}
-        className="w-full h-auto object-contain"
-        priority
-      />
-    </div></div>
+      <div className="w-full max-w-4xl h-auto rounded-xl overflow-hidden">
+        <Image
+          src="/assets/sansa-dash.png"
+          alt="Sansa Dashboard"
+          width={2400}
+          height={1600}
+          className="w-full h-auto object-contain"
+          priority
+        />
+      </div>
+    </div>
   );
 }

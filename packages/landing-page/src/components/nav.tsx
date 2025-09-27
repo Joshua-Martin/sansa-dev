@@ -5,8 +5,8 @@
  * Features a clean, modern design with proper spacing and hover effects.
  */
 
-import { Box } from "lucide-react";
-import SansaLogo from "./brand/sansa-logo";
+import { Box } from 'lucide-react';
+import SansaLogo from './brand/sansa-logo';
 
 interface NavProps {
   /** Additional CSS classes to apply to the component */
@@ -15,7 +15,9 @@ interface NavProps {
 
 export function Nav({ className }: NavProps) {
   return (
-    <nav className={`relative z-50 bg-none px-4 sm:px-6 lg:px-8 py-4 ${className ?? ''}`}>
+    <nav
+      className={`relative z-50 bg-none px-4 sm:px-6 lg:px-8 py-4 ${className ?? ''}`}
+    >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo Section */}
         <div className="flex items-center space-x-1">

@@ -21,17 +21,17 @@ interface QualityMetric {
 const generateQualityData = (): QualityMetric[] => {
   const namedCalls = [
     'schedule-orchestration',
-    'document-summarization', 
+    'document-summarization',
     'code-review',
     'data-analysis',
     'content-generation',
   ];
 
-  return namedCalls.map(name => {
+  return namedCalls.map((name) => {
     const accuracyRate = Math.random() * 0.15 + 0.85; // 85-100%
-    const threshold = 0.90; // 90% threshold
+    const threshold = 0.9; // 90% threshold
     const callCount = Math.floor(Math.random() * 5000 + 500);
-    
+
     let status: QualityMetric['status'];
     if (accuracyRate >= 0.95) status = 'excellent';
     else if (accuracyRate >= threshold) status = 'good';
@@ -61,10 +61,14 @@ const QualityMaintenanceChart: React.FC = () => {
   const getStatusColor = (status: QualityMetric['status']) => {
     switch (status) {
       case 'excellent':
-      case 'good': return 'text-primary bg-primary/10';
-      case 'warning': return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/20';
-      case 'critical': return 'text-red-600 bg-red-100 dark:bg-red-900/20';
-      default: return 'text-gray-600 bg-gray-100 dark:bg-gray-900/20';
+      case 'good':
+        return 'text-primary bg-primary/10';
+      case 'warning':
+        return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/20';
+      case 'critical':
+        return 'text-red-600 bg-red-100 dark:bg-red-900/20';
+      default:
+        return 'text-gray-600 bg-gray-100 dark:bg-gray-900/20';
     }
   };
 
@@ -81,10 +85,14 @@ const QualityMaintenanceChart: React.FC = () => {
   const getProgressColor = (status: QualityMetric['status']) => {
     switch (status) {
       case 'excellent':
-      case 'good': return 'bg-primary/70';
-      case 'warning': return 'bg-yellow-500/70';
-      case 'critical': return 'bg-red-500/70';
-      default: return 'bg-muted-foreground';
+      case 'good':
+        return 'bg-primary/70';
+      case 'warning':
+        return 'bg-yellow-500/70';
+      case 'critical':
+        return 'bg-red-500/70';
+      default:
+        return 'bg-muted-foreground';
     }
   };
 
@@ -102,13 +110,17 @@ const QualityMaintenanceChart: React.FC = () => {
                 {/* Compact named call layout */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 flex-1">
-                    <span className="font-medium text-sm truncate">{metric.name}</span>
+                    <span className="font-medium text-sm truncate">
+                      {metric.name}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground ml-2">
                     <span className="font-mono font-medium text-foreground">
                       {(metric.accuracyRate * 100).toFixed(1)}%
                     </span>
-                    <span className="hidden sm:inline">{metric.callCount.toLocaleString()} calls</span>
+                    <span className="hidden sm:inline">
+                      {metric.callCount.toLocaleString()} calls
+                    </span>
                   </div>
                 </div>
 
@@ -117,7 +129,9 @@ const QualityMaintenanceChart: React.FC = () => {
                   <div className="w-full bg-muted-foreground rounded-full h-1">
                     <div
                       className={`h-1 rounded-full transition-all duration-300 ${getProgressColor(metric.status)}`}
-                      style={{ width: `${getProgressWidth(metric.accuracyRate)}%` }}
+                      style={{
+                        width: `${getProgressWidth(metric.accuracyRate)}%`,
+                      }}
                     />
                   </div>
                   {/* Threshold indicator */}

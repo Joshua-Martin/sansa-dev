@@ -97,7 +97,7 @@ export const mockLabNamedCalls: LabNamedCall[] = [
     status: 'action-available',
     benchmarkResults: {
       alternativeModel: 'GPT-3.5 Turbo',
-      alternativeCostPerCall: 0.10,
+      alternativeCostPerCall: 0.1,
       accuracyDelta: 0.02,
       costSavingsPercent: 37.5,
       recommendation: 'switch',
@@ -157,58 +157,58 @@ export const mockLabNamedCallDetails: Record<string, LabNamedCallDetail> = {
     averageLatency: 1250,
     errorRate: 1.2,
     successRate: 98.8,
-    totalCost: 6957.60,
+    totalCost: 6957.6,
     cacheHitRate: 15.3,
     // Benchmark comparison
     currentModelLatency: 850,
     alternativeModelLatency: 620,
     baselineResponse: {
-      "meeting_scheduled": true,
-      "meeting_details": {
-        "title": "Team Standup",
-        "date": "2025-10-02",
-        "time": "10:00",
-        "timezone": "EST",
-        "duration_minutes": 60,
-        "location": "Conference Room A",
-        "virtual_option": true
+      meeting_scheduled: true,
+      meeting_details: {
+        title: 'Team Standup',
+        date: '2025-10-02',
+        time: '10:00',
+        timezone: 'EST',
+        duration_minutes: 60,
+        location: 'Conference Room A',
+        virtual_option: true,
       },
-      "attendees": [
-        {"name": "Sarah", "role": "organizer", "email": "sarah@company.com"},
-        {"name": "Mike", "role": "developer", "email": "mike@company.com"},
-        {"name": "Jennifer", "role": "designer", "email": "jennifer@company.com"},
-        {"name": "David", "role": "product_manager", "email": "david@company.com"}
+      attendees: [
+        { name: 'Sarah', role: 'organizer', email: 'sarah@company.com' },
+        { name: 'Mike', role: 'developer', email: 'mike@company.com' },
+        { name: 'Jennifer', role: 'designer', email: 'jennifer@company.com' },
+        { name: 'David', role: 'product_manager', email: 'david@company.com' },
       ],
-      "actions_taken": [
-        "calendar_invite_sent",
-        "room_booking_confirmed",
-        "reminder_scheduled"
+      actions_taken: [
+        'calendar_invite_sent',
+        'room_booking_confirmed',
+        'reminder_scheduled',
       ],
-      "confidence_score": 0.95
+      confidence_score: 0.95,
     },
     alternativeResponse: {
-      "meeting_scheduled": true,
-      "meeting_details": {
-        "title": "Daily Standup Meeting",
-        "date": "2025-10-02",
-        "time": "10:00",
-        "timezone": "EST",
-        "duration_minutes": 60,
-        "location": "Conference Room A",
-        "virtual_option": true
+      meeting_scheduled: true,
+      meeting_details: {
+        title: 'Daily Standup Meeting',
+        date: '2025-10-02',
+        time: '10:00',
+        timezone: 'EST',
+        duration_minutes: 60,
+        location: 'Conference Room A',
+        virtual_option: true,
       },
-      "attendees": [
-        {"name": "Mike", "role": "developer", "email": "mike@company.com"},
-        {"name": "Sarah", "role": "organizer", "email": "sarah@company.com"},
-        {"name": "David", "role": "product_manager", "email": "david@company.com"},
-        {"name": "Jennifer", "role": "designer", "email": "jennifer@company.com"}
+      attendees: [
+        { name: 'Mike', role: 'developer', email: 'mike@company.com' },
+        { name: 'Sarah', role: 'organizer', email: 'sarah@company.com' },
+        { name: 'David', role: 'product_manager', email: 'david@company.com' },
+        { name: 'Jennifer', role: 'designer', email: 'jennifer@company.com' },
       ],
-      "actions_taken": [
-        "room_booking_confirmed",
-        "calendar_invite_sent",
-        "reminder_scheduled"
+      actions_taken: [
+        'room_booking_confirmed',
+        'calendar_invite_sent',
+        'reminder_scheduled',
       ],
-      "confidence_score": 0.89
+      confidence_score: 0.89,
     },
     benchmarkDate: '2025-09-10T14:30:00Z',
     // Trends
@@ -229,58 +229,58 @@ export const mockLabNamedCallDetails: Record<string, LabNamedCallDetail> = {
     averageLatency: 890,
     errorRate: 0.8,
     successRate: 99.2,
-    totalCost: 1051.80,
+    totalCost: 1051.8,
     cacheHitRate: 23.7,
     // Benchmark comparison
     currentModelLatency: 580,
     alternativeModelLatency: 450,
     baselineResponse: {
-      "analysis_type": "financial_report_summary",
-      "period": "Q3",
-      "key_metrics": {
-        "total_revenue": 4000000,
-        "revenue_growth_yoy": 0.15,
-        "gross_margin": 0.72,
-        "net_margin": 0.18,
-        "operating_expenses_change": 0.08
+      analysis_type: 'financial_report_summary',
+      period: 'Q3',
+      key_metrics: {
+        total_revenue: 4000000,
+        revenue_growth_yoy: 0.15,
+        gross_margin: 0.72,
+        net_margin: 0.18,
+        operating_expenses_change: 0.08,
       },
-      "revenue_breakdown": {
-        "saas_subscriptions": {"amount": 2400000, "percentage": 0.60},
-        "professional_services": {"amount": 1200000, "percentage": 0.30},
-        "license_fees": {"amount": 400000, "percentage": 0.10}
+      revenue_breakdown: {
+        saas_subscriptions: { amount: 2400000, percentage: 0.6 },
+        professional_services: { amount: 1200000, percentage: 0.3 },
+        license_fees: { amount: 400000, percentage: 0.1 },
       },
-      "recommendations": [
-        "Continue SaaS platform investment",
-        "Expand sales team capacity",
-        "Optimize service delivery processes",
-        "Monitor competitive landscape"
+      recommendations: [
+        'Continue SaaS platform investment',
+        'Expand sales team capacity',
+        'Optimize service delivery processes',
+        'Monitor competitive landscape',
       ],
-      "risk_factors": ["market_competition", "currency_fluctuations"],
-      "confidence_score": 0.92
+      risk_factors: ['market_competition', 'currency_fluctuations'],
+      confidence_score: 0.92,
     },
     alternativeResponse: {
-      "analysis_type": "financial_report_summary",
-      "period": "Q3",
-      "key_metrics": {
-        "total_revenue": 4000000,
-        "revenue_growth_yoy": 0.15,
-        "gross_margin": 0.73,
-        "net_margin": 0.17,
-        "operating_expenses_change": 0.09
+      analysis_type: 'financial_report_summary',
+      period: 'Q3',
+      key_metrics: {
+        total_revenue: 4000000,
+        revenue_growth_yoy: 0.15,
+        gross_margin: 0.73,
+        net_margin: 0.17,
+        operating_expenses_change: 0.09,
       },
-      "revenue_breakdown": {
-        "saas_subscriptions": {"amount": 2400000, "percentage": 0.60},
-        "professional_services": {"amount": 1200000, "percentage": 0.30},
-        "license_fees": {"amount": 400000, "percentage": 0.10}
+      revenue_breakdown: {
+        saas_subscriptions: { amount: 2400000, percentage: 0.6 },
+        professional_services: { amount: 1200000, percentage: 0.3 },
+        license_fees: { amount: 400000, percentage: 0.1 },
       },
-      "recommendations": [
-        "Expand sales team capacity",
-        "Continue SaaS platform investment",
-        "Monitor competitive landscape",
-        "Optimize service delivery processes"
+      recommendations: [
+        'Expand sales team capacity',
+        'Continue SaaS platform investment',
+        'Monitor competitive landscape',
+        'Optimize service delivery processes',
       ],
-      "risk_factors": ["currency_fluctuations", "market_competition"],
-      "confidence_score": 0.91
+      risk_factors: ['currency_fluctuations', 'market_competition'],
+      confidence_score: 0.91,
     },
     benchmarkDate: '2025-09-08T09:15:00Z',
     // Trends
@@ -314,128 +314,130 @@ export const mockLabNamedCallDetails: Record<string, LabNamedCallDetail> = {
     currentModelLatency: 1420,
     alternativeModelLatency: 980,
     baselineResponse: {
-      "code_review": {
-        "file": "user-service.js",
-        "severity_summary": {
-          "critical": 2,
-          "high": 1,
-          "medium": 2,
-          "low": 3
+      code_review: {
+        file: 'user-service.js',
+        severity_summary: {
+          critical: 2,
+          high: 1,
+          medium: 2,
+          low: 3,
         },
-        "issues": [
+        issues: [
           {
-            "type": "security",
-            "severity": "critical",
-            "line": 127,
-            "description": "SQL injection vulnerability via string concatenation",
-            "recommendation": "Use parameterized queries or prepared statements",
-            "cwe": "CWE-89"
+            type: 'security',
+            severity: 'critical',
+            line: 127,
+            description: 'SQL injection vulnerability via string concatenation',
+            recommendation: 'Use parameterized queries or prepared statements',
+            cwe: 'CWE-89',
           },
           {
-            "type": "security",
-            "severity": "high",
-            "line": 89,
-            "description": "Cross-site scripting risk in HTML output",
-            "recommendation": "Implement proper input sanitization",
-            "cwe": "CWE-79"
+            type: 'security',
+            severity: 'high',
+            line: 89,
+            description: 'Cross-site scripting risk in HTML output',
+            recommendation: 'Implement proper input sanitization',
+            cwe: 'CWE-79',
           },
           {
-            "type": "performance",
-            "severity": "medium",
-            "lines": "234-245",
-            "description": "N+1 query pattern detected",
-            "recommendation": "Implement batch loading or eager fetching"
+            type: 'performance',
+            severity: 'medium',
+            lines: '234-245',
+            description: 'N+1 query pattern detected',
+            recommendation: 'Implement batch loading or eager fetching',
           },
           {
-            "type": "memory",
-            "severity": "medium",
-            "line": 156,
-            "description": "Event listeners not cleaned up in componentWillUnmount",
-            "recommendation": "Add proper cleanup in useEffect return"
+            type: 'memory',
+            severity: 'medium',
+            line: 156,
+            description:
+              'Event listeners not cleaned up in componentWillUnmount',
+            recommendation: 'Add proper cleanup in useEffect return',
           },
           {
-            "type": "quality",
-            "severity": "low",
-            "line": 3,
-            "description": "Unused import: lodash.debounce",
-            "recommendation": "Remove unused dependency"
-          }
+            type: 'quality',
+            severity: 'low',
+            line: 3,
+            description: 'Unused import: lodash.debounce',
+            recommendation: 'Remove unused dependency',
+          },
         ],
-        "metrics": {
-          "cyclomatic_complexity": 12,
-          "maintainability_index": 65,
-          "lines_of_code": 342
+        metrics: {
+          cyclomatic_complexity: 12,
+          maintainability_index: 65,
+          lines_of_code: 342,
         },
-        "recommendations": [
-          "Implement comprehensive input validation",
-          "Add error boundaries for API calls",
-          "Consider implementing caching layer",
-          "Add unit tests for edge cases"
-        ]
+        recommendations: [
+          'Implement comprehensive input validation',
+          'Add error boundaries for API calls',
+          'Consider implementing caching layer',
+          'Add unit tests for edge cases',
+        ],
       },
-      "confidence_score": 0.94
+      confidence_score: 0.94,
     },
     alternativeResponse: {
-      "code_review": {
-        "file": "user-service.js",
-        "severity_summary": {
-          "critical": 2,
-          "high": 1,
-          "medium": 1,
-          "low": 4
+      code_review: {
+        file: 'user-service.js',
+        severity_summary: {
+          critical: 2,
+          high: 1,
+          medium: 1,
+          low: 4,
         },
-        "issues": [
+        issues: [
           {
-            "type": "security",
-            "severity": "high",
-            "line": 89,
-            "description": "Cross-site scripting risk in HTML output",
-            "recommendation": "Implement proper input sanitization",
-            "cwe": "CWE-79"
+            type: 'security',
+            severity: 'high',
+            line: 89,
+            description: 'Cross-site scripting risk in HTML output',
+            recommendation: 'Implement proper input sanitization',
+            cwe: 'CWE-79',
           },
           {
-            "type": "security",
-            "severity": "critical",
-            "line": 127,
-            "description": "SQL injection vulnerability via string concatenation",
-            "recommendation": "Use parameterized queries or prepared statements",
-            "cwe": "CWE-89"
+            type: 'security',
+            severity: 'critical',
+            line: 127,
+            description: 'SQL injection vulnerability via string concatenation',
+            recommendation: 'Use parameterized queries or prepared statements',
+            cwe: 'CWE-89',
           },
           {
-            "type": "performance",
-            "severity": "medium",
-            "lines": "234-245",
-            "description": "N+1 query pattern detected",
-            "recommendation": "Implement batch loading or eager fetching"
+            type: 'performance',
+            severity: 'medium',
+            lines: '234-245',
+            description: 'N+1 query pattern detected',
+            recommendation: 'Implement batch loading or eager fetching',
           },
           {
-            "type": "quality",
-            "severity": "low",
-            "line": 3,
-            "description": "Unused import: lodash.debounce",
-            "recommendation": "Remove unused dependency"
+            type: 'quality',
+            severity: 'low',
+            line: 3,
+            description: 'Unused import: lodash.debounce',
+            recommendation: 'Remove unused dependency',
           },
           {
-            "type": "memory",
-            "severity": "medium",
-            "line": 156,
-            "description": "Event listeners not cleaned up in componentWillUnmount",
-            "recommendation": "Add proper cleanup in useEffect return"
-          }
+            type: 'memory',
+            severity: 'medium',
+            line: 156,
+            description:
+              'Event listeners not cleaned up in componentWillUnmount',
+            recommendation: 'Add proper cleanup in useEffect return',
+          },
         ],
-        "metrics": {
-          "cyclomatic_complexity": 11,
-          "maintainability_index": 67,
-          "lines_of_code": 342
+        metrics: {
+          cyclomatic_complexity: 11,
+          maintainability_index: 67,
+          lines_of_code: 342,
         },
-        "recommendations": [
-          "Add error boundaries for API calls",
-          "Implement comprehensive input validation",
-          "Add unit tests for edge cases",
-          "Consider implementing caching layer"
-        ]
+        recommendations: [
+          'Add error boundaries for API calls',
+          'Implement comprehensive input validation',
+          'Add unit tests for edge cases',
+          'Consider implementing caching layer',
+        ],
       },
-      "confidence_score": 0.93
+      confidence_score: 0.93,
     },
     benchmarkDate: '2025-09-12T16:45:00Z',
     // Trends
@@ -469,26 +471,20 @@ export const mockLabNamedCallDetails: Record<string, LabNamedCallDetail> = {
     currentModelLatency: 980,
     alternativeModelLatency: 720,
     baselineResponse: {
-      "message": "I understand your frustration, let me connect you with someone who can better handle this situation",
-      "classification": "billing-issue",
-      "priority": "medium",
-      "sentiment": "frustrated",
-      "routes": [
-        "fetch-billing-history",
-        "queue-agent",
-        "fetch-tracking-data"
-      ]
+      message:
+        'I understand your frustration, let me connect you with someone who can better handle this situation',
+      classification: 'billing-issue',
+      priority: 'medium',
+      sentiment: 'frustrated',
+      routes: ['fetch-billing-history', 'queue-agent', 'fetch-tracking-data'],
     },
     alternativeResponse: {
-      "message": "I apologize for the inconvenience, let me transfer you to a billing specialist who can resolve this for you",
-      "classification": "billing-issue",
-      "priority": "medium",
-      "sentiment": "frustrated",
-      "routes": [
-        "fetch-billing-history",
-        "queue-agent",
-        "fetch-tracking-data"
-      ]
+      message:
+        'I apologize for the inconvenience, let me transfer you to a billing specialist who can resolve this for you',
+      classification: 'billing-issue',
+      priority: 'medium',
+      sentiment: 'frustrated',
+      routes: ['fetch-billing-history', 'queue-agent', 'fetch-tracking-data'],
     },
     benchmarkDate: '2025-09-13T10:15:00Z',
     // Trends

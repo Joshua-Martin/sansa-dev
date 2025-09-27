@@ -11,27 +11,21 @@ import { JsonViewer } from '../../../components/custom/lab';
 const PromoPage: React.FC = () => {
   // Support-routing call data from mockData
   const sonnetResponse = {
-    "message": "I understand your frustration, let me connect you with someone who can better handle this situation",
-    "classification": "billing-issue",
-    "priority": "medium",
-    "sentiment": "frustrated",
-    "routes": [
-      "fetch-billing-history",
-      "queue-agent",
-      "fetch-tracking-data"
-    ]
+    message:
+      'I understand your frustration, let me connect you with someone who can better handle this situation',
+    classification: 'billing-issue',
+    priority: 'medium',
+    sentiment: 'frustrated',
+    routes: ['fetch-billing-history', 'queue-agent', 'fetch-tracking-data'],
   };
 
   const gptMiniResponse = {
-    "message": "I apologize for the inconvenience, let me transfer you to a billing specialist who can resolve this for you",
-    "classification": "billing-issue",
-    "priority": "medium",
-    "sentiment": "frustrated",
-    "routes": [
-      "fetch-billing-history",
-      "queue-agent",
-      "fetch-tracking-data"
-    ]
+    message:
+      'I apologize for the inconvenience, let me transfer you to a billing specialist who can resolve this for you',
+    classification: 'billing-issue',
+    priority: 'medium',
+    sentiment: 'frustrated',
+    routes: ['fetch-billing-history', 'queue-agent', 'fetch-tracking-data'],
   };
 
   return (

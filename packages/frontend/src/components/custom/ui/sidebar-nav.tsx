@@ -139,7 +139,10 @@ const SidebarNav: React.FC = () => {
           className="p-3 rounded-lg hover:bg-destructive hover:text-destructive-foreground transition-colors duration-200 group"
           title="Sign Out"
         >
-          <LogOut size={20} className="text-muted-foreground group-hover:text-destructive-foreground" />
+          <LogOut
+            size={20}
+            className="text-muted-foreground group-hover:text-destructive-foreground"
+          />
         </button>
       </div>
     </div>

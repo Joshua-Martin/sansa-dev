@@ -11,7 +11,13 @@ import {
   Legend,
 } from 'recharts';
 import { mockCostData } from './mockData';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../common/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../../common/card';
 
 type ChartDataItem = {
   date: string;
@@ -59,10 +65,10 @@ const chartConfig: ChartConfig = {
  */
 const CostOverviewChart: React.FC = () => {
   // Format data for the chart
-  const chartData: ChartDataItem[] = mockCostData.map(item => ({
+  const chartData: ChartDataItem[] = mockCostData.map((item) => ({
     date: new Date(item.date).toLocaleDateString('en-US', {
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     }),
     gpt4: item.gpt4,
     gpt35: item.gpt35,

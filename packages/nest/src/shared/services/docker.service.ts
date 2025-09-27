@@ -181,7 +181,9 @@ export class DockerService {
       }
 
       // Fallback to default network if not found
-      this.logger.warn('Could not find sansa-dev network, using bridge network');
+      this.logger.warn(
+        'Could not find sansa-dev network, using bridge network',
+      );
       return 'bridge';
     } catch (error) {
       this.logger.error('Failed to find dev container network', error);

@@ -76,14 +76,13 @@ const generateTimelineData = (): TimelineDataItem[] => {
   // 14 days × 4 periods per day = 56 periods
   for (let i = 55; i >= 0; i--) {
     const periodStart = new Date(today);
-    periodStart.setHours(today.getHours() - (i * 6)); // Each period is 6 hours
+    periodStart.setHours(today.getHours() - i * 6); // Each period is 6 hours
 
     // Format period label (e.g., "Sep 6", "Sep 7", etc.)
     const periodLabel = periodStart.toLocaleDateString('en-US', {
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
-
 
     // Most periods have consistent call volume (small variation)
     const totalCalls = baseCallVolume + Math.floor(Math.random() * 200 - 100); // ±100 calls variation
@@ -93,7 +92,8 @@ const generateTimelineData = (): TimelineDataItem[] => {
 
     // Check if this is September 6th (simulate problematic day)
     // This should be 7 days ago from September 13th, 2025, so it should be within our 14-day window
-    const isProblemDay = periodStart.getDate() === 6 && periodStart.getMonth() === 8; // September is month 8 (0-indexed)
+    const isProblemDay =
+      periodStart.getDate() === 6 && periodStart.getMonth() === 8; // September is month 8 (0-indexed)
 
     if (isProblemDay) {
       // Problem day: September 6th - distribute re-routing across the 4 periods
@@ -124,7 +124,8 @@ const generateTimelineData = (): TimelineDataItem[] => {
       aggregatedAccuracy = baseAccuracy - accuracyOffset;
     } else {
       // Normal periods: minimal re-routing, consistent accuracy
-      reRoutedCalls = Math.floor(totalCalls * 0.02) + Math.floor(Math.random() * 10); // 2% + small variation
+      reRoutedCalls =
+        Math.floor(totalCalls * 0.02) + Math.floor(Math.random() * 10); // 2% + small variation
       aggregatedAccuracy = baseAccuracy + (Math.random() * 0.02 - 0.01); // ±1% variation around 94%
     }
 
@@ -179,10 +180,11 @@ const TimelineChart: React.FC = () => {
       return null;
     }
 
-    const accuracy = payload.find(p => p.dataKey === 'aggregatedAccuracy')?.value || 0;
+    const accuracy =
+      payload.find((p) => p.dataKey === 'aggregatedAccuracy')?.value || 0;
     // Calculate total calls from the bar values
     const totalCalls = payload
-      .filter(entry => entry.dataKey !== 'aggregatedAccuracy')
+      .filter((entry) => entry.dataKey !== 'aggregatedAccuracy')
       .reduce((sum, entry) => sum + (entry.value || 0), 0);
 
     return (
@@ -191,15 +193,22 @@ const TimelineChart: React.FC = () => {
         <div className="grid gap-1.5">
           <div className="flex items-center justify-between gap-4">
             <span className="text-muted-foreground">Total Calls:</span>
-            <span className="font-mono font-medium">{totalCalls.toLocaleString()}</span>
+            <span className="font-mono font-medium">
+              {totalCalls.toLocaleString()}
+            </span>
           </div>
           <div className="flex items-center justify-between gap-4">
             <span className="text-muted-foreground">Accuracy:</span>
-            <span className="font-mono font-medium">{(accuracy * 100).toFixed(1)}%</span>
+            <span className="font-mono font-medium">
+              {(accuracy * 100).toFixed(1)}%
+            </span>
           </div>
           <div className="border-t border-border/30 my-1"></div>
           {payload
-            .filter(entry => entry.dataKey !== 'aggregatedAccuracy' && entry.value > 0)
+            .filter(
+              (entry) =>
+                entry.dataKey !== 'aggregatedAccuracy' && entry.value > 0
+            )
             .map((entry, index) => (
               <div key={index} className="flex items-center gap-2">
                 <div
@@ -219,11 +228,12 @@ const TimelineChart: React.FC = () => {
     );
   };
 
-
   return (
     <Card className="h-full flex flex-col">
       <div className="flex items-center justify-between p-4 flex-shrink-0">
-        <h3 className="text-sm text-muted-foreground">System Activity Timeline</h3>
+        <h3 className="text-sm text-muted-foreground">
+          System Activity Timeline
+        </h3>
       </div>
       <CardContent className="p-0 py-6 flex-1 flex flex-col justify-end">
         <div className="flex-1 min-h-0">
@@ -243,7 +253,9 @@ const TimelineChart: React.FC = () => {
                 tickLine={false}
                 axisLine={false}
                 domain={[0, 10000]}
-                tickFormatter={(value: number) => `${(value / 1000).toFixed(0)}K`}
+                tickFormatter={(value: number) =>
+                  `${(value / 1000).toFixed(0)}K`
+                }
               />
               <YAxis
                 yAxisId="accuracy"
@@ -252,7 +264,9 @@ const TimelineChart: React.FC = () => {
                 tickLine={false}
                 axisLine={false}
                 domain={[0.8, 1.0]}
-                tickFormatter={(value: number) => `${(value * 100).toFixed(0)}%`}
+                tickFormatter={(value: number) =>
+                  `${(value * 100).toFixed(0)}%`
+                }
               />
               <Tooltip content={<CustomTooltip />} />
 

@@ -27,7 +27,8 @@ const RIGHT_DIP_COL = CENTER_COLUMNS - 4; // 5th from right
 // Flex fractions for the center band when not using an inner grid
 const LEFT_FILLER_FRACTION = (LEFT_DIP_COL - 1) / CENTER_COLUMNS;
 const DIP_FRACTION = 1 / CENTER_COLUMNS;
-const CENTER_WHITE_FRACTION = (RIGHT_DIP_COL - LEFT_DIP_COL - 1) / CENTER_COLUMNS;
+const CENTER_WHITE_FRACTION =
+  (RIGHT_DIP_COL - LEFT_DIP_COL - 1) / CENTER_COLUMNS;
 const RIGHT_FILLER_FRACTION = (CENTER_COLUMNS - RIGHT_DIP_COL) / CENTER_COLUMNS;
 
 /**
@@ -43,7 +44,10 @@ export function MiddleSeparator() {
       <div className="absolute inset-0 bg-dark-background" />
 
       {/* Content layer with grid alignment */}
-      <div className="relative z-10 grid items-stretch h-full min-h-0 w-full" style={{ ...gridTemplateColumns24, gridTemplateRows: '1fr' }}>
+      <div
+        className="relative z-10 grid items-stretch h-full min-h-0 w-full"
+        style={{ ...gridTemplateColumns24, gridTemplateRows: '1fr' }}
+      >
         {/* Left side to left accent line - transparent to show gray background */}
         <div
           className="relative h-full"
@@ -57,29 +61,52 @@ export function MiddleSeparator() {
         >
           <div className="flex h-full w-full items-stretch">
             {/* Left gray filler - transparent to show background */}
-            <div className="h-full" style={{ width: `${LEFT_FILLER_FRACTION * 100}%` }} />
+            <div
+              className="h-full"
+              style={{ width: `${LEFT_FILLER_FRACTION * 100}%` }}
+            />
 
             {/* Left dip container with gray background */}
-            <div className="relative h-full bg-dark-background" style={{ width: `${DIP_FRACTION * 100}%` }}>
+            <div
+              className="relative h-full bg-dark-background"
+              style={{ width: `${DIP_FRACTION * 100}%` }}
+            >
               {/* White dip cut-out on top */}
               <div className="absolute inset-0">
-                <FolderDip direction="left" color="white" className="w-full h-full" />
+                <FolderDip
+                  direction="left"
+                  color="white"
+                  className="w-full h-full"
+                />
               </div>
             </div>
 
             {/* Center white band */}
-            <div className="bg-white h-full" style={{ width: `${CENTER_WHITE_FRACTION * 100}%` }} />
+            <div
+              className="bg-white h-full"
+              style={{ width: `${CENTER_WHITE_FRACTION * 100}%` }}
+            />
 
             {/* Right dip container with gray background */}
-            <div className="relative h-full bg-dark-background" style={{ width: `${DIP_FRACTION * 100}%` }}>
+            <div
+              className="relative h-full bg-dark-background"
+              style={{ width: `${DIP_FRACTION * 100}%` }}
+            >
               {/* White dip cut-out on top */}
               <div className="absolute inset-0">
-                <FolderDip direction="right" color="white" className="w-full h-full" />
+                <FolderDip
+                  direction="right"
+                  color="white"
+                  className="w-full h-full"
+                />
               </div>
             </div>
 
             {/* Right gray filler - transparent to show background */}
-            <div className="h-full" style={{ width: `${RIGHT_FILLER_FRACTION * 100}%` }} />
+            <div
+              className="h-full"
+              style={{ width: `${RIGHT_FILLER_FRACTION * 100}%` }}
+            />
           </div>
         </div>
 

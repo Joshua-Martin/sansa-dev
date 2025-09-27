@@ -9,7 +9,7 @@ import { z } from 'zod';
 import { useAuth } from '../../../hooks/useAuth';
 
 import { Button } from '../../../components/common/button';
-import { Input } from '../../../components/common/input'; 
+import { Input } from '../../../components/common/input';
 import {
   Card,
   CardContent,

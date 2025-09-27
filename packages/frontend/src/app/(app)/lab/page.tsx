@@ -2,7 +2,10 @@
 
 import React from 'react';
 import PageTitle from '../../../components/custom/ui/page-title';
-import { NamedCallsTable, mockLabNamedCalls } from '../../../components/custom/lab';
+import {
+  NamedCallsTable,
+  mockLabNamedCalls,
+} from '../../../components/custom/lab';
 
 /**
  * Sansa Lab Page Component

@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import Image from 'next/image';
 import { FileText, Compass, Zap } from 'lucide-react';
 import DotsBg from '@/components/custom/dots-bg';
@@ -52,7 +58,7 @@ const PATH_STROKE_ACTIVE = 'hsl(var(--color-path-active))'; // primary color var
 const BENCHMARK_PRODUCT_GAP = 60;
 
 // Router to Benchmarks Path Position Fraction
-const ROUTER_BENCHMARK_PATH_FRACTION = 1/4;
+const ROUTER_BENCHMARK_PATH_FRACTION = 1 / 4;
 
 /**
  * Build a rounded orthogonal path from a start to an end point using two 90° corner arcs.
@@ -79,7 +85,12 @@ const ROUTER_BENCHMARK_PATH_FRACTION = 1/4;
 function buildRoundedConnectorPath(
   start: Point,
   end: Point,
-  options?: { splitFraction?: number; radiusPx?: number; radiusFraction?: number; minRadius?: number }
+  options?: {
+    splitFraction?: number;
+    radiusPx?: number;
+    radiusFraction?: number;
+    minRadius?: number;
+  }
 ): string {
   const splitFraction = options?.splitFraction ?? 0.2;
   const radiusFraction = options?.radiusFraction ?? 0.05;
@@ -104,7 +115,10 @@ function buildRoundedConnectorPath(
   const proposedRadius = options?.radiusPx ?? fractionRadius;
   const maxRadiusFromVertical = Math.max(2, Math.abs(dy) / 2);
   const maxRadiusFromGeometry = Math.max(1, Math.abs(splitX - start.x) - 1);
-  const r = Math.max(1, Math.min(proposedRadius, maxRadiusFromVertical, maxRadiusFromGeometry));
+  const r = Math.max(
+    1,
+    Math.min(proposedRadius, maxRadiusFromVertical, maxRadiusFromGeometry)
+  );
 
   const sweepToVertical = directionY > 0 ? 1 : 0; // down = clockwise(1), up = counterclockwise(0)
   const sweepToHorizontal = directionY > 0 ? 0 : 1; // opposite to complete the 90° back to horizontal
@@ -147,12 +161,15 @@ function useSequentialPathAnimation(
   options: PathAnimationOptions,
   isEnabled: boolean
 ): { activeIndex: number | null; position: Point | null } {
-  const { forwardMs, reverseMs, pauseMs, speedPxPerSec, reverseSpeedPxPerSec } = options;
+  const { forwardMs, reverseMs, pauseMs, speedPxPerSec, reverseSpeedPxPerSec } =
+    options;
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [position, setPosition] = useState<Point | null>(null);
 
-  const phaseRef = useRef<'forward' | 'pauseAfterForward' | 'reverse' | 'pauseAfterReverse'>('forward');
+  const phaseRef = useRef<
+    'forward' | 'pauseAfterForward' | 'reverse' | 'pauseAfterReverse'
+  >('forward');
   const phaseStartRef = useRef<number>(0);
 
   // Keep local copies of timings in refs to avoid restarting effect when options are stable objects
@@ -160,7 +177,9 @@ function useSequentialPathAnimation(
   const reverseMsRef = useRef<number | undefined>(reverseMs);
   const pauseMsRef = useRef<number>(pauseMs);
   const speedRef = useRef<number | undefined>(speedPxPerSec);
-  const reverseSpeedRef = useRef<number | undefined>(reverseSpeedPxPerSec ?? speedPxPerSec);
+  const reverseSpeedRef = useRef<number | undefined>(
+    reverseSpeedPxPerSec ?? speedPxPerSec
+  );
   useEffect(() => {
     forwardMsRef.current = forwardMs;
     reverseMsRef.current = reverseMs;
@@ -173,7 +192,9 @@ function useSequentialPathAnimation(
     let rafId: number | null = null;
 
     const tick = (now: number) => {
-      const validPaths = pathRefs.current.filter((p): p is SVGPathElement => !!p);
+      const validPaths = pathRefs.current.filter(
+        (p): p is SVGPathElement => !!p
+      );
       const total = validPaths.length;
 
       if (!isEnabled || total === 0) {
@@ -222,7 +243,10 @@ function useSequentialPathAnimation(
           if (rSpeed && rSpeed > 0) {
             return (length / rSpeed) * 1000;
           }
-          return Math.max(1, reverseMsRef.current ?? forwardMsRef.current ?? 1000);
+          return Math.max(
+            1,
+            reverseMsRef.current ?? forwardMsRef.current ?? 1000
+          );
         })();
         const t = Math.max(0, Math.min(1, phaseElapsed / reverseDurationMs));
         const pt = path.getPointAtLength((1 - t) * length);
@@ -284,14 +308,27 @@ const Promo2Page: React.FC = () => {
   const saasColumnRef = useRef<HTMLDivElement | null>(null);
   const providersColumnRef = useRef<HTMLDivElement | null>(null);
 
-  const [svgSize, setSvgSize] = useState<{ width: number; height: number }>({ width: 1200, height: 800 });
-  const [productRightCenter, setProductRightCenter] = useState<Point | null>(null);
+  const [svgSize, setSvgSize] = useState<{ width: number; height: number }>({
+    width: 1200,
+    height: 800,
+  });
+  const [productRightCenter, setProductRightCenter] = useState<Point | null>(
+    null
+  );
   const [providerCenters, setProviderCenters] = useState<Array<Point>>([]);
-  const [saasToProductLine, setSaasToProductLine] = useState<string | null>(null);
-  const [productWrapperHeight, setProductWrapperHeight] = useState<number | null>(null);
+  const [saasToProductLine, setSaasToProductLine] = useState<string | null>(
+    null
+  );
+  const [productWrapperHeight, setProductWrapperHeight] = useState<
+    number | null
+  >(null);
   const [benchmarksHeight, setBenchmarksHeight] = useState<number | null>(null);
-  const [totalWrapperHeight, setTotalWrapperHeight] = useState<number | null>(null);
-  const [routerToBenchmarksPaths, setRouterToBenchmarksPaths] = useState<Array<string>>([]);
+  const [totalWrapperHeight, setTotalWrapperHeight] = useState<number | null>(
+    null
+  );
+  const [routerToBenchmarksPaths, setRouterToBenchmarksPaths] = useState<
+    Array<string>
+  >([]);
   const [zapPositions, setZapPositions] = useState<Array<Point>>([]);
 
   // Absolute top offsets (px) within the row for each column
@@ -309,7 +346,10 @@ const Promo2Page: React.FC = () => {
     if (!rootRef.current) return;
     const resize = () => {
       const rect = rootRef.current!.getBoundingClientRect();
-      setSvgSize({ width: Math.max(1, Math.round(rect.width)), height: Math.max(1, Math.round(rect.height)) });
+      setSvgSize({
+        width: Math.max(1, Math.round(rect.width)),
+        height: Math.max(1, Math.round(rect.height)),
+      });
     };
     resize();
     const ro = new ResizeObserver(resize);
@@ -338,13 +378,15 @@ const Promo2Page: React.FC = () => {
         setBenchmarksHeight(Math.round(br.height));
       }
 
-
       // Provider endpoints at left edge center
       const centers: Array<Point> = [];
       providerRefs.current.forEach((el) => {
         if (!el) return;
         const r = el.getBoundingClientRect();
-        centers.push({ x: r.left - rootRect.left, y: r.top - rootRect.top + r.height / 2 });
+        centers.push({
+          x: r.left - rootRect.left,
+          y: r.top - rootRect.top + r.height / 2,
+        });
       });
       setProviderCenters(centers);
 
@@ -366,7 +408,9 @@ const Promo2Page: React.FC = () => {
 
         // Calculate positions relative to root - account for parent padding
         const apiParent = apiRouterRef.current.parentElement?.parentElement; // Get the p-6 div
-        const apiBottomY = apiParent ? (apiParent.getBoundingClientRect().bottom - rootRect.top) : (apiRect.bottom - rootRect.top);
+        const apiBottomY = apiParent
+          ? apiParent.getBoundingClientRect().bottom - rootRect.top
+          : apiRect.bottom - rootRect.top;
         const benchTopY = benchRect.top - rootRect.top;
 
         // Prefer Unified APIs center X if available; otherwise fall back to fraction-based positions
@@ -374,13 +418,20 @@ const Promo2Page: React.FC = () => {
         let rightPathX: number;
         if (unifiedRef.current) {
           const unifiedRect = unifiedRef.current.getBoundingClientRect();
-          const unifiedCenterX = unifiedRect.left - rootRect.left + unifiedRect.width / 2;
+          const unifiedCenterX =
+            unifiedRect.left - rootRect.left + unifiedRect.width / 2;
           leftPathX = unifiedCenterX;
           rightPathX = unifiedCenterX;
         } else {
           const containerWidth = prodRect.width;
-          leftPathX = prodRect.left - rootRect.left + containerWidth * ROUTER_BENCHMARK_PATH_FRACTION;
-          rightPathX = prodRect.left - rootRect.left + containerWidth * (1 - ROUTER_BENCHMARK_PATH_FRACTION);
+          leftPathX =
+            prodRect.left -
+            rootRect.left +
+            containerWidth * ROUTER_BENCHMARK_PATH_FRACTION;
+          rightPathX =
+            prodRect.left -
+            rootRect.left +
+            containerWidth * (1 - ROUTER_BENCHMARK_PATH_FRACTION);
         }
 
         // Create two vertical paths (may overlap if centered on Unified APIs)
@@ -418,7 +469,10 @@ const Promo2Page: React.FC = () => {
         providerRefs.current.forEach((el) => {
           if (!el) return;
           const r = el.getBoundingClientRect();
-          zapPos.push({ x: r.left - rootRect.left, y: r.top - rootRect.top + r.height / 2 });
+          zapPos.push({
+            x: r.left - rootRect.left,
+            y: r.top - rootRect.top + r.height / 2,
+          });
         });
       }
 
@@ -431,17 +485,26 @@ const Promo2Page: React.FC = () => {
         // API Router bottom (where paths start) - need to account for parent padding
         // The apiRouterRef is inside a div with p-6 padding, so we need the parent's bottom
         const apiParent = apiRouterRef.current.parentElement?.parentElement; // Get the p-6 div
-        const apiBottomY = apiParent ? (apiParent.getBoundingClientRect().bottom - rootRect.top) : (apiRect.bottom - rootRect.top);
+        const apiBottomY = apiParent
+          ? apiParent.getBoundingClientRect().bottom - rootRect.top
+          : apiRect.bottom - rootRect.top;
         let leftPathX: number;
         let rightPathX: number;
         if (unifiedRef.current) {
           const unifiedRect = unifiedRef.current.getBoundingClientRect();
-          const unifiedCenterX = unifiedRect.left - rootRect.left + unifiedRect.width / 2;
+          const unifiedCenterX =
+            unifiedRect.left - rootRect.left + unifiedRect.width / 2;
           leftPathX = unifiedCenterX;
           rightPathX = unifiedCenterX;
         } else {
-          leftPathX = prodRect.left - rootRect.left + prodRect.width * ROUTER_BENCHMARK_PATH_FRACTION;
-          rightPathX = prodRect.left - rootRect.left + prodRect.width * (1 - ROUTER_BENCHMARK_PATH_FRACTION);
+          leftPathX =
+            prodRect.left -
+            rootRect.left +
+            prodRect.width * ROUTER_BENCHMARK_PATH_FRACTION;
+          rightPathX =
+            prodRect.left -
+            rootRect.left +
+            prodRect.width * (1 - ROUTER_BENCHMARK_PATH_FRACTION);
         }
 
         zapPos.push({ x: leftPathX, y: apiBottomY });
@@ -480,7 +543,12 @@ const Promo2Page: React.FC = () => {
   useEffect(() => {
     if (productWrapperHeight !== null && benchmarksHeight !== null) {
       const padding = 16; // 2 * 8px for p-2
-      setTotalWrapperHeight(productWrapperHeight + BENCHMARK_PRODUCT_GAP + benchmarksHeight + padding);
+      setTotalWrapperHeight(
+        productWrapperHeight +
+          BENCHMARK_PRODUCT_GAP +
+          benchmarksHeight +
+          padding
+      );
     }
   }, [productWrapperHeight, benchmarksHeight]);
 
@@ -497,16 +565,24 @@ const Promo2Page: React.FC = () => {
 
       // 1) Product+Benchmarks vertical centering within the row
       if (totalWrapperHeight !== null) {
-        const top = Math.max(0, Math.round((rowRect.height - totalWrapperHeight) / 2));
+        const top = Math.max(
+          0,
+          Math.round((rowRect.height - totalWrapperHeight) / 2)
+        );
         setCenterTop(top);
       }
 
       // 2) Providers: align Unified APIs center with midpoint between first two providers
-      if (unifiedRef.current && providerRefs.current[0] && providerRefs.current[1]) {
+      if (
+        unifiedRef.current &&
+        providerRefs.current[0] &&
+        providerRefs.current[1]
+      ) {
         const unifiedRect = unifiedRef.current.getBoundingClientRect();
         const r0 = providerRefs.current[0]!.getBoundingClientRect();
         const r1 = providerRefs.current[1]!.getBoundingClientRect();
-        const unifiedMidY = unifiedRect.top - rowRect.top + unifiedRect.height / 2;
+        const unifiedMidY =
+          unifiedRect.top - rowRect.top + unifiedRect.height / 2;
 
         const h0 = r0.height;
         const h1 = r1.height;
@@ -520,7 +596,8 @@ const Promo2Page: React.FC = () => {
         // Fallback: center first provider on Unified APIs if second not present
         const unifiedRect = unifiedRef.current.getBoundingClientRect();
         const firstRect = providerRefs.current[0]!.getBoundingClientRect();
-        const unifiedMidY = unifiedRect.top - rowRect.top + unifiedRect.height / 2;
+        const unifiedMidY =
+          unifiedRect.top - rowRect.top + unifiedRect.height / 2;
         const firstHalf = firstRect.height / 2;
         const top = Math.max(0, Math.round(unifiedMidY - firstHalf));
         setProvidersTop(top);
@@ -530,8 +607,12 @@ const Promo2Page: React.FC = () => {
       if (classifierRef.current && saasColumnRef.current) {
         const classifierRect = classifierRef.current.getBoundingClientRect();
         const saasRect = saasColumnRef.current.getBoundingClientRect();
-        const classifierMidY = classifierRect.top - rowRect.top + classifierRect.height / 2;
-        const top = Math.max(0, Math.round(classifierMidY - saasRect.height / 2));
+        const classifierMidY =
+          classifierRect.top - rowRect.top + classifierRect.height / 2;
+        const top = Math.max(
+          0,
+          Math.round(classifierMidY - saasRect.height / 2)
+        );
         setSaasTop(top);
       }
     };
@@ -556,7 +637,8 @@ const Promo2Page: React.FC = () => {
   }, [totalWrapperHeight]);
 
   const providerPaths = useMemo(() => {
-    if (!productRightCenter || providerCenters.length === 0) return [] as string[];
+    if (!productRightCenter || providerCenters.length === 0)
+      return [] as string[];
     return providerCenters.map((endPoint) =>
       buildRoundedConnectorPath(
         { x: productRightCenter.x, y: productRightCenter.y },
@@ -601,10 +683,11 @@ const Promo2Page: React.FC = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div ref={rootRef} className="relative w-full max-w-7xl">
-        <div className='absolute -inset-12 rounded-3xl overflow-hidden border-1 border-gray-100/50'>
-        <div className="absolute inset-2 rounded-2xl overflow-hidden">
-        <DotsBg color="#ffffff30" />
-        </div></div>
+        <div className="absolute -inset-12 rounded-3xl overflow-hidden border-1 border-gray-100/50">
+          <div className="absolute inset-2 rounded-2xl overflow-hidden">
+            <DotsBg color="#ffffff30" />
+          </div>
+        </div>
         {/* SVG for connecting paths */}
         <svg
           ref={svgRef}
@@ -656,12 +739,22 @@ const Promo2Page: React.FC = () => {
 
           {/* Active path overlay on top for correct stacking order */}
           {animatePaths && activePathD && (
-            <path d={activePathD} stroke={PATH_STROKE_ACTIVE} strokeWidth={activeStrokeWidth} fill="none" />
+            <path
+              d={activePathD}
+              stroke={PATH_STROKE_ACTIVE}
+              strokeWidth={activeStrokeWidth}
+              fill="none"
+            />
           )}
 
           {/* Animated dot following the current path */}
           {position && (
-            <circle cx={position.x} cy={position.y} r={5} fill="hsl(var(--color-path-active))" />
+            <circle
+              cx={position.x}
+              cy={position.y}
+              r={5}
+              fill="hsl(var(--color-path-active))"
+            />
           )}
         </svg>
 
@@ -682,7 +775,11 @@ const Promo2Page: React.FC = () => {
 
         <div ref={rowRef} className="relative h-[600px]">
           {/* B2B SaaS Application */}
-          <div ref={saasColumnRef} className="absolute left-0" style={{ top: saasTop }}>
+          <div
+            ref={saasColumnRef}
+            className="absolute left-0"
+            style={{ top: saasTop }}
+          >
             <div className="bg-white rounded-lg shadow-lg w-80 h-64 relative">
               {/* Window controls */}
               <div className="flex items-center p-3 border-b border-gray-300">
@@ -703,44 +800,76 @@ const Promo2Page: React.FC = () => {
                 </div>
               </div>
               {/* Content area */}
-              <div ref={saasRef} className="p-6 h-full flex items-center justify-center">
+              <div
+                ref={saasRef}
+                className="p-6 h-full flex items-center justify-center"
+              >
                 <div className="text-gray-500 text-lg">B2B SaaS</div>
               </div>
             </div>
             <div className="text-center mt-4 hidden">
-              <span className="text-green-600 font-semibold text-lg">B2B SaaS</span>
+              <span className="text-green-600 font-semibold text-lg">
+                B2B SaaS
+              </span>
             </div>
           </div>
 
           {/* StackOne Integration Layer (Product) */}
-          <div className="absolute p-3 rounded-xl bg-white/20 overflow-hidden" 
-          style={totalWrapperHeight !== null ? { 
-            height: totalWrapperHeight, top: centerTop, left: '50%', transform: 'translateX(-50%)' as const } : { top: centerTop, left: '50%', transform: 'translateX(-50%)' as const }}>
-            
-            <div ref={productRef} className="bg-background border-1 border-gray-100/30 rounded-lg w-96 relative overflow-hidden">
-
+          <div
+            className="absolute p-3 rounded-xl bg-white/20 overflow-hidden"
+            style={
+              totalWrapperHeight !== null
+                ? {
+                    height: totalWrapperHeight,
+                    top: centerTop,
+                    left: '50%',
+                    transform: 'translateX(-50%)' as const,
+                  }
+                : {
+                    top: centerTop,
+                    left: '50%',
+                    transform: 'translateX(-50%)' as const,
+                  }
+            }
+          >
+            <div
+              ref={productRef}
+              className="bg-background border-1 border-gray-100/30 rounded-lg w-96 relative overflow-hidden"
+            >
               {/* Content - Split into two sections vertically */}
               <div className="p-6 h-full relative" style={{ zIndex: 2 }}>
                 <div className="flex flex-col h-full">
                   {/* API Router Section */}
                   <div ref={apiRouterRef} className="flex-1 space-y-4">
                     <div className="border-b-2 border-border pb-2">
-                      <h3 className="text-primary font-bold text-lg">API Router</h3>
+                      <h3 className="text-primary font-bold text-lg">
+                        API Router
+                      </h3>
                     </div>
 
                     {/* Unified APIs */}
-                    <div ref={unifiedRef} className="bg-background rounded-lg p-2 border border-border">
+                    <div
+                      ref={unifiedRef}
+                      className="bg-background rounded-lg p-2 border border-border"
+                    >
                       <div className="flex items-center justify-start">
-                      <FileText className="w-4 h-4 text-foreground mr-2" />
-                        <span className="font-semibold text-foreground">Unified APIs</span>
+                        <FileText className="w-4 h-4 text-foreground mr-2" />
+                        <span className="font-semibold text-foreground">
+                          Unified APIs
+                        </span>
                       </div>
                     </div>
 
                     {/* Classifier */}
-                    <div ref={classifierRef} className="bg-background rounded-lg p-2 border border-border">
+                    <div
+                      ref={classifierRef}
+                      className="bg-background rounded-lg p-2 border border-border"
+                    >
                       <div className="flex items-center justify-start">
                         <Compass className="w-4 h-4 text-foreground mr-2" />
-                        <span className="font-semibold text-foreground">Classifier</span>
+                        <span className="font-semibold text-foreground">
+                          Classifier
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -749,23 +878,29 @@ const Promo2Page: React.FC = () => {
             </div>
 
             {/* Benchmarks positioned absolutely below Product */}
-            <div ref={benchmarksRef} className="absolute left-1/2 transform -translate-x-1/2 bg-none border-2 border-border rounded-lg w-96 relative overflow-hidden"
+            <div
+              ref={benchmarksRef}
+              className="absolute left-1/2 transform -translate-x-1/2 bg-none border-2 border-border rounded-lg w-96 relative overflow-hidden"
               style={{ top: BENCHMARK_PRODUCT_GAP }}
             >
-          {/* Content - Split into two sections vertically */}
-          <div className="p-6 h-full bg-background">
+              {/* Content - Split into two sections vertically */}
+              <div className="p-6 h-full bg-background">
                 <div className="flex flex-col h-full">
                   {/* API Router Section */}
                   <div className="flex-1 space-y-4">
                     <div className="border-b-2 border-border pb-2">
-                      <h3 className="text-primary font-bold text-lg text-foreground">Benchmarks</h3>
+                      <h3 className="text-primary font-bold text-lg text-foreground">
+                        Benchmarks
+                      </h3>
                     </div>
 
                     {/* Collect */}
                     <div className="bg-background rounded-lg p-2 border border-border">
                       <div className="flex items-center justify-start">
-                      <FileText className="w-4 h-4 text-foreground mr-2" />
-                        <span className="font-semibold text-foreground">Collect</span>
+                        <FileText className="w-4 h-4 text-foreground mr-2" />
+                        <span className="font-semibold text-foreground">
+                          Collect
+                        </span>
                       </div>
                     </div>
 
@@ -773,7 +908,9 @@ const Promo2Page: React.FC = () => {
                     <div className="bg-background rounded-lg p-2 border border-border">
                       <div className="flex items-center justify-start">
                         <Compass className="w-4 h-4 text-foreground mr-2" />
-                        <span className="font-semibold text-foreground">Train</span>
+                        <span className="font-semibold text-foreground">
+                          Train
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -782,15 +919,26 @@ const Promo2Page: React.FC = () => {
             </div>
 
             <div className="text-center mt-4 hidden">
-              <span className="text-green-700 font-semibold text-lg">StackOne Integration Layer</span>
+              <span className="text-green-700 font-semibold text-lg">
+                StackOne Integration Layer
+              </span>
             </div>
           </div>
 
           {/* Integration Categories */}
-          <div ref={providersColumnRef} className="absolute right-0" style={{ top: providersTop }}>
+          <div
+            ref={providersColumnRef}
+            className="absolute right-0"
+            style={{ top: providersTop }}
+          >
             <div className="space-y-6">
               {/* Claude */}
-              <div ref={(el) => { providerRefs.current[0] = el; }} className="bg-background rounded-lg p-4 w-64 shadow-lg border border-border">
+              <div
+                ref={(el) => {
+                  providerRefs.current[0] = el;
+                }}
+                className="bg-background rounded-lg p-4 w-64 shadow-lg border border-border"
+              >
                 <div className="flex items-center space-x-3">
                   <Image
                     src="/ai-logos/claude.png"
@@ -804,7 +952,12 @@ const Promo2Page: React.FC = () => {
               </div>
 
               {/* Gemini */}
-              <div ref={(el) => { providerRefs.current[1] = el; }} className="bg-background rounded-lg p-4 w-64 shadow-lg border border-border">
+              <div
+                ref={(el) => {
+                  providerRefs.current[1] = el;
+                }}
+                className="bg-background rounded-lg p-4 w-64 shadow-lg border border-border"
+              >
                 <div className="flex items-center space-x-3">
                   <Image
                     src="/ai-logos/gemini.png"
@@ -818,7 +971,12 @@ const Promo2Page: React.FC = () => {
               </div>
 
               {/* OpenAI */}
-              <div ref={(el) => { providerRefs.current[2] = el; }} className="bg-background rounded-lg p-4 w-64 shadow-lg border border-border">
+              <div
+                ref={(el) => {
+                  providerRefs.current[2] = el;
+                }}
+                className="bg-background rounded-lg p-4 w-64 shadow-lg border border-border"
+              >
                 <div className="flex items-center space-x-3">
                   <Image
                     src="/ai-logos/openai.png"
@@ -832,7 +990,12 @@ const Promo2Page: React.FC = () => {
               </div>
 
               {/* Perplexity */}
-              <div ref={(el) => { providerRefs.current[3] = el; }} className="bg-background rounded-lg p-4 w-64 shadow-lg border border-border">
+              <div
+                ref={(el) => {
+                  providerRefs.current[3] = el;
+                }}
+                className="bg-background rounded-lg p-4 w-64 shadow-lg border border-border"
+              >
                 <div className="flex items-center space-x-3">
                   <Image
                     src="/ai-logos/perplexity.png"
@@ -846,7 +1009,12 @@ const Promo2Page: React.FC = () => {
               </div>
 
               {/* xAI */}
-              <div ref={(el) => { providerRefs.current[4] = el; }} className="bg-background rounded-lg p-4 w-64 shadow-lg border border-border">
+              <div
+                ref={(el) => {
+                  providerRefs.current[4] = el;
+                }}
+                className="bg-background rounded-lg p-4 w-64 shadow-lg border border-border"
+              >
                 <div className="flex items-center space-x-3">
                   <Image
                     src="/ai-logos/xai.png"
@@ -858,7 +1026,6 @@ const Promo2Page: React.FC = () => {
                   <span className="font-bold text-foreground">xAI</span>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

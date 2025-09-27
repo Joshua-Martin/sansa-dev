@@ -84,10 +84,10 @@ type SignUpFormData = z.infer<typeof signUpSchema>;
 /**
  * Password strength indicator
  */
-const PasswordStrengthIndicator: React.FC<{ password: string; isVisible: boolean }> = ({
-  password,
-  isVisible,
-}) => {
+const PasswordStrengthIndicator: React.FC<{
+  password: string;
+  isVisible: boolean;
+}> = ({ password, isVisible }) => {
   const requirements = [
     { label: 'At least 8 characters', test: password.length >= 8 },
     { label: 'One uppercase letter', test: /[A-Z]/.test(password) },
@@ -100,7 +100,9 @@ const PasswordStrengthIndicator: React.FC<{ password: string; isVisible: boolean
 
   return (
     <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-background border border-border rounded-md shadow-lg p-3 space-y-2">
-      <p className="text-xs font-medium text-muted-foreground">Password requirements:</p>
+      <p className="text-xs font-medium text-muted-foreground">
+        Password requirements:
+      </p>
       {requirements.map((req, index) => (
         <div key={index} className="flex items-center gap-2 text-xs">
           {req.test ? (

@@ -3,10 +3,7 @@
 import React from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 
-import {
-  Card,
-  CardContent,
-} from '../../../components/common/card';
+import { Card, CardContent } from '../../../components/common/card';
 import PageTitle from '../../../components/custom/ui/page-title';
 
 /**

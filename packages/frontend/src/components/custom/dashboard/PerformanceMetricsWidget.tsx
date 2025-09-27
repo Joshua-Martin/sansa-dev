@@ -27,11 +27,23 @@ const PerformanceMetricsWidget: React.FC = () => {
   const activity = mockRecentActivity;
 
   // Helper function to get trend based on metric value
-  const getTrend = (value: number, goodThreshold: number, reverse: boolean = false) => {
+  const getTrend = (
+    value: number,
+    goodThreshold: number,
+    reverse: boolean = false
+  ) => {
     if (reverse) {
-      return value <= goodThreshold ? 'up' : value >= goodThreshold + 0.1 ? 'down' : 'neutral';
+      return value <= goodThreshold
+        ? 'up'
+        : value >= goodThreshold + 0.1
+          ? 'down'
+          : 'neutral';
     }
-    return value >= goodThreshold ? 'up' : value <= goodThreshold - 0.1 ? 'down' : 'neutral';
+    return value >= goodThreshold
+      ? 'up'
+      : value <= goodThreshold - 0.1
+        ? 'down'
+        : 'neutral';
   };
 
   // Helper function to get change percentage (mock)
@@ -93,7 +105,7 @@ const PerformanceMetricsWidget: React.FC = () => {
       title: 'Cache Hit Rate',
       value: `${(metrics.cacheHitRate * 100).toFixed(1)}%`,
       icon: Database,
-      trend: getTrend(metrics.cacheHitRate, 0.20),
+      trend: getTrend(metrics.cacheHitRate, 0.2),
       change: getChange(metrics.cacheHitRate),
       suffix: '',
     },
@@ -112,9 +124,12 @@ const PerformanceMetricsWidget: React.FC = () => {
     const uptime = 99.8; // Mock uptime percentage
     const successfulRoutingDecisions = 1247; // Mock routing decisions
     const errorRate = activity.errorRate;
-    
+
     // Simple reliability score calculation (0-100)
-    const score = Math.min(100, uptime - (errorRate * 1000) + (successfulRoutingDecisions / 100));
+    const score = Math.min(
+      100,
+      uptime - errorRate * 1000 + successfulRoutingDecisions / 100
+    );
     return Math.max(0, score);
   };
 
@@ -139,12 +154,14 @@ const PerformanceMetricsWidget: React.FC = () => {
             suffix={metric.suffix}
           />
         ))}
-        
+
         {/* System Reliability Score - spans 2 columns and 2 rows */}
         <div className="md:col-span-2 md:row-span-2">
           <div className="h-full p-6 rounded-lg border bg-card text-card-foreground border-border">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm text-muted-foreground">System Reliability</h3>
+              <h3 className="text-sm text-muted-foreground">
+                System Reliability
+              </h3>
             </div>
 
             {/* Large reliability score */}
@@ -152,7 +169,9 @@ const PerformanceMetricsWidget: React.FC = () => {
               <div className="text-4xl font-bold text-primary mb-1">
                 {reliabilityScore.toFixed(0)}
               </div>
-              <div className="text-sm text-muted-foreground">Reliability Score</div>
+              <div className="text-sm text-muted-foreground">
+                Reliability Score
+              </div>
             </div>
 
             {/* Sub-metrics */}
@@ -167,21 +186,29 @@ const PerformanceMetricsWidget: React.FC = () => {
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
                   <Router className="h-3 w-3 text-primary" />
-                  <span className="text-muted-foreground">Routing Decisions</span>
+                  <span className="text-muted-foreground">
+                    Routing Decisions
+                  </span>
                 </div>
-                <span className="font-mono font-medium">{routingDecisions.toLocaleString()}</span>
+                <span className="font-mono font-medium">
+                  {routingDecisions.toLocaleString()}
+                </span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
                   <Shield className="h-3 w-3 text-orange-600" />
-                  <span className="text-muted-foreground">Failovers Handled</span>
+                  <span className="text-muted-foreground">
+                    Failovers Handled
+                  </span>
                 </div>
-                <span className="font-mono font-medium">{failoversHandled}</span>
+                <span className="font-mono font-medium">
+                  {failoversHandled}
+                </span>
               </div>
             </div>
           </div>
         </div>
-        
+
         {/* Second row - 4 more regular KPIs (reliability score takes up 2 spots, so we have 4 remaining) */}
         {performanceMetrics.slice(4, 8).map((metric, index) => (
           <DashboardMetric

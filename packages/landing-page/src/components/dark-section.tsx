@@ -33,7 +33,8 @@ const RIGHT_DIP_COL = CENTER_COLUMNS - 4; // 5th from right
 // Flex fractions for the center band when not using an inner grid
 const LEFT_FILLER_FRACTION = (LEFT_DIP_COL - 1) / CENTER_COLUMNS;
 const DIP_FRACTION = 1 / CENTER_COLUMNS;
-const CENTER_WHITE_FRACTION = (RIGHT_DIP_COL - LEFT_DIP_COL - 1) / CENTER_COLUMNS;
+const CENTER_WHITE_FRACTION =
+  (RIGHT_DIP_COL - LEFT_DIP_COL - 1) / CENTER_COLUMNS;
 const RIGHT_FILLER_FRACTION = (CENTER_COLUMNS - RIGHT_DIP_COL) / CENTER_COLUMNS;
 
 /**
@@ -56,7 +57,7 @@ export function DarkSection() {
 
       <GridPattern
         patternId="dark-section-grid-pattern"
-        gridColumns={GRID_COLUMNS}  
+        gridColumns={GRID_COLUMNS}
         strokeWidth={0.8}
         color="#ffffff"
         gridOpacity={0.3}
@@ -79,58 +80,98 @@ export function DarkSection() {
 
       {/* Top row with white folder cutouts - positioned at top edge */}
       <div className="relative z-20 h-[60px]">
-        <div className="grid h-full w-full" style={{ ...gridTemplateColumns24, gridTemplateRows: '1fr' }}>
+        <div
+          className="grid h-full w-full"
+          style={{ ...gridTemplateColumns24, gridTemplateRows: '1fr' }}
+        >
           {/* Left side to left accent line */}
           <div style={{ gridColumn: `1 / ${LEFT_LINE}` }} />
 
           {/* Center band between accent lines */}
-          <div style={{ gridColumn: `${LEFT_LINE} / ${RIGHT_LINE}` }} className="relative h-full">
+          <div
+            style={{ gridColumn: `${LEFT_LINE} / ${RIGHT_LINE}` }}
+            className="relative h-full"
+          >
             <div className="flex h-full w-full items-stretch relative">
               {/* Left filler */}
-              <div className="h-full" style={{ width: `${LEFT_FILLER_FRACTION * 100}%` }} />
+              <div
+                className="h-full"
+                style={{ width: `${LEFT_FILLER_FRACTION * 100}%` }}
+              />
 
               {/* Left dip container with white cutout */}
-              <div className="relative h-full" style={{ width: `${DIP_FRACTION * 100}%` }}>
+              <div
+                className="relative h-full"
+                style={{ width: `${DIP_FRACTION * 100}%` }}
+              >
                 <div className="absolute inset-0">
-                  <FolderDip direction="left" color="white" className="w-full h-full" />
+                  <FolderDip
+                    direction="left"
+                    color="white"
+                    className="w-full h-full"
+                  />
                 </div>
               </div>
 
               {/* Center white cutout */}
-              <div className="bg-white h-full" style={{ width: `${CENTER_WHITE_FRACTION * 100}%` }} />
+              <div
+                className="bg-white h-full"
+                style={{ width: `${CENTER_WHITE_FRACTION * 100}%` }}
+              />
 
               {/* Right dip container with white cutout */}
-              <div className="relative h-full" style={{ width: `${DIP_FRACTION * 100}%` }}>
+              <div
+                className="relative h-full"
+                style={{ width: `${DIP_FRACTION * 100}%` }}
+              >
                 <div className="absolute inset-0">
-                  <FolderDip direction="right" color="white" className="w-full h-full" />
+                  <FolderDip
+                    direction="right"
+                    color="white"
+                    className="w-full h-full"
+                  />
                 </div>
               </div>
 
               {/* Right filler */}
-              <div className="h-full" style={{ width: `${RIGHT_FILLER_FRACTION * 100}%` }} />
+              <div
+                className="h-full"
+                style={{ width: `${RIGHT_FILLER_FRACTION * 100}%` }}
+              />
             </div>
           </div>
 
           {/* Right side from right accent line to edge */}
           <div style={{ gridColumn: `${RIGHT_LINE} / ${GRID_COLUMNS + 1}` }} />
         </div>
-
       </div>
 
       {/* Main content area */}
       <div className="relative z-30 py-20 sm:py-28">
-        <div className="grid w-full px-4 sm:px-6 lg:px-8" style={gridTemplateColumns24}>
+        <div
+          className="grid w-full px-4 sm:px-6 lg:px-8"
+          style={gridTemplateColumns24}
+        >
           {/* Left column (empty on md+) */}
-          <div className="hidden md:block" style={{ gridColumn: `1 / ${LEFT_LINE}` }} />
+          <div
+            className="hidden md:block"
+            style={{ gridColumn: `1 / ${LEFT_LINE}` }}
+          />
 
           {/* Center content between accent lines - split into two columns */}
-          <div style={{ gridColumn: `${LEFT_LINE} / ${RIGHT_LINE}` }} className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div
+            style={{ gridColumn: `${LEFT_LINE} / ${RIGHT_LINE}` }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center"
+          >
             {/* Left column - AI cost optimization messaging */}
             <div className="text-center lg:text-left">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Optimize your AI pipeline costs</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+                Optimize your AI pipeline costs
+              </h2>
               <p className="text-lg sm:text-xl text-white/70 mb-8">
                 Reduce AI API costs by up to 50% while maintaining performance.
-                Join the waitlist to be among the first to access intelligent routing.
+                Join the waitlist to be among the first to access intelligent
+                routing.
               </p>
             </div>
 
@@ -141,7 +182,10 @@ export function DarkSection() {
           </div>
 
           {/* Right column (empty on md+) */}
-          <div className="hidden md:block" style={{ gridColumn: `${RIGHT_LINE} / ${GRID_COLUMNS + 1}` }} />
+          <div
+            className="hidden md:block"
+            style={{ gridColumn: `${RIGHT_LINE} / ${GRID_COLUMNS + 1}` }}
+          />
         </div>
       </div>
     </div>

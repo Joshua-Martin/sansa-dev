@@ -37,7 +37,10 @@ export function AccentBorders({
   fadeOutEndPercent = 0.25,
 }: AccentBordersProps) {
   // Use CSS custom property based on variant
-  const borderColor = variant === 'dark' ? 'var(--color-dark-accent-border)' : 'var(--color-accent-border)';
+  const borderColor =
+    variant === 'dark'
+      ? 'var(--color-dark-accent-border)'
+      : 'var(--color-accent-border)';
   // Symmetric grid line indices based on single rounded left line
   const leftLine = Math.round(accentPositionPercent * gridColumns);
   const rightLine = gridColumns - leftLine + 2;
@@ -49,11 +52,14 @@ export function AccentBorders({
 
   // Create fade-out mask if enabled
   const fadeOutMask = enableFadeOut
-    ? `linear-gradient(to bottom, transparent ${(fadeOutStartPercent * 100)}%, black ${(fadeOutEndPercent * 100)}%)`
+    ? `linear-gradient(to bottom, transparent ${fadeOutStartPercent * 100}%, black ${fadeOutEndPercent * 100}%)`
     : undefined;
 
   return (
-    <div className={`absolute inset-0 pointer-events-none ${className ?? ''}`} aria-hidden="true">
+    <div
+      className={`absolute inset-0 pointer-events-none ${className ?? ''}`}
+      aria-hidden="true"
+    >
       <div className="grid h-full w-full" style={gridTemplateColumns}>
         {/* Left accent border */}
         <div

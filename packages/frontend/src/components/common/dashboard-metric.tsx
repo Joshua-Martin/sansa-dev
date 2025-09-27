@@ -11,7 +11,7 @@ export type DashboardMetric = {
   trend?: 'up' | 'down' | 'neutral';
   suffix?: string;
   className?: string;
-}
+};
 
 /**
  * A standardized component for displaying a single metric with optional trend indicator
@@ -46,7 +46,9 @@ const DashboardMetric = ({
   };
 
   return (
-    <div className={cn('bg-card p-3 rounded-lg border border-border', className)}>
+    <div
+      className={cn('bg-card p-3 rounded-lg border border-border', className)}
+    >
       <p className="text-sm text-muted-foreground">{title}</p>
       <div className="flex items-center">
         <p className="text-xl font-semibold">

@@ -26,33 +26,37 @@ const generateDates = (days: number): string[] => {
 };
 
 // Cost data over time
-export const mockCostData: CostData[] = generateDates(30).map((date, index) => ({
-  date,
-  gpt4: Math.random() * 50 + 20,
-  gpt35: Math.random() * 30 + 10,
-  claude: Math.random() * 40 + 15,
-  gemini: Math.random() * 25 + 8,
-  total: 0, // Will be calculated
-})).map(item => ({
-  ...item,
-  total: item.gpt4 + item.gpt35 + item.claude + item.gemini
-}));
+export const mockCostData: CostData[] = generateDates(30)
+  .map((date, index) => ({
+    date,
+    gpt4: Math.random() * 50 + 20,
+    gpt35: Math.random() * 30 + 10,
+    claude: Math.random() * 40 + 15,
+    gemini: Math.random() * 25 + 8,
+    total: 0, // Will be calculated
+  }))
+  .map((item) => ({
+    ...item,
+    total: item.gpt4 + item.gpt35 + item.claude + item.gemini,
+  }));
 
 // Token usage data
-export const mockTokenUsage: TokenUsage[] = generateDates(30).map((date, index) => {
-  const inputTokens = Math.floor(Math.random() * 50000 + 10000);
-  const outputTokens = Math.floor(Math.random() * 20000 + 5000);
-  const totalTokens = inputTokens + outputTokens;
-  const cost = totalTokens * 0.0001; // Mock cost per token
+export const mockTokenUsage: TokenUsage[] = generateDates(30).map(
+  (date, index) => {
+    const inputTokens = Math.floor(Math.random() * 50000 + 10000);
+    const outputTokens = Math.floor(Math.random() * 20000 + 5000);
+    const totalTokens = inputTokens + outputTokens;
+    const cost = totalTokens * 0.0001; // Mock cost per token
 
-  return {
-    date,
-    inputTokens,
-    outputTokens,
-    totalTokens,
-    cost,
-  };
-});
+    return {
+      date,
+      inputTokens,
+      outputTokens,
+      totalTokens,
+      cost,
+    };
+  }
+);
 
 // Model metrics
 export const mockModelMetrics: ModelMetric[] = [
@@ -171,7 +175,7 @@ export const mockPerformanceMetrics: PerformanceMetrics = {
   coverage: 0.96,
   hallucinationRate: 0.05,
   latency: 1.7,
-  cacheHitRate: 0.20,
+  cacheHitRate: 0.2,
   driftDetection: 0.02,
 };
 

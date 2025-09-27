@@ -15,13 +15,10 @@ import {
  * showing costs, performance metrics, model comparisons, and recent activity.
  */
 const DashboardPage: React.FC = () => {
-
   return (
     <section className="h-full w-full space-y-6 max-h-screen flex flex-col">
       {/* Header */}
-      <PageTitle
-        title="Good morning, Joshua"
-      />
+      <PageTitle title="Good morning, Joshua" />
 
       {/* KPI Grid with 2x2 System Reliability Score */}
       <PerformanceMetricsWidget />

@@ -33,9 +33,6 @@ const gridTemplateColumns24: React.CSSProperties = {
   gridTemplateColumns: `repeat(${GRID_COLUMNS}, minmax(0, 1fr))`,
 };
 
-
-
-
 export default function Home() {
   return (
     <div className="min-h-screen relative">
@@ -43,7 +40,7 @@ export default function Home() {
       <div className="absolute top-0 left-0 right-0 z-50">
         <Nav />
       </div>
-      
+
       {/* Hero Section */}
       <HeroSection
         gridColumns={GRID_COLUMNS}
@@ -65,7 +62,7 @@ export default function Home() {
         rightLine={RIGHT_LINE}
       />
 
-<ThinSeparatorSection
+      <ThinSeparatorSection
         gridColumns={GRID_COLUMNS}
         accentPositionPercent={ACCENT_POSITION_PERCENT}
         accentStrokeWidthPx={ACCENT_STROKE_WIDTH_PX}
@@ -94,7 +91,6 @@ export default function Home() {
         leftLine={LEFT_LINE}
         rightLine={RIGHT_LINE}
       />
-
 
       {/* Dark Section with faint grid (bottom of page) */}
       <DarkSection />

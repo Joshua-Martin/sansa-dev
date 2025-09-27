@@ -35,9 +35,15 @@ export function HowItWorksSection({
     <div className="relative bg-white">
       {/* Content aligned to 24-col grid */}
       <div className="relative z-10 py-20">
-        <div className="grid w-full px-4 sm:px-6 lg:px-8" style={gridTemplateColumns}>
+        <div
+          className="grid w-full px-4 sm:px-6 lg:px-8"
+          style={gridTemplateColumns}
+        >
           {/* Left column (empty on md+) */}
-          <div className="hidden md:block" style={{ gridColumn: `1 / ${leftLine}` }} />
+          <div
+            className="hidden md:block"
+            style={{ gridColumn: `1 / ${leftLine}` }}
+          />
 
           {/* Center content between accent lines */}
           <div
@@ -54,7 +60,10 @@ export function HowItWorksSection({
           </div>
 
           {/* Right column (empty on md+) */}
-          <div className="hidden md:block" style={{ gridColumn: `${rightLine} / ${gridColumns + 1}` }} />
+          <div
+            className="hidden md:block"
+            style={{ gridColumn: `${rightLine} / ${gridColumns + 1}` }}
+          />
         </div>
 
         {/* Overlay accent borders on md+ */}

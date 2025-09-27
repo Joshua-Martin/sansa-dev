@@ -82,15 +82,51 @@ interface IntegrationLogo {
  */
 const createLogoPositions = (gridSize: number): IntegrationLogo[] => [
   // Main logos - positioned at specific grid coordinates
-  { backgroundPositionX: INTEGRATION_LOGOS.CLAUDE, top: gridSize * 1, left: gridSize * 7 },
-  { backgroundPositionX: INTEGRATION_LOGOS.OPENAI, top: gridSize * 2, left: gridSize * 9 },
-  { backgroundPositionX: INTEGRATION_LOGOS.GEMINI, top: gridSize * 1, left: gridSize * 10 },
-  { backgroundPositionX: INTEGRATION_LOGOS.PERPLEXITY, top: gridSize * 3, left: gridSize * 11 },
+  {
+    backgroundPositionX: INTEGRATION_LOGOS.CLAUDE,
+    top: gridSize * 1,
+    left: gridSize * 7,
+  },
+  {
+    backgroundPositionX: INTEGRATION_LOGOS.OPENAI,
+    top: gridSize * 2,
+    left: gridSize * 9,
+  },
+  {
+    backgroundPositionX: INTEGRATION_LOGOS.GEMINI,
+    top: gridSize * 1,
+    left: gridSize * 10,
+  },
+  {
+    backgroundPositionX: INTEGRATION_LOGOS.PERPLEXITY,
+    top: gridSize * 3,
+    left: gridSize * 11,
+  },
   // Faded logos for background effect (one shadow per regular logo, clustered within bounds)
-  { backgroundPositionX: INTEGRATION_LOGOS.CLAUDE, top: gridSize * 2, left: gridSize * 6, isFaded: true },
-  { backgroundPositionX: INTEGRATION_LOGOS.OPENAI, top: gridSize * 1, left: gridSize * 13, isFaded: true },
-  { backgroundPositionX: INTEGRATION_LOGOS.GEMINI, top: gridSize * 3, left: gridSize * 8, isFaded: true },
-  { backgroundPositionX: INTEGRATION_LOGOS.PERPLEXITY, top: gridSize * 2, left: gridSize * 12, isFaded: true },
+  {
+    backgroundPositionX: INTEGRATION_LOGOS.CLAUDE,
+    top: gridSize * 2,
+    left: gridSize * 6,
+    isFaded: true,
+  },
+  {
+    backgroundPositionX: INTEGRATION_LOGOS.OPENAI,
+    top: gridSize * 1,
+    left: gridSize * 13,
+    isFaded: true,
+  },
+  {
+    backgroundPositionX: INTEGRATION_LOGOS.GEMINI,
+    top: gridSize * 3,
+    left: gridSize * 8,
+    isFaded: true,
+  },
+  {
+    backgroundPositionX: INTEGRATION_LOGOS.PERPLEXITY,
+    top: gridSize * 2,
+    left: gridSize * 12,
+    isFaded: true,
+  },
 ];
 
 /**
@@ -110,7 +146,9 @@ export function Integrations({
     typeof window !== 'undefined' ? document.documentElement.clientWidth : 1920
   );
   const [cellSize, setCellSize] = React.useState(
-    typeof window !== 'undefined' ? document.documentElement.clientWidth / gridColumns : 60
+    typeof window !== 'undefined'
+      ? document.documentElement.clientWidth / gridColumns
+      : 60
   );
   React.useEffect(() => {
     const updateViewportWidth = () => {
@@ -129,7 +167,11 @@ export function Integrations({
   return (
     <>
       {/* Height placeholder to influence parent container height */}
-      <div className={`opacity-0 w-full pointer-events-none`} aria-hidden="true" style={{ height: `${gridHeight}px` }} />
+      <div
+        className={`opacity-0 w-full pointer-events-none`}
+        aria-hidden="true"
+        style={{ height: `${gridHeight}px` }}
+      />
 
       {/* Absolutely positioned integrations content */}
       <div
@@ -140,60 +182,64 @@ export function Integrations({
           width: `${viewportWidth}px`,
         }}
       >
-      {/* Grid background pattern */}
-      {showGrid && (
-        <svg
-          className="pointer-events-none absolute text-neutral-200 [mask-image:linear-gradient(transparent,black,transparent)] md:[mask-image:linear-gradient(90deg,transparent,black_70%,transparent)]"
-          width="100%"
-          height="100%"
-          viewBox={`0 0 ${viewportWidth} ${gridHeight}`}
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <defs>
-            <pattern
-              id={gridPatternId}
-              x="0"
-              y="0"
-              width={cellSize}
-              height={cellSize}
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d={`M ${cellSize} 0 L 0 0 0 ${cellSize}`}
-                fill="transparent"
-                stroke="#00000040"
-                strokeWidth={strokeWidth}
-              />
-            </pattern>
-          </defs>
-          <rect fill={`url(#${gridPatternId})`} width="100%" height="100%" />
-        </svg>
-      )}
-
-      {/* Integration logos container */}
-      <div className="absolute inset-0">
-        {createLogoPositions(cellSize).map((logo, index) => (
-          <div
-            key={index}
-            className={`absolute rounded-lg bg-gradient-to-b from-neutral-100 to-white ${
-              logo.isFaded ? 'opacity-30 shadow-[0_2px_6px_0_#0003_inset]' : 'shadow-md'
-            }`}
-            style={{
-              width: `${cellSize}px`,
-              height: `${cellSize}px`,
-              top: `${logo.top}px`,
-              left: `${logo.left}px`,
-              ...(logo.isFaded ? {} : {
-                backgroundImage: `url(${logosImageUrl})`,
-                backgroundSize: '400%',
-                backgroundPositionX: `${logo.backgroundPositionX}%`,
-              }),
-            }}
+        {/* Grid background pattern */}
+        {showGrid && (
+          <svg
+            className="pointer-events-none absolute text-neutral-200 [mask-image:linear-gradient(transparent,black,transparent)] md:[mask-image:linear-gradient(90deg,transparent,black_70%,transparent)]"
+            width="100%"
+            height="100%"
+            viewBox={`0 0 ${viewportWidth} ${gridHeight}`}
+            preserveAspectRatio="xMidYMid slice"
           >
-            <div className="absolute inset-0 rounded-[inherit] border border-black/20 [mask-image:linear-gradient(#000a,black)]" />
-          </div>
-        ))}
-      </div>
+            <defs>
+              <pattern
+                id={gridPatternId}
+                x="0"
+                y="0"
+                width={cellSize}
+                height={cellSize}
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d={`M ${cellSize} 0 L 0 0 0 ${cellSize}`}
+                  fill="transparent"
+                  stroke="#00000040"
+                  strokeWidth={strokeWidth}
+                />
+              </pattern>
+            </defs>
+            <rect fill={`url(#${gridPatternId})`} width="100%" height="100%" />
+          </svg>
+        )}
+
+        {/* Integration logos container */}
+        <div className="absolute inset-0">
+          {createLogoPositions(cellSize).map((logo, index) => (
+            <div
+              key={index}
+              className={`absolute rounded-lg bg-gradient-to-b from-neutral-100 to-white ${
+                logo.isFaded
+                  ? 'opacity-30 shadow-[0_2px_6px_0_#0003_inset]'
+                  : 'shadow-md'
+              }`}
+              style={{
+                width: `${cellSize}px`,
+                height: `${cellSize}px`,
+                top: `${logo.top}px`,
+                left: `${logo.left}px`,
+                ...(logo.isFaded
+                  ? {}
+                  : {
+                      backgroundImage: `url(${logosImageUrl})`,
+                      backgroundSize: '400%',
+                      backgroundPositionX: `${logo.backgroundPositionX}%`,
+                    }),
+              }}
+            >
+              <div className="absolute inset-0 rounded-[inherit] border border-black/20 [mask-image:linear-gradient(#000a,black)]" />
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );

@@ -295,19 +295,17 @@ const SignInContent: React.FC = () => {
  */
 const SignInPage: React.FC = () => {
   return (
-
-      <Suspense
-        fallback={
-          <Card variant="ghost">
-            <CardContent className="p-8">
-              <div className="text-center">Loading...</div>
-            </CardContent>
-          </Card>
-        }
-      >
-        <SignInContent />
-      </Suspense>
-
+    <Suspense
+      fallback={
+        <Card variant="ghost">
+          <CardContent className="p-8">
+            <div className="text-center">Loading...</div>
+          </CardContent>
+        </Card>
+      }
+    >
+      <SignInContent />
+    </Suspense>
   );
 };
 

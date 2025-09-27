@@ -27,7 +27,10 @@ export function BottomSection({
       <div className="relative w-full py-20">
         <div className="grid w-full" style={gridTemplateColumns}>
           {/* Left side */}
-          <div style={{ gridColumn: `1 / ${leftLine}` }} className="border-r border-accent-border" />
+          <div
+            style={{ gridColumn: `1 / ${leftLine}` }}
+            className="border-r border-accent-border"
+          />
 
           {/* Center area with white rounded component */}
           <div
@@ -40,7 +43,6 @@ export function BottomSection({
           {/* Right side */}
           <div style={{ gridColumn: `${rightLine} / ${gridColumns + 1}` }} />
         </div>
-
       </div>
     </div>
   );

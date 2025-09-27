@@ -30,7 +30,9 @@ export function IntegrationsSection({
   leftLine,
 }: IntegrationsSectionProps) {
   return (
-    <div className={`relative bg-white text-gray-900 border-t border-accent-border w-full aspect-[5/${gridColumns}]`}>
+    <div
+      className={`relative bg-white text-gray-900 border-t border-accent-border w-full aspect-[5/${gridColumns}]`}
+    >
       <div className="relative w-full">
         <div className="grid w-full" style={gridTemplateColumns}>
           {/* Left side */}
@@ -42,8 +44,12 @@ export function IntegrationsSection({
             className="bg-white flex items-center justify-start relative"
           >
             <div className="relative z-10 text-left px-20">
-              <h2 className="text-2xl sm:text-3xl font-semibold mb-2">Integrations</h2>
-              <p className="text-lg text-gray-600">Connect with your favorite tools</p>
+              <h2 className="text-2xl sm:text-3xl font-semibold mb-2">
+                Integrations
+              </h2>
+              <p className="text-lg text-gray-600">
+                Connect with your favorite tools
+              </p>
             </div>
 
             {/* Integrations component */}

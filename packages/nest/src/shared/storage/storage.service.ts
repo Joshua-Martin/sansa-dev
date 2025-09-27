@@ -366,7 +366,10 @@ export class StorageService implements OnModuleInit {
           'MINIO_SECRET_KEY',
           'minioadmin123',
         ),
-        bucket: this.configService.get<string>('MINIO_BUCKET', 'sansa-dev-files'),
+        bucket: this.configService.get<string>(
+          'MINIO_BUCKET',
+          'sansa-dev-files',
+        ),
         region: this.configService.get<string>('MINIO_REGION', 'us-east-1'),
         useSSL:
           this.configService.get<string>('MINIO_USE_SSL', 'false') === 'true',

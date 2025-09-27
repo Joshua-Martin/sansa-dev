@@ -12,7 +12,13 @@ import {
   Legend,
 } from 'recharts';
 import { mockTokenUsage } from './mockData';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../common/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../../common/card';
 
 type ChartDataItem = {
   date: string;
@@ -55,10 +61,10 @@ const chartConfig: ChartConfig = {
  */
 const TokenUsageChart: React.FC = () => {
   // Format data for the chart
-  const chartData: ChartDataItem[] = mockTokenUsage.map(item => ({
+  const chartData: ChartDataItem[] = mockTokenUsage.map((item) => ({
     date: new Date(item.date).toLocaleDateString('en-US', {
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     }),
     inputTokens: item.inputTokens,
     outputTokens: item.outputTokens,
@@ -106,9 +112,7 @@ const TokenUsageChart: React.FC = () => {
                   className="h-2.5 w-2.5 rounded-[2px] shrink-0"
                   style={{ backgroundColor: entry.color }}
                 />
-                <span className="text-muted-foreground">
-                  {formattedLabel}:
-                </span>
+                <span className="text-muted-foreground">{formattedLabel}:</span>
                 <span className="font-mono font-medium tabular-nums text-foreground">
                   {formattedValue}
                 </span>
@@ -172,7 +176,9 @@ const TokenUsageChart: React.FC = () => {
                 tick={{ fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(value: number) => `${(value / 1000).toFixed(0)}K`}
+                tickFormatter={(value: number) =>
+                  `${(value / 1000).toFixed(0)}K`
+                }
               />
               <YAxis
                 yAxisId="cost"

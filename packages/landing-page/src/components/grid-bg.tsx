@@ -247,7 +247,6 @@ export const GridPattern: React.FC<GridPatternProps> = ({
   const viewBoxWidth = viewportWidth;
   const viewBoxHeight = cellSize * gridColumns;
 
-
   // Calculate accent line positions based on percent
   const clamp01 = (v: number): number => (v < 0 ? 0 : v > 1 ? 1 : v);
 
@@ -393,7 +392,11 @@ export const GridPattern: React.FC<GridPatternProps> = ({
           r="100%"
         >
           <stop offset="0%" stopColor="black" stopOpacity="1" />
-          <stop offset={`${Math.round(centerFadeIntensity * 100)}%`} stopColor="black" stopOpacity="0.8" />
+          <stop
+            offset={`${Math.round(centerFadeIntensity * 100)}%`}
+            stopColor="black"
+            stopOpacity="0.8"
+          />
           <stop offset="80%" stopColor="black" stopOpacity="0.2" />
           <stop offset="100%" stopColor="white" stopOpacity="0" />
         </radialGradient>

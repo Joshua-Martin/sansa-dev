@@ -62,12 +62,12 @@ const generateCostSavingsData = (): CostSavingsDataItem[] => {
     if (dayIndex >= 9 && dayIndex <= 18) {
       // First optimization ramp: gradually increasing from day 9 to 18
       const rampProgress = (dayIndex - 9) / 9; // 0 to 1 over 9 days
-      const rampMultiplier = 1 + (rampProgress * 1.5); // 1x to 2.5x increase
+      const rampMultiplier = 1 + rampProgress * 1.5; // 1x to 2.5x increase
       dailySavings *= rampMultiplier;
     } else if (dayIndex >= 19) {
       // Second optimization ramp: steeper gradual increase from day 19 onward
       const rampProgress = (dayIndex - 19) / 10; // 0 to 1 over remaining days
-      const rampMultiplier = 1 + (rampProgress * 2.5); // 1x to 3.5x increase
+      const rampMultiplier = 1 + rampProgress * 2.5; // 1x to 3.5x increase
       dailySavings *= rampMultiplier;
     }
 
@@ -78,19 +78,19 @@ const generateCostSavingsData = (): CostSavingsDataItem[] => {
     if (dayIndex >= 9 && dayIndex <= 18) {
       // First optimization ramp: gradually increasing tokens from day 9 to 18
       const rampProgress = (dayIndex - 9) / 9; // 0 to 1 over 9 days
-      const rampMultiplier = 1 + (rampProgress * 1.2); // 1x to 2.2x increase
+      const rampMultiplier = 1 + rampProgress * 1.2; // 1x to 2.2x increase
       optimizedTokens = Math.floor(optimizedTokens * rampMultiplier);
     } else if (dayIndex >= 19) {
       // Second optimization ramp: steeper increase from day 19 onward
       const rampProgress = (dayIndex - 19) / 10; // 0 to 1 over remaining days
-      const rampMultiplier = 1 + (rampProgress * 2.0); // 1x to 3x increase
+      const rampMultiplier = 1 + rampProgress * 2.0; // 1x to 3x increase
       optimizedTokens = Math.floor(optimizedTokens * rampMultiplier);
     }
 
     dates.push({
       date: date.toLocaleDateString('en-US', {
         month: 'short',
-        day: 'numeric'
+        day: 'numeric',
       }),
       cumulativeSavings,
       optimizedTokens,
@@ -110,7 +110,10 @@ const generateCostSavingsData = (): CostSavingsDataItem[] => {
 const CostSavingsChart: React.FC = () => {
   const chartData = generateCostSavingsData();
   const totalSavings = chartData[chartData.length - 1]?.cumulativeSavings || 0;
-  const totalOptimizedTokens = chartData.reduce((sum, item) => sum + item.optimizedTokens, 0);
+  const totalOptimizedTokens = chartData.reduce(
+    (sum, item) => sum + item.optimizedTokens,
+    0
+  );
 
   // Find the dates for optimization events (days 9 and 19 from the start - start of ramp up)
   const optimizationEventDates = [
@@ -161,9 +164,7 @@ const CostSavingsChart: React.FC = () => {
                   className="h-2.5 w-2.5 rounded-[2px] shrink-0"
                   style={{ backgroundColor: entry.color }}
                 />
-                <span className="text-muted-foreground">
-                  {formattedLabel}:
-                </span>
+                <span className="text-muted-foreground">{formattedLabel}:</span>
                 <span className="font-mono font-medium tabular-nums text-foreground ml-auto">
                   {formattedValue}
                 </span>
@@ -179,7 +180,6 @@ const CostSavingsChart: React.FC = () => {
       </div>
     );
   };
-
 
   return (
     <Card className="h-full flex flex-col">
@@ -208,7 +208,9 @@ const CostSavingsChart: React.FC = () => {
               <div className="text-2xl font-bold text-primary">
                 {(totalOptimizedTokens / 1000).toFixed(0)}M
               </div>
-              <div className="text-xs text-muted-foreground">Tokens Optimized</div>
+              <div className="text-xs text-muted-foreground">
+                Tokens Optimized
+              </div>
             </div>
           </div>
         </div>
@@ -216,9 +218,23 @@ const CostSavingsChart: React.FC = () => {
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartData}>
               <defs>
-                <linearGradient id="savingsGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={chartConfig.cumulativeSavings.color} stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor={chartConfig.cumulativeSavings.color} stopOpacity={0.05}/>
+                <linearGradient
+                  id="savingsGradient"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="5%"
+                    stopColor={chartConfig.cumulativeSavings.color}
+                    stopOpacity={0.3}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor={chartConfig.cumulativeSavings.color}
+                    stopOpacity={0.05}
+                  />
                 </linearGradient>
               </defs>
               <XAxis
@@ -244,14 +260,14 @@ const CostSavingsChart: React.FC = () => {
                   strokeWidth={2}
                   strokeDasharray="5,5"
                   label={{
-                    value: "Optimization",
-                    position: "top",
+                    value: 'Optimization',
+                    position: 'top',
                     style: {
                       fontSize: '10px',
                       fill: chartConfig.cumulativeSavings.color,
                       fontWeight: 'bold',
                       transform: `translateY(${index === 0 ? '10px' : '10px'})`,
-                    }
+                    },
                   }}
                 />
               ))}

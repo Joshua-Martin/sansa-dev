@@ -54,11 +54,11 @@ function buildRoundedConnectorPath(
   // Sweep flags to ensure arcs bend in the correct direction
   // First arc: horizontal -> vertical
   //   CW for (dx>0 && dy>0) or (dx<0 && dy<0); CCW otherwise
-  const sweepToVertical = (dx > 0) === (dy > 0) ? 1 : 0;
+  const sweepToVertical = dx > 0 === dy > 0 ? 1 : 0;
 
   // Second arc: vertical -> horizontal
   //   CW when signs differ (dy>0 && dx<0) or (dy<0 && dx>0); CCW otherwise
-  const sweepToHorizontal = (dx > 0) !== (dy > 0) ? 1 : 0;
+  const sweepToHorizontal = dx > 0 !== dy > 0 ? 1 : 0;
 
   return [
     `M ${start.x} ${start.y}`,
@@ -159,7 +159,10 @@ function buildCostSavingsRoundedHVHVPath(
   const clampedFraction = (v: number) => Math.max(0, Math.min(1, v));
   const firstFrac = clampedFraction(config.firstHorizontalFraction);
   const levelFracFromEnd = clampedFraction(config.verticalLevelFractionFromEnd);
-  const firstVertFrac = config.firstVerticalFraction !== undefined ? clampedFraction(config.firstVerticalFraction) : undefined;
+  const firstVertFrac =
+    config.firstVerticalFraction !== undefined
+      ? clampedFraction(config.firstVerticalFraction)
+      : undefined;
   const endX = end.x + (config.endHorizontalOffsetPx ?? 0);
   const dx = endX - start.x;
   const dy = end.y - start.y;
@@ -173,14 +176,21 @@ function buildCostSavingsRoundedHVHVPath(
 
   // Compute interior X and horizontal level Y per configured fractions
   const splitX = start.x + firstFrac * dx;
-  const levelY = firstVertFrac !== undefined
-    ? start.y + firstVertFrac * dy
-    : end.y + levelFracFromEnd * (start.y - end.y);
+  const levelY =
+    firstVertFrac !== undefined
+      ? start.y + firstVertFrac * dy
+      : end.y + levelFracFromEnd * (start.y - end.y);
 
   // Corner radius, limited so it fits available segments
   const rBase = Math.max(2, config.radiusPx);
-  const maxHorizontalInset = Math.min(Math.abs(splitX - start.x), Math.abs(endX - splitX));
-  const maxVerticalInset = Math.min(Math.abs(levelY - start.y), Math.abs(end.y - levelY));
+  const maxHorizontalInset = Math.min(
+    Math.abs(splitX - start.x),
+    Math.abs(endX - splitX)
+  );
+  const maxVerticalInset = Math.min(
+    Math.abs(levelY - start.y),
+    Math.abs(end.y - levelY)
+  );
   const r = Math.min(rBase, maxHorizontalInset, maxVerticalInset);
 
   // If radius collapses to zero, fall back to sharp HVHV orthogonal polyline
@@ -196,9 +206,9 @@ function buildCostSavingsRoundedHVHVPath(
 
   // Arc sweep flags for the three corners
   // 1) horizontal -> vertical (toward levelY from start.y)
-  const sweep1 = (dx > 0) === (dy > 0) ? 1 : 0;
+  const sweep1 = dx > 0 === dy > 0 ? 1 : 0;
   // 2) vertical -> horizontal (toward end.x at levelY)
-  const sweep2 = (dx > 0) !== (dy > 0) ? 1 : 0;
+  const sweep2 = dx > 0 !== dy > 0 ? 1 : 0;
   // 3) horizontal -> vertical (down/up into end.y)
   const sweep3 = sweep1; // same orientation as first turn for consistent geometry
 
@@ -235,16 +245,23 @@ function buildCostSavingsRoundedHVHVPath(
 const ScoreGraphic: React.FC = () => {
   // Root container for coordinate system
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const [svgSize, setSvgSize] = useState<{ width: number; height: number }>({ width: 1, height: 1 });
+  const [svgSize, setSvgSize] = useState<{ width: number; height: number }>({
+    width: 1,
+    height: 1,
+  });
 
   // Stat badge refs and measured points (left-edge centers)
   const responseMatchRef = useRef<HTMLDivElement | null>(null);
   const costSavingsRef = useRef<HTMLDivElement | null>(null);
   const fasterResponseRef = useRef<HTMLDivElement | null>(null);
 
-  const [responseMatchPoint, setResponseMatchPoint] = useState<Point | null>(null);
+  const [responseMatchPoint, setResponseMatchPoint] = useState<Point | null>(
+    null
+  );
   const [costSavingsPoint, setCostSavingsPoint] = useState<Point | null>(null);
-  const [fasterResponsePoint, setFasterResponsePoint] = useState<Point | null>(null);
+  const [fasterResponsePoint, setFasterResponsePoint] = useState<Point | null>(
+    null
+  );
 
   // GPT viewer measurement points (converted to root coordinates)
   const [gptPoints, setGptPoints] = useState<{
@@ -259,27 +276,21 @@ const ScoreGraphic: React.FC = () => {
 
   // Support-routing call data from mockData
   const sonnetResponse = {
-    "message": "I understand your frustration, let me connect you with someone who can better handle this situation",
-    "classification": "billing-issue",
-    "priority": "medium",
-    "sentiment": "frustrated",
-    "routes": [
-      "fetch-billing-history",
-      "queue-agent",
-      "fetch-tracking-data"
-    ]
+    message:
+      'I understand your frustration, let me connect you with someone who can better handle this situation',
+    classification: 'billing-issue',
+    priority: 'medium',
+    sentiment: 'frustrated',
+    routes: ['fetch-billing-history', 'queue-agent', 'fetch-tracking-data'],
   };
 
   const gptMiniResponse = {
-    "message": "I apologize for the inconvenience, let me transfer you to a billing specialist who can resolve this for you",
-    "classification": "billing-issue",
-    "priority": "medium",
-    "sentiment": "frustrated",
-    "routes": [
-      "fetch-billing-history",
-      "queue-agent",
-      "fetch-tracking-data"
-    ]
+    message:
+      'I apologize for the inconvenience, let me transfer you to a billing specialist who can resolve this for you',
+    classification: 'billing-issue',
+    priority: 'medium',
+    sentiment: 'frustrated',
+    routes: ['fetch-billing-history', 'queue-agent', 'fetch-tracking-data'],
   };
 
   // Keep SVG viewbox synced to root container size
@@ -287,7 +298,10 @@ const ScoreGraphic: React.FC = () => {
     if (!rootRef.current) return;
     const resize = () => {
       const rect = rootRef.current!.getBoundingClientRect();
-      setSvgSize({ width: Math.max(1, Math.round(rect.width)), height: Math.max(1, Math.round(rect.height)) });
+      setSvgSize({
+        width: Math.max(1, Math.round(rect.width)),
+        height: Math.max(1, Math.round(rect.height)),
+      });
     };
     resize();
     const ro = new ResizeObserver(resize);
@@ -307,7 +321,10 @@ const ScoreGraphic: React.FC = () => {
       const calcLeftCenter = (el: HTMLDivElement | null): Point | null => {
         if (!el) return null;
         const r = el.getBoundingClientRect();
-        return { x: r.left - rootRect.left, y: r.top - rootRect.top + r.height / 2 };
+        return {
+          x: r.left - rootRect.left,
+          y: r.top - rootRect.top + r.height / 2,
+        };
       };
       setResponseMatchPoint(calcLeftCenter(responseMatchRef.current));
       setCostSavingsPoint(calcLeftCenter(costSavingsRef.current));
@@ -342,7 +359,8 @@ const ScoreGraphic: React.FC = () => {
       const rootRect = rootRef.current.getBoundingClientRect();
       const offsetX = pts.containerRect.left - rootRect.left;
       const offsetY = pts.containerRect.top - rootRect.top;
-      const toRoot = (p?: Point): Point | undefined => (p ? { x: p.x + offsetX, y: p.y + offsetY } : undefined);
+      const toRoot = (p?: Point): Point | undefined =>
+        p ? { x: p.x + offsetX, y: p.y + offsetY } : undefined;
       setGptPoints({
         messageValueCenterBottom: toRoot(pts.messageValueCenterBottom),
         priceBottomCenter: toRoot(pts.priceBottomCenter),
@@ -367,7 +385,11 @@ const ScoreGraphic: React.FC = () => {
   const costSavingsPath = useMemo(() => {
     // Route Cost Savings -> Price with rounded orthogonal segments (HVHV)
     if (!costSavingsPoint || !gptPoints.priceBottomCenter) return null;
-    return buildCostSavingsRoundedHVHVPath(costSavingsPoint, gptPoints.priceBottomCenter, COST_SAVINGS_CONNECTOR);
+    return buildCostSavingsRoundedHVHVPath(
+      costSavingsPoint,
+      gptPoints.priceBottomCenter,
+      COST_SAVINGS_CONNECTOR
+    );
   }, [costSavingsPoint, gptPoints.priceBottomCenter]);
 
   const fasterResponsePath = useMemo(() => {
@@ -418,13 +440,28 @@ const ScoreGraphic: React.FC = () => {
           style={{ zIndex: 25 }}
         >
           {responseMatchPath && (
-            <path d={responseMatchPath} stroke="#86efac" strokeWidth={3} fill="none" />
+            <path
+              d={responseMatchPath}
+              stroke="#86efac"
+              strokeWidth={3}
+              fill="none"
+            />
           )}
           {costSavingsPath && (
-            <path d={costSavingsPath} stroke="#86efac" strokeWidth={3} fill="none" />
+            <path
+              d={costSavingsPath}
+              stroke="#86efac"
+              strokeWidth={3}
+              fill="none"
+            />
           )}
           {fasterResponsePath && (
-            <path d={fasterResponsePath} stroke="#86efac" strokeWidth={3} fill="none" />
+            <path
+              d={fasterResponsePath}
+              stroke="#86efac"
+              strokeWidth={3}
+              fill="none"
+            />
           )}
         </svg>
 
@@ -445,31 +482,43 @@ const ScoreGraphic: React.FC = () => {
             <span className="text-purple-400">&quot;message&quot;</span>
             <span className="text-gray-300">: </span>
             <span className="text-yellow-400">&quot;</span>
-            <span className="text-yellow-400">I apologize for the inconvenience, let me transfer you to a</span>
+            <span className="text-yellow-400">
+              I apologize for the inconvenience, let me transfer you to a
+            </span>
             <br />
-            <span className="text-gray-600">                </span>
-            <span className="text-yellow-400">billing specialist who can resolve this for you</span>
+            <span className="text-gray-600"> </span>
+            <span className="text-yellow-400">
+              billing specialist who can resolve this for you
+            </span>
             <span className="text-yellow-400">&quot;</span>
           </div>
         )}
 
         {/* Floating Accuracy Badges */}
         <div className="absolute -right-30 top-30 z-30 flex flex-col justify-start space-y-10">
-          <div ref={fasterResponseRef} className="border-2 border-primary bg-background/90 text-foreground px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-3 shadow-primary">
+          <div
+            ref={fasterResponseRef}
+            className="border-2 border-primary bg-background/90 text-foreground px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-3 shadow-primary"
+          >
             <Zap className="h-5 w-5" />
             68% Faster Response
           </div>
 
-          <div ref={costSavingsRef} className="border-2 border-primary bg-background/90 text-foreground px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-3 shadow-primary">
+          <div
+            ref={costSavingsRef}
+            className="border-2 border-primary bg-background/90 text-foreground px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-3 shadow-primary"
+          >
             <DollarSign className="h-5 w-5" />
             90% Cost Savings
           </div>
 
-          <div ref={responseMatchRef} className="border-2 border-primary/70 bg-background/90 text-foreground px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-3 shadow-primary">
+          <div
+            ref={responseMatchRef}
+            className="border-2 border-primary/70 bg-background/90 text-foreground px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-3 shadow-primary"
+          >
             <Target className="h-5 w-5" />
             96.8% Response Match
           </div>
-
         </div>
       </div>
     </div>
