@@ -17,7 +17,9 @@ export function useAddToWaitlist() {
    * @param email - The email address to add to the waitlist
    * @returns Promise that resolves when the operation completes
    */
-  const addToWaitlist = async (email: string): Promise<{ success: boolean; message: string }> => {
+  const addToWaitlist = async (
+    email: string
+  ): Promise<{ success: boolean; message: string }> => {
     setIsLoading(true);
     setError(null);
 
@@ -25,7 +27,11 @@ export function useAddToWaitlist() {
       const addToWaitlistFunction = httpsCallable(functions, 'addToWaitlist');
       const result = await addToWaitlistFunction({ email });
 
-      const data = result.data as { success: boolean; message: string; error?: string };
+      const data = result.data as {
+        success: boolean;
+        message: string;
+        error?: string;
+      };
 
       if (!data.success) {
         throw new Error(data.message || 'Failed to add email to waitlist');
@@ -33,7 +39,8 @@ export function useAddToWaitlist() {
 
       return data;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
+      const errorMessage =
+        err instanceof Error ? err.message : 'An unexpected error occurred';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {

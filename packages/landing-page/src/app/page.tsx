@@ -52,7 +52,7 @@ export default function Home() {
         leftLine={LEFT_LINE}
         rightLine={RIGHT_LINE}
       />
-            <ThinSeparatorSection
+      <ThinSeparatorSection
         gridColumns={GRID_COLUMNS}
         accentPositionPercent={ACCENT_POSITION_PERCENT}
         accentStrokeWidthPx={ACCENT_STROKE_WIDTH_PX}

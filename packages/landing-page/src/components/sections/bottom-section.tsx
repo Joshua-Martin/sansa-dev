@@ -38,7 +38,7 @@ export function BottomSection({
             className="bg-background flex items-center justify-center border-r border-accent-border"
           >
             <div className="mx-10 w-full border-x border-accent-border">
-            <HowItWorksAnimation />
+              <HowItWorksAnimation />
             </div>
           </div>
 

@@ -7,7 +7,9 @@ export default function PromoPage() {
   const [messages, setMessages] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(true);
   const [isSending, setIsSending] = useState(false);
-  const [animatingMessageIndex, setAnimatingMessageIndex] = useState<number | null>(null);
+  const [animatingMessageIndex, setAnimatingMessageIndex] = useState<
+    number | null
+  >(null);
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   const fullText = 'Thanks for the summary!';
@@ -28,7 +30,7 @@ export default function PromoPage() {
         setTimeout(() => {
           setIsSending(false);
           // Add message and clear input
-          setMessages(prev => {
+          setMessages((prev) => {
             const newMessages = [...prev, fullText];
             setAnimatingMessageIndex(newMessages.length - 1);
             return newMessages;
@@ -54,20 +56,28 @@ export default function PromoPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-8 bg-black">
       {/* iPhone Container */}
-      <div className={`relative w-80 h-[600px] border rounded-[3rem] p-2 transition-all duration-200 ${
-        isFadingOut ? 'border-transparent' : 'border-white'
-      }`}>
-        <div className={`w-full h-full border rounded-[2.5rem] transition-all duration-200 ${
+      <div
+        className={`relative w-80 h-[600px] border rounded-[3rem] p-2 transition-all duration-200 ${
           isFadingOut ? 'border-transparent' : 'border-white'
-        }`}>
-          {/* Status Bar / Header */}
-          <div className={`h-12 mb-4 transition-all duration-200 ${
-            isFadingOut ? 'border-b-transparent' : 'border-b border-white'
-          }`}>
-            {/* Dynamic Island */}
-          <div className={`absolute top-6 left-1/2 transform -translate-x-1/2 w-32 h-4 border rounded-full transition-all duration-200 ${
+        }`}
+      >
+        <div
+          className={`w-full h-full border rounded-[2.5rem] transition-all duration-200 ${
             isFadingOut ? 'border-transparent' : 'border-white'
-          }`}></div>
+          }`}
+        >
+          {/* Status Bar / Header */}
+          <div
+            className={`h-12 mb-4 transition-all duration-200 ${
+              isFadingOut ? 'border-b-transparent' : 'border-b border-white'
+            }`}
+          >
+            {/* Dynamic Island */}
+            <div
+              className={`absolute top-6 left-1/2 transform -translate-x-1/2 w-32 h-4 border rounded-full transition-all duration-200 ${
+                isFadingOut ? 'border-transparent' : 'border-white'
+              }`}
+            ></div>
           </div>
 
           {/* Content Area */}
@@ -84,7 +94,9 @@ export default function PromoPage() {
                           : ''
                       }`}
                     >
-                      <div className="text-xs text-white mb-1 max-w-xs text-right">user</div>
+                      <div className="text-xs text-white mb-1 max-w-xs text-right">
+                        user
+                      </div>
                       <div className="p-3 border border-white text-white rounded-l-lg rounded-t-lg">
                         {message}
                       </div>
@@ -95,16 +107,24 @@ export default function PromoPage() {
             </div>
 
             {/* Text Input Mock */}
-            <div className={`flex items-center h-12 border rounded-lg w-full px-3 transition-all duration-200 ${
-              isFadingOut ? 'border-transparent' : 'border-white'
-            }`}>
-              <span className={`flex-1 transition-all duration-200 ${
-                isFadingOut ? 'text-transparent' : 'text-white'
-              }`}>{typedText}</span>
-              <div className={`w-8 h-8 border rounded-full flex items-center justify-center transition-all duration-200 ${
+            <div
+              className={`flex items-center h-12 border rounded-lg w-full px-3 transition-all duration-200 ${
                 isFadingOut ? 'border-transparent' : 'border-white'
-              }`}>
-              <CornerRightUp
+              }`}
+            >
+              <span
+                className={`flex-1 transition-all duration-200 ${
+                  isFadingOut ? 'text-transparent' : 'text-white'
+                }`}
+              >
+                {typedText}
+              </span>
+              <div
+                className={`w-8 h-8 border rounded-full flex items-center justify-center transition-all duration-200 ${
+                  isFadingOut ? 'border-transparent' : 'border-white'
+                }`}
+              >
+                <CornerRightUp
                   size={16}
                   className={`transition-all duration-200 ${
                     isFadingOut ? 'text-transparent' : 'text-white'
@@ -115,7 +135,7 @@ export default function PromoPage() {
                 />
               </div>
             </div>
-          </div> 
+          </div>
         </div>
       </div>
     </div>
