@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { useAddToWaitlist } from '../../hooks/useAddToWaitlist';
 
 /**
  * Waitlist Form Component
@@ -12,14 +13,20 @@ export function WaitlistForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<{ email: string }>();
 
-  const onSubmit = (data: { email: string }) => {
-    console.log('Waitlist submission:', data);
-    // TODO: Implement actual submission logic
-    reset();
+  const { addToWaitlist, isLoading } = useAddToWaitlist();
+
+  const onSubmit = async (data: { email: string }) => {
+    try {
+      await addToWaitlist(data.email);
+      reset();
+    } catch (error) {
+      // Error handling is done by the hook - no need to handle here
+      console.error('Failed to add to waitlist:', error);
+    }
   };
 
   return (
@@ -52,10 +59,10 @@ export function WaitlistForm() {
 
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isLoading}
           className="mono-text w-full px-8 py-3 bg-black text-white font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? 'Joining...' : 'Join waitlist'}
+          {isLoading ? 'Joining...' : 'Join waitlist'}
         </button>
       </div>
     </form>

@@ -158,12 +158,12 @@ export const addToWaitlist = onCall(
 );
 
 /**
- * Sends a confirmation email to users who join the waitlist
- * @param recipientEmail - The email address of the recipient
+ * Sends a notification email to admins when someone joins the waitlist
+ * @param signupEmail - The email address of the person who signed up
  * @returns Promise indicating success or failure of sending the email
  */
 async function sendWaitlistConfirmationEmail(
-  recipientEmail: string
+  signupEmail: string
 ): Promise<void> {
   try {
     // Check for SendGrid API key presence
@@ -178,15 +178,13 @@ async function sendWaitlistConfirmationEmail(
 
     // Create the email message with named parameters
     const msg = {
-      to: recipientEmail,
+      to: ['joshua@gomantic.com', 'ag4text@gmail.com'],
       from: 'joshua@aviator.cx', // Use your verified sender
-      subject: 'Aviator Waitlist Confirmation',
-      text: `Aviator is coming soon\n\nThank you for joining our waitlist. We'll keep you updated on our progress.\n\nFrom the Founders of Aviator,\nJoshua & Alex`,
+      subject: 'New Waitlist Signup',
+      text: `New waitlist sign up: ${signupEmail}`,
       html: `
         <div style="text-align: left; font-family: Arial, sans-serif;">
-          <h1 style="font-size: 24px; font-weight: bold; margin: 0 0 16px 0;">Aviator is coming soon</h1>
-          <p style="margin: 0 0 16px 0;">Thank you for joining our waitlist. We'll keep you updated on our progress.</p>
-          <p style="margin: 0;">From the Founders of Aviator,<br/>Joshua & Alex</p>
+          <p style="margin: 0;">New waitlist sign up: <strong>${signupEmail}</strong></p>
         </div>
       `,
     };
@@ -201,10 +199,10 @@ async function sendWaitlistConfirmationEmail(
     });
 
     await Promise.race([emailPromise, timeoutPromise]);
-    console.log(`Waitlist confirmation email sent to: ${recipientEmail}`);
+    console.log(`Waitlist notification email sent for signup: ${signupEmail}`);
   } catch (error: unknown) {
     const sendgridError = error as { code?: number; message?: string };
-    console.error('Error sending waitlist confirmation email:', sendgridError);
+    console.error('Error sending waitlist notification email:', sendgridError);
 
     // Log specific error types for better debugging
     if (sendgridError.code === 401 || sendgridError.code === 403) {

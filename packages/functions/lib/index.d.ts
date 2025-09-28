@@ -1,4 +1,3 @@
 import { addToWaitlist } from './waitlist.js';
-import { xBotScore } from './x-bot-score.js';
-export { addToWaitlist, xBotScore };
+export { addToWaitlist };
 //# sourceMappingURL=index.d.ts.map

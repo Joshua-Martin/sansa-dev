@@ -4,7 +4,6 @@
  * Main landing page for the application showcasing key features and value proposition.
  */
 import { Nav } from '../components/nav';
-import { MiddleSeparator } from '../components/middle-separator';
 import { DarkSection } from '../components/dark-section';
 import { HeroSection } from '../components/sections/hero-section';
 import { BottomSection } from '../components/sections/bottom-section';
@@ -49,6 +48,15 @@ export default function Home() {
         accentOpacity={ACCENT_OPACITY}
         leftPercent={leftPercent}
         rightPercent={rightPercent}
+        gridTemplateColumns={gridTemplateColumns24}
+        leftLine={LEFT_LINE}
+        rightLine={RIGHT_LINE}
+      />
+            <ThinSeparatorSection
+        gridColumns={GRID_COLUMNS}
+        accentPositionPercent={ACCENT_POSITION_PERCENT}
+        accentStrokeWidthPx={ACCENT_STROKE_WIDTH_PX}
+        accentOpacity={ACCENT_OPACITY}
         gridTemplateColumns={gridTemplateColumns24}
         leftLine={LEFT_LINE}
         rightLine={RIGHT_LINE}

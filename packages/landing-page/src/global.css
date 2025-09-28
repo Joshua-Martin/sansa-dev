@@ -159,7 +159,7 @@ html {
 
 /*
  * Selected card shadow with subtle shadows on all four sides
- * 
+ *
  * Creates a toned down shadow effect for selected or highlighted cards.
  * Applied to all four sides with reduced opacity for a gentle highlight effect.
  */
@@ -169,4 +169,25 @@ html {
     /* Left shadow */ 6px 0 12px -3px rgba(0, 0, 0, 0.15),
     /* Right shadow */ 0 -6px 12px -3px rgba(0, 0, 0, 0.15),
     /* Top shadow */ 0 6px 12px -3px rgba(0, 0, 0, 0.15); /* Bottom shadow */
+}
+
+/*
+ * Message bubble fade-in and up animation
+ *
+ * Starts with the entire message container (user label + bubble) positioned below and faded out,
+ * then animates up to final position and full opacity
+ */
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
 }

@@ -23,8 +23,8 @@ export function BottomSection({
   rightLine,
 }: BottomSectionProps) {
   return (
-    <div className="relative bg-background text-gray-900 border-b border-accent-border">
-      <div className="relative w-full py-20">
+    <div className="relative bg-background border-t border-accent-border">
+      <div className="relative w-full">
         <div className="grid w-full" style={gridTemplateColumns}>
           {/* Left side */}
           <div
@@ -37,7 +37,9 @@ export function BottomSection({
             style={{ gridColumn: `${leftLine} / ${rightLine}` }}
             className="bg-background flex items-center justify-center border-r border-accent-border"
           >
+            <div className="mx-10 w-full border-x border-accent-border">
             <HowItWorksAnimation />
+            </div>
           </div>
 
           {/* Right side */}

@@ -562,8 +562,8 @@ const HowItWorksAnimation: React.FC = () => {
   return (
     <div className="w-full h-full bg-background flex items-center justify-center">
       <div ref={rootRef} className="relative w-full h-full">
-        <div className="absolute inset-0 rounded-3xl overflow-hidden border-1 border-gray-100/50 bg-gray-50">
-          <div className="absolute inset-2 rounded-2xl overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden border-1 border-gray-100/50 bg-gray-50/50">
+          <div className="absolute inset-2 overflow-hidden">
             <DotsBg color="#cccccc70" />
           </div>
         </div>
@@ -647,7 +647,7 @@ const HowItWorksAnimation: React.FC = () => {
 
         <div
           ref={rowRef}
-          className="relative h-full min-h-[300px] sm:min-h-[350px] md:min-h-[400px] xl:min-h-[400px] flex items-center justify-between px-4 sm:px-6 md:px-8 xl:px-8 gap-4 sm:gap-6 md:gap-8 xl:gap-8"
+          className="relative h-full min-h-[300px] sm:min-h-[350px] md:min-h-[400px] xl:min-h-[400px] flex items-center justify-between px-4 sm:px-6 md:px-14 gap-4 sm:gap-6 md:gap-8 xl:gap-8"
         >
           {/* B2B SaaS Application */}
           <div ref={saasColumnRef} className="flex-shrink-0 self-center">
