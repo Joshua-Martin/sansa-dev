@@ -21,3 +21,6 @@ const analytics = getAnalytics(app);
 const functions = getFunctions(app);
 
 export { analytics, functions };
+
+
+

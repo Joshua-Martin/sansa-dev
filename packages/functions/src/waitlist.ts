@@ -52,8 +52,8 @@ export const addToWaitlist = onCall(
         throw new Error('Invalid email format');
       }
 
-      // Get Firestore instance for the 'aviator' database
-      const db = getFirestore('aviator');
+      // Get Firestore instance for the 'sansa-ml' database
+      const db = getFirestore('sansa-ml');
 
       // Reference to waitlist collection
       const waitlistRef = db.collection('waitlist');
@@ -84,19 +84,7 @@ export const addToWaitlist = onCall(
         const firestoreError = error as FirestoreError;
         console.error('Firestore set operation failed:', firestoreError);
 
-        if (firestoreError.code === FirestoreErrorCode.NOT_FOUND) {
-          throw new Error(
-            'Unable to access waitlist collection. Database path may not exist.'
-          );
-        } else if (
-          firestoreError.code === FirestoreErrorCode.PERMISSION_DENIED
-        ) {
-          throw new Error('Permission denied when accessing the database.');
-        } else {
-          throw new Error(
-            `Database error: ${firestoreError.message || 'Unknown database error'}`
-          );
-        }
+        throw new Error('Service is currently unavailable. Please try again later.');
       }
 
       // Send confirmation email only if we created a new entry
@@ -121,38 +109,12 @@ export const addToWaitlist = onCall(
       const firestoreError = error as FirestoreError;
       console.error('Error adding to waitlist:', firestoreError);
 
-      // Enhanced error handling with more specific error messages
-      if (firestoreError.code === FirestoreErrorCode.NOT_FOUND) {
-        return {
-          success: false,
-          message:
-            'Unable to access waitlist database. Please contact support.',
-          error: 'DATABASE_NOT_FOUND',
-        };
-      } else if (firestoreError.code === FirestoreErrorCode.PERMISSION_DENIED) {
-        return {
-          success: false,
-          message:
-            'Permission denied when accessing the database. Please contact support.',
-          error: 'PERMISSION_DENIED',
-        };
-      } else if (firestoreError.code === FirestoreErrorCode.UNAVAILABLE) {
-        return {
-          success: false,
-          message:
-            'Database service is currently unavailable. Please try again later.',
-          error: 'SERVICE_UNAVAILABLE',
-        };
-      } else {
-        return {
-          success: false,
-          message:
-            firestoreError instanceof Error
-              ? firestoreError.message
-              : 'Failed to add email to waitlist',
-          error: 'UNKNOWN_ERROR',
-        };
-      }
+      // Return generic service unavailable message for all errors
+      return {
+        success: false,
+        message: 'Service is currently unavailable. Please try again later.',
+        error: 'SERVICE_UNAVAILABLE',
+      };
     }
   }
 );
@@ -178,8 +140,8 @@ async function sendWaitlistConfirmationEmail(
 
     // Create the email message with named parameters
     const msg = {
-      to: ['joshua@gomantic.com', 'ag4text@gmail.com'],
-      from: 'joshua@aviator.cx', // Use your verified sender
+      to: ['joshuabenjaminm@gmail.com', 'ag4text@gmail.com'],
+      from: 'noreply@sansaml.com', // Use your verified sender
       subject: 'New Waitlist Signup',
       text: `New waitlist sign up: ${signupEmail}`,
       html: `
