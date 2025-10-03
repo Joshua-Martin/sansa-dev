@@ -28,7 +28,7 @@ interface FirestoreError extends Error {
 
 /**
  * Function to add an email to the waitlist
- * @param data - The request data containing email
+ * @param data - The request data containing email and optional company name
  * @returns Promise with success message or error
  */
 export const addToWaitlist = onCall(
@@ -46,6 +46,7 @@ export const addToWaitlist = onCall(
       }
 
       const email = request.data.email;
+      const company = request.data.company || null; // Optional company name
 
       // Validate email format
       if (!validateEmail(email)) {
@@ -67,13 +68,21 @@ export const addToWaitlist = onCall(
         if (!docSnap.exists) {
           // Firestore doc ID is already the email string; we store it again for redundancy and
           // use `merge: true` so repeated calls won’t overwrite future schema additions.
-          await docRef.set(
-            {
-              email,
-              timestamp: new Date().toISOString(),
-            },
-            { merge: true }
-          );
+          const docData: {
+            email: string;
+            timestamp: string;
+            company?: string | null;
+          } = {
+            email,
+            timestamp: new Date().toISOString(),
+          };
+
+          // Only include company if provided
+          if (company !== null) {
+            docData.company = company;
+          }
+
+          await docRef.set(docData, { merge: true });
           createdNew = true;
         } else {
           console.log(
@@ -84,13 +93,15 @@ export const addToWaitlist = onCall(
         const firestoreError = error as FirestoreError;
         console.error('Firestore set operation failed:', firestoreError);
 
-        throw new Error('Service is currently unavailable. Please try again later.');
+        throw new Error(
+          'Service is currently unavailable. Please try again later.'
+        );
       }
 
       // Send confirmation email only if we created a new entry
       if (createdNew) {
         try {
-          await sendWaitlistConfirmationEmail(email);
+          await sendWaitlistConfirmationEmail(email, company);
         } catch (emailError) {
           // Log the error but don't fail the whole operation
           console.error(
@@ -122,10 +133,12 @@ export const addToWaitlist = onCall(
 /**
  * Sends a notification email to admins when someone joins the waitlist
  * @param signupEmail - The email address of the person who signed up
+ * @param company - The optional company name of the person who signed up
  * @returns Promise indicating success or failure of sending the email
  */
 async function sendWaitlistConfirmationEmail(
-  signupEmail: string
+  signupEmail: string,
+  company: string | null
 ): Promise<void> {
   try {
     // Check for SendGrid API key presence
@@ -143,10 +156,10 @@ async function sendWaitlistConfirmationEmail(
       to: ['joshuabenjaminm@gmail.com', 'ag4text@gmail.com'],
       from: 'noreply@sansaml.com', // Use your verified sender
       subject: 'New Waitlist Signup',
-      text: `New waitlist sign up: ${signupEmail}`,
+      text: `New waitlist sign up: ${signupEmail}${company ? ` (${company})` : ''}`,
       html: `
         <div style="text-align: left; font-family: Arial, sans-serif;">
-          <p style="margin: 0;">New waitlist sign up: <strong>${signupEmail}</strong></p>
+          <p style="margin: 0;">New waitlist sign up: <strong>${signupEmail}</strong>${company ? ` from <strong>${company}</strong>` : ''}</p>
         </div>
       `,
     };
