@@ -1,15 +1,42 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '../../../components/common/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '../../../components/common/card';
 import PageTitle from '../../../components/custom/ui/page-title';
 import { Button } from '../../../components/common/button';
 import { Badge } from '../../../components/common/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components/common/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components/common/tabs';
-import { Calendar, Clock, Zap, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../../../components/common/table';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '../../../components/common/tabs';
+import {
+  Calendar,
+  Clock,
+  Zap,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+} from 'lucide-react';
 import { authApi } from '../../../lib/auth/auth.api';
-import type { LLMApiCallRecord, MonitoringStats } from '../../../lib/auth/auth.api';
+import type {
+  LLMApiCallRecord,
+  MonitoringStats,
+} from '../../../lib/auth/auth.api';
 import { useToast } from '../../../components/common/use-toast';
 
 /**
@@ -21,7 +48,9 @@ const MonitoringPage: React.FC = () => {
   const [records, setRecords] = useState<LLMApiCallRecord[]>([]);
   const [stats, setStats] = useState<MonitoringStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedRecord, setSelectedRecord] = useState<LLMApiCallRecord | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<LLMApiCallRecord | null>(
+    null
+  );
   const { toast } = useToast();
 
   // Load data on component mount
@@ -39,7 +68,7 @@ const MonitoringPage: React.FC = () => {
 
       setRecords(recordsData);
       setStats(statsData);
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
         description: 'Failed to load monitoring data',
@@ -105,48 +134,59 @@ const MonitoringPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Calls</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Total Calls
+                  </CardTitle>
                   <Zap className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stats.totalCalls.toLocaleString()}</div>
+                  <div className="text-2xl font-bold">
+                    {(stats.totalCalls || 0).toLocaleString()}
+                  </div>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Success Rate
+                  </CardTitle>
                   <CheckCircle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {stats.totalCalls > 0
-                      ? `${((stats.successfulCalls / stats.totalCalls) * 100).toFixed(1)}%`
-                      : '0%'
-                    }
+                    {(stats.totalCalls || 0) > 0
+                      ? `${(((stats.successfulCalls || 0) / (stats.totalCalls || 1)) * 100).toFixed(1)}%`
+                      : '0%'}
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Avg Response Time</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Avg Response Time
+                  </CardTitle>
                   <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {formatDuration(stats.avgDurationMs)}
+                    {formatDuration(stats.avgDurationMs || null)}
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Tokens</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Total Tokens
+                  </CardTitle>
                   <AlertCircle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stats.totalTokens.toLocaleString()}</div>
+                  <div className="text-2xl font-bold">
+                    {(stats.totalTokens || 0).toLocaleString()}
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -169,7 +209,9 @@ const MonitoringPage: React.FC = () => {
                     <div className="text-center py-8 text-muted-foreground">
                       <Zap className="h-12 w-12 mx-auto mb-4 opacity-50" />
                       <p>No API calls recorded yet.</p>
-                      <p className="text-sm">Start using Sansa-X to see your monitoring data here.</p>
+                      <p className="text-sm">
+                        Start using Sansa-X to see your monitoring data here.
+                      </p>
                     </div>
                   ) : (
                     <div className="space-y-4">
@@ -197,7 +239,9 @@ const MonitoringPage: React.FC = () => {
                               </TableCell>
                               <TableCell>
                                 <div>
-                                  <div className="font-medium">{record.name}</div>
+                                  <div className="font-medium">
+                                    {record.name}
+                                  </div>
                                   <div className="text-sm text-muted-foreground">
                                     v{record.promptVersion}
                                   </div>
@@ -205,13 +249,22 @@ const MonitoringPage: React.FC = () => {
                               </TableCell>
                               <TableCell>{record.model}</TableCell>
                               <TableCell>
-                                <Badge variant="outline">{record.provider}</Badge>
+                                <Badge variant="outline">
+                                  {record.provider}
+                                </Badge>
                               </TableCell>
-                              <TableCell>{formatDuration(record.durationMs)}</TableCell>
                               <TableCell>
-                                {(record.inputTokenCount + record.outputTokenCount).toLocaleString()}
+                                {formatDuration(record.durationMs)}
                               </TableCell>
-                              <TableCell>{formatDate(record.requestTimestamp)}</TableCell>
+                              <TableCell>
+                                {(
+                                  record.inputTokenCount +
+                                  record.outputTokenCount
+                                ).toLocaleString()}
+                              </TableCell>
+                              <TableCell>
+                                {formatDate(record.requestTimestamp)}
+                              </TableCell>
                               <TableCell>
                                 <Button
                                   variant="ghost"
@@ -240,7 +293,9 @@ const MonitoringPage: React.FC = () => {
                   <div className="text-center py-8 text-muted-foreground">
                     <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>Advanced analytics coming soon.</p>
-                    <p className="text-sm">Charts and graphs for deeper insights into your LLM usage.</p>
+                    <p className="text-sm">
+                      Charts and graphs for deeper insights into your LLM usage.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
@@ -266,51 +321,76 @@ const MonitoringPage: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Call ID</label>
+                        <label className="text-sm font-medium text-muted-foreground">
+                          Call ID
+                        </label>
                         <p className="font-mono text-sm">{selectedRecord.id}</p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Name</label>
+                        <label className="text-sm font-medium text-muted-foreground">
+                          Name
+                        </label>
                         <p>{selectedRecord.name}</p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Prompt Version</label>
+                        <label className="text-sm font-medium text-muted-foreground">
+                          Prompt Version
+                        </label>
                         <p>{selectedRecord.promptVersion}</p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Model</label>
+                        <label className="text-sm font-medium text-muted-foreground">
+                          Model
+                        </label>
                         <p>{selectedRecord.model}</p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Provider</label>
+                        <label className="text-sm font-medium text-muted-foreground">
+                          Provider
+                        </label>
                         <p>{selectedRecord.provider}</p>
                       </div>
                     </div>
 
                     <div className="space-y-4">
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Status</label>
+                        <label className="text-sm font-medium text-muted-foreground">
+                          Status
+                        </label>
                         <div className="flex items-center gap-2 mt-1">
                           {getStatusIcon(selectedRecord)}
                           {getStatusBadge(selectedRecord)}
                         </div>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Duration</label>
+                        <label className="text-sm font-medium text-muted-foreground">
+                          Duration
+                        </label>
                         <p>{formatDuration(selectedRecord.durationMs)}</p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Tokens</label>
+                        <label className="text-sm font-medium text-muted-foreground">
+                          Tokens
+                        </label>
                         <p>
-                          Input: {selectedRecord.inputTokenCount?.toLocaleString() || 0}, Output: {selectedRecord.outputTokenCount?.toLocaleString() || 0}
+                          Input:{' '}
+                          {selectedRecord.inputTokenCount?.toLocaleString() ||
+                            0}
+                          , Output:{' '}
+                          {selectedRecord.outputTokenCount?.toLocaleString() ||
+                            0}
                         </p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Request Time</label>
+                        <label className="text-sm font-medium text-muted-foreground">
+                          Request Time
+                        </label>
                         <p>{formatDate(selectedRecord.requestTimestamp)}</p>
                       </div>
                       <div>
-                        <label className="text-sm font-medium text-muted-foreground">Response Time</label>
+                        <label className="text-sm font-medium text-muted-foreground">
+                          Response Time
+                        </label>
                         <p>{formatDate(selectedRecord.responseTimestamp)}</p>
                       </div>
                     </div>
@@ -318,7 +398,9 @@ const MonitoringPage: React.FC = () => {
 
                   {selectedRecord.error && (
                     <div className="mt-6">
-                      <label className="text-sm font-medium text-muted-foreground">Error</label>
+                      <label className="text-sm font-medium text-muted-foreground">
+                        Error
+                      </label>
                       <div className="mt-2 p-4 bg-red-50 dark:bg-red-900/10 rounded-lg">
                         <pre className="text-sm text-red-700 dark:text-red-300 whitespace-pre-wrap">
                           {JSON.stringify(selectedRecord.error, null, 2)}
@@ -329,9 +411,13 @@ const MonitoringPage: React.FC = () => {
 
                   {selectedRecord.response && (
                     <div className="mt-6">
-                      <label className="text-sm font-medium text-muted-foreground">Response</label>
+                      <label className="text-sm font-medium text-muted-foreground">
+                        Response
+                      </label>
                       <div className="mt-2 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg max-h-60 overflow-y-auto">
-                        <pre className="text-sm whitespace-pre-wrap">{selectedRecord.response}</pre>
+                        <pre className="text-sm whitespace-pre-wrap">
+                          {selectedRecord.response}
+                        </pre>
                       </div>
                     </div>
                   )}

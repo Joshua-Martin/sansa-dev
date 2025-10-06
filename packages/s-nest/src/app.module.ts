@@ -11,9 +11,9 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { AuthModule } from './modules/auth/auth.module';
 import { ChatAgentModule } from './modules/chat-agent/chat-agent.module';
 import { SansaXModule } from './modules/sansa-x/sansa-x.module';
-import { JwtAuthGuard } from './shared/guards/jwt-auth.guard'; 
+import { JwtAuthGuard } from './shared/guards/jwt-auth.guard';
 import { RbacGuard } from './shared/guards/rbac.guard';
- 
+
 /**
  * Root module of the application that imports and configures all other modules
  *

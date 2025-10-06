@@ -21,7 +21,10 @@ import {
 } from '@nestjs/swagger';
 import { AuthService } from '../../shared/auth/auth.service';
 import { UserService } from '../../shared/database/services/user.service';
-import { ApiKeyService, CreateApiKeyParams } from '../../shared/database/services/api-key.service';
+import {
+  ApiKeyService,
+  CreateApiKeyParams,
+} from '../../shared/database/services/api-key.service';
 import { LLMApiCallRecordService } from '../../shared/database/services/llm-api-call-record.service';
 import {
   SignUpRequest,
@@ -29,6 +32,9 @@ import {
   AuthResponse,
   UserProfileResponse,
   UpdateUserParams,
+  CreateApiKeyRequest,
+  ApiKeyResponse,
+  ApiKeyListItem,
 } from '@sansa-dev/s-shared';
 import {
   JwtAuthGuard,
@@ -439,7 +445,8 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Create a new API key for Sansa-X integration',
-    description: 'Creates a secure API key that can be used by Sansa-X clients to send monitoring data',
+    description:
+      'Creates a secure API key that can be used by Sansa-X clients to send monitoring data',
   })
   @ApiBody({ type: ApiCreateApiKeyRequest })
   @ApiResponse({
@@ -457,14 +464,16 @@ export class AuthController {
   })
   async createApiKey(
     @Req() request: AuthenticatedRequest,
-    @Body() createRequest: { name: string; expiresAt?: string },
-  ): Promise<any> {
+    @Body() createRequest: CreateApiKeyRequest,
+  ): Promise<ApiKeyResponse> {
     this.logger.log(`Creating API key for user: ${request.user.userId}`);
 
     const params: CreateApiKeyParams = {
       userId: request.user.userId,
       name: createRequest.name,
-      expiresAt: createRequest.expiresAt ? new Date(createRequest.expiresAt) : undefined,
+      expiresAt: createRequest.expiresAt
+        ? new Date(createRequest.expiresAt)
+        : undefined,
     };
 
     const apiKey = await this.apiKeyService.createApiKey(params);
@@ -479,14 +488,15 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Get all API keys for the current user',
-    description: 'Retrieves a list of all API keys associated with the authenticated user',
+    description:
+      'Retrieves a list of all API keys associated with the authenticated user',
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'API keys retrieved successfully',
     type: [ApiApiKeyListResponse],
   })
-  async getApiKeys(@Req() request: AuthenticatedRequest): Promise<any[]> {
+  async getApiKeys(@Req() request: AuthenticatedRequest): Promise<ApiKeyListItem[]> {
     return this.apiKeyService.getUserApiKeys(request.user.userId);
   }
 
@@ -560,7 +570,8 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Get LLM API call records for the current user',
-    description: 'Retrieves paginated list of LLM API call records for monitoring and analytics',
+    description:
+      'Retrieves paginated list of LLM API call records for monitoring and analytics',
   })
   @ApiResponse({
     status: HttpStatus.OK,

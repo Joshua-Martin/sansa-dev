@@ -8,36 +8,10 @@ import type {
   TokenResponse,
   MessageResponse,
   UserStats,
+  CreateApiKeyRequest,
+  ApiKeyResponse,
+  ApiKeyListItem,
 } from '@sansa-dev/s-shared';
-
-// API Key types
-export interface CreateApiKeyRequest {
-  name: string;
-  expiresAt?: string;
-}
-
-export interface ApiKeyResponse {
-  id: string;
-  name: string;
-  key: string; // Only shown on creation
-  isActive: boolean;
-  expiresAt: Date | null;
-  lastUsedAt: Date | null;
-  lastUsedIp: string | null;
-  requestCount: number;
-  createdAt: Date;
-}
-
-export interface ApiKeyListResponse {
-  id: string;
-  name: string;
-  isActive: boolean;
-  expiresAt: Date | null;
-  lastUsedAt: Date | null;
-  lastUsedIp: string | null;
-  requestCount: number;
-  createdAt: Date;
-}
 
 // Monitoring types
 export interface LLMApiCallRecord {
@@ -275,8 +249,13 @@ export class AuthApi {
    * @throws BadRequestException if validation fails
    * @throws ConflictException if API key name already exists
    */
-  static async createApiKey(createRequest: CreateApiKeyRequest): Promise<ApiKeyResponse> {
-    return api.post<ApiKeyResponse>(this.AUTH_ENDPOINTS.API_KEYS, createRequest);
+  static async createApiKey(
+    createRequest: CreateApiKeyRequest
+  ): Promise<ApiKeyResponse> {
+    return api.post<ApiKeyResponse>(
+      this.AUTH_ENDPOINTS.API_KEYS,
+      createRequest
+    );
   }
 
   /**
@@ -285,8 +264,8 @@ export class AuthApi {
    * @returns Promise resolving to array of API keys
    * @throws UnauthorizedException if not authenticated
    */
-  static async getApiKeys(): Promise<ApiKeyListResponse[]> {
-    return api.get<ApiKeyListResponse[]>(this.AUTH_ENDPOINTS.API_KEYS);
+  static async getApiKeys(): Promise<ApiKeyListItem[]> {
+    return api.get<ApiKeyListItem[]>(this.AUTH_ENDPOINTS.API_KEYS);
   }
 
   /**
@@ -299,7 +278,9 @@ export class AuthApi {
    * @throws BadRequestException if API key doesn't belong to user
    */
   static async deactivateApiKey(apiKeyId: string): Promise<MessageResponse> {
-    return api.put<MessageResponse>(`${this.AUTH_ENDPOINTS.API_KEYS}/${apiKeyId}/deactivate`);
+    return api.put<MessageResponse>(
+      `${this.AUTH_ENDPOINTS.API_KEYS}/${apiKeyId}/deactivate`
+    );
   }
 
   /**
@@ -312,7 +293,9 @@ export class AuthApi {
    * @throws BadRequestException if API key doesn't belong to user
    */
   static async deleteApiKey(apiKeyId: string): Promise<MessageResponse> {
-    return api.delete<MessageResponse>(`${this.AUTH_ENDPOINTS.API_KEYS}/${apiKeyId}`);
+    return api.delete<MessageResponse>(
+      `${this.AUTH_ENDPOINTS.API_KEYS}/${apiKeyId}`
+    );
   }
 
   /**
@@ -322,17 +305,22 @@ export class AuthApi {
    * @returns Promise resolving to array of LLM API call records
    * @throws UnauthorizedException if not authenticated
    */
-  static async getMonitoringRecords(options: GetRecordsOptions = {}): Promise<LLMApiCallRecord[]> {
+  static async getMonitoringRecords(
+    options: GetRecordsOptions = {}
+  ): Promise<LLMApiCallRecord[]> {
     const params = new URLSearchParams();
 
     if (options.limit) params.append('limit', options.limit.toString());
     if (options.offset) params.append('offset', options.offset.toString());
-    if (options.startDate) params.append('startDate', options.startDate.toISOString());
-    if (options.endDate) params.append('endDate', options.endDate.toISOString());
+    if (options.startDate)
+      params.append('startDate', options.startDate.toISOString());
+    if (options.endDate)
+      params.append('endDate', options.endDate.toISOString());
     if (options.model) params.append('model', options.model);
     if (options.provider) params.append('provider', options.provider);
     if (options.name) params.append('name', options.name);
-    if (options.promptVersion) params.append('promptVersion', options.promptVersion);
+    if (options.promptVersion)
+      params.append('promptVersion', options.promptVersion);
 
     const queryString = params.toString();
     const url = queryString
@@ -352,7 +340,7 @@ export class AuthApi {
    */
   static async getMonitoringStats(
     startDate?: Date,
-    endDate?: Date,
+    endDate?: Date
   ): Promise<MonitoringStats> {
     const params = new URLSearchParams();
 

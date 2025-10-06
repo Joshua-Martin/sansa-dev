@@ -9,29 +9,15 @@ import { Repository } from 'typeorm';
 import * as crypto from 'crypto';
 import { ApiKey } from '../entities/api-key.entity';
 import { User } from '../entities/user.entity';
+import type { CreateApiKeyRequest, ApiKeyResponse, ApiKeyListItem } from '@sansa-dev/s-shared';
 
 /**
- * Parameters for creating an API key
+ * Parameters for creating an API key (internal use)
  */
 export interface CreateApiKeyParams {
   userId: string;
   name: string;
   expiresAt?: Date;
-}
-
-/**
- * API key response data
- */
-export interface ApiKeyResponse {
-  id: string;
-  name: string;
-  key: string; // Only shown on creation
-  isActive: boolean;
-  expiresAt: Date | null;
-  lastUsedAt: Date | null;
-  lastUsedIp: string | null;
-  requestCount: number;
-  createdAt: Date;
 }
 
 /**
@@ -148,7 +134,7 @@ export class ApiKeyService {
    * @param userId - User ID
    * @returns Array of API keys (without the secret key)
    */
-  async getUserApiKeys(userId: string): Promise<Omit<ApiKeyResponse, 'key'>[]> {
+  async getUserApiKeys(userId: string): Promise<ApiKeyListItem[]> {
     const apiKeys = await this.apiKeyRepository.find({
       where: { user: { id: userId } },
       order: { createdAt: 'DESC' },
@@ -220,10 +206,10 @@ export class ApiKeyService {
   /**
    * Generate a secure API key
    *
-   * @returns A cryptographically secure API key
+   * @returns A cryptographically secure API key using hex encoding (URL-safe)
    */
   private generateApiKey(): string {
-    // Generate a 32-byte random key and encode as base64
-    return crypto.randomBytes(32).toString('base64');
+    // Generate a 32-byte random key and encode as hex for URL safety
+    return crypto.randomBytes(32).toString('hex');
   }
 }

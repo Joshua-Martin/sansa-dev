@@ -4,14 +4,22 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '../../common/button';
 import { Input } from '../../common/input';
 import { Label } from '../../common/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../common/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+  DialogDescription,
+} from '../../common/dialog';
 import { Alert, AlertDescription } from '../../common/alert';
 import { Badge } from '../../common/badge';
 import { CopyButton } from '../../common/copy-button';
 import { Trash2, Plus, Eye, EyeOff } from 'lucide-react';
 import { authApi } from '../../../lib/auth/auth.api';
-import type { ApiKeyListResponse, ApiKeyResponse } from '../../../lib/auth/auth.api';
 import { useToast } from '../../common/use-toast';
+import type { ApiKeyListItem, ApiKeyResponse, CreateApiKeyRequest } from '@sansa-dev/s-shared';
 
 /**
  * API Keys Manager Component
@@ -19,9 +27,12 @@ import { useToast } from '../../common/use-toast';
  * Allows users to create, view, and manage their API keys for Sansa-X integration.
  */
 const ApiKeysManager: React.FC = () => {
-  const [apiKeys, setApiKeys] = useState<ApiKeyListResponse[]>([]);
+  const [apiKeys, setApiKeys] = useState<ApiKeyListItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isCreatedKeyDialogOpen, setIsCreatedKeyDialogOpen] = useState(false);
+  const [apiKeyToDelete, setApiKeyToDelete] = useState<ApiKeyListItem | null>(null);
   const [newApiKeyName, setNewApiKeyName] = useState('');
   const [createdApiKey, setCreatedApiKey] = useState<ApiKeyResponse | null>(null);
   const [showCreatedKey, setShowCreatedKey] = useState(false);
@@ -60,23 +71,25 @@ const ApiKeysManager: React.FC = () => {
 
     try {
       setIsLoading(true);
-      const createdKey = await authApi.createApiKey({
+      const createRequest: CreateApiKeyRequest = {
         name: newApiKeyName.trim(),
-      });
+      };
+      const createdKey = await authApi.createApiKey(createRequest);
 
       setCreatedApiKey(createdKey);
       setNewApiKeyName('');
       setIsCreateDialogOpen(false);
+      setIsCreatedKeyDialogOpen(true); // Open the created key dialog
       await loadApiKeys(); // Refresh the list
 
       toast({
         title: 'Success',
         description: 'API key created successfully',
       });
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: 'Error',
-        description: error?.message || 'Failed to create API key',
+        description: (error && typeof error === 'object' && 'message' in error ? error.message : 'Failed to create API key'),
         variant: 'destructive',
       });
     } finally {
@@ -94,10 +107,10 @@ const ApiKeysManager: React.FC = () => {
         title: 'Success',
         description: 'API key deactivated successfully',
       });
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: 'Error',
-        description: error?.message || 'Failed to deactivate API key',
+        description: (error && typeof error === 'object' && 'message' in error ? error.message : 'Failed to deactivate API key'),
         variant: 'destructive',
       });
     } finally {
@@ -105,28 +118,33 @@ const ApiKeysManager: React.FC = () => {
     }
   };
 
-  const handleDeleteApiKey = async (apiKeyId: string) => {
-    if (!confirm('Are you sure you want to delete this API key? This action cannot be undone.')) {
-      return;
-    }
+  const handleDeleteApiKey = (apiKey: ApiKeyListItem) => {
+    setApiKeyToDelete(apiKey);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteApiKey = async () => {
+    if (!apiKeyToDelete) return;
 
     try {
       setIsLoading(true);
-      await authApi.deleteApiKey(apiKeyId);
+      await authApi.deleteApiKey(apiKeyToDelete.id);
       await loadApiKeys(); // Refresh the list
 
       toast({
         title: 'Success',
         description: 'API key deleted successfully',
       });
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: 'Error',
-        description: error?.message || 'Failed to delete API key',
+        description: (error && typeof error === 'object' && 'message' in error ? error.message : 'Failed to delete API key'),
         variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
+      setIsDeleteDialogOpen(false);
+      setApiKeyToDelete(null);
     }
   };
 
@@ -141,140 +159,205 @@ const ApiKeysManager: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4">
-      {/* Created API Key Alert */}
-      {createdApiKey && (
-        <Alert>
-          <AlertDescription>
+    <div className="space-y-6">
+      {/* Created API Key Dialog */}
+      <Dialog open={isCreatedKeyDialogOpen} onOpenChange={setIsCreatedKeyDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-primary"></div>
+              API Key Created Successfully!
+            </DialogTitle>
+            <DialogDescription>
+              Your new API key has been created. Copy it now as it will not be shown again.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
             <div className="space-y-2">
-              <p className="font-medium">API Key Created Successfully!</p>
               <p className="text-sm">
-                <strong>Name:</strong> {createdApiKey.name}
+                <strong>Name:</strong> {createdApiKey?.name}
               </p>
               <div className="flex items-center gap-2">
-                <strong>Key:</strong>
-                <code className="bg-muted px-2 py-1 rounded text-sm">
-                  {showCreatedKey ? createdApiKey.key : '•'.repeat(32)}
+                <strong className="text-sm">Key:</strong>
+                <code className="bg-muted px-3 py-1 rounded text-sm font-mono border flex-1 min-w-0">
+                  {showCreatedKey ? createdApiKey?.key : '•'.repeat(32)}
                 </code>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowCreatedKey(!showCreatedKey)}
                 >
-                  {showCreatedKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showCreatedKey ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </Button>
-                <CopyButton text={createdApiKey.key} />
+                <CopyButton textToCopy={createdApiKey?.key || ''} />
               </div>
-              <p className="text-xs text-muted-foreground">
-                ⚠️ Copy this key now - it will not be shown again!
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCreatedApiKey(null)}
-              >
-                Dismiss
-              </Button>
+              <div className="bg-yellow-50 border border-yellow-200 rounded p-3 dark:bg-yellow-950 dark:border-yellow-800">
+                <p className="text-xs text-yellow-800 font-medium dark:text-yellow-200">
+                  ⚠️ Copy this key now - it will not be shown again!
+                </p>
+              </div>
             </div>
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {/* Create API Key Dialog */}
-      <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-        <DialogTrigger asChild>
-          <Button disabled={isLoading}>
-            <Plus className="h-4 w-4 mr-2" />
-            Create API Key
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create New API Key</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="api-key-name">API Key Name</Label>
-              <Input
-                id="api-key-name"
-                placeholder="e.g., Production App, Development, etc."
-                value={newApiKeyName}
-                onChange={(e) => setNewApiKeyName(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleCreateApiKey();
-                  }
+            <DialogFooter>
+              <Button
+                onClick={() => {
+                  setCreatedApiKey(null);
+                  setIsCreatedKeyDialogOpen(false);
+                  setShowCreatedKey(false);
                 }}
-              />
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="outline"
-                onClick={() => setIsCreateDialogOpen(false)}
-                disabled={isLoading}
               >
-                Cancel
+                I&apos;ve copied the key
               </Button>
-              <Button onClick={handleCreateApiKey} disabled={isLoading}>
-                Create
-              </Button>
-            </div>
+            </DialogFooter>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* API Keys List */}
-      <div className="space-y-2">
-        {apiKeys.length === 0 ? (
+      {/* Header with Create Button */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h4 className="text-base font-medium">Your API Keys</h4>
           <p className="text-sm text-muted-foreground">
-            No API keys found. Create your first API key to get started with Sansa-X integration.
+            Create and manage API keys for accessing Sansa-X services
           </p>
+        </div>
+        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+          <DialogTrigger asChild>
+            <Button disabled={isLoading}>
+              <Plus className="h-4 w-4 mr-2" />
+              Create API Key
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create New API Key</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="api-key-name">API Key Name</Label>
+                <Input
+                  id="api-key-name"
+                  placeholder="e.g., Production App, Development, etc."
+                  value={newApiKeyName}
+                  onChange={(e) => setNewApiKeyName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleCreateApiKey();
+                    }
+                  }}
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsCreateDialogOpen(false)}
+                  disabled={isLoading}
+                >
+                  Cancel
+                </Button>
+                <Button onClick={handleCreateApiKey} disabled={isLoading}>
+                  Create
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete API Key</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete the API key &quot;{apiKeyToDelete?.name}&quot;? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsDeleteDialogOpen(false)}
+              disabled={isLoading}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDeleteApiKey}
+              disabled={isLoading}
+            >
+              Delete API Key
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* API Keys List */}
+      <div className="space-y-3">
+        {apiKeys.length === 0 ? (
+          <div className="text-center py-8 border-2 border-dashed border-muted-foreground/25 rounded-lg">
+            <p className="text-muted-foreground mb-2">No API keys found</p>
+            <p className="text-sm text-muted-foreground">
+              Create your first API key to get started with Sansa-X integration.
+            </p>
+          </div>
         ) : (
           apiKeys.map((apiKey) => (
             <div
               key={apiKey.id}
-              className="flex items-center justify-between p-3 border rounded-lg"
+              className="border rounded-lg p-4 hover:shadow-sm transition-shadow"
             >
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">{apiKey.name}</span>
-                  <Badge variant={apiKey.isActive ? 'default' : 'secondary'}>
-                    {apiKey.isActive ? 'Active' : 'Inactive'}
-                  </Badge>
-                  {isExpired(apiKey.expiresAt) && (
-                    <Badge variant="destructive">Expired</Badge>
-                  )}
+              <div className="flex items-start justify-between">
+                <div className="space-y-2 flex-1">
+                  <div className="flex items-center gap-3">
+                    <span className="font-medium text-base">{apiKey.name}</span>
+                    <div className="flex gap-2">
+                      <Badge variant={apiKey.isActive ? 'default' : 'secondary'}>
+                        {apiKey.isActive ? 'Active' : 'Inactive'}
+                      </Badge>
+                      {isExpired(apiKey.expiresAt) && (
+                        <Badge variant="destructive">Expired</Badge>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-muted-foreground">
+                    <div>
+                      <span className="font-medium">Requests:</span> {apiKey.requestCount.toLocaleString()}
+                    </div>
+                    <div>
+                      <span className="font-medium">Last used:</span> {formatDate(apiKey.lastUsedAt)}
+                    </div>
+                    {apiKey.expiresAt && (
+                      <div>
+                        <span className="font-medium">Expires:</span> {formatDate(apiKey.expiresAt)}
+                        {isExpired(apiKey.expiresAt) && <span className="text-destructive"> (Expired)</span>}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="text-sm text-muted-foreground space-y-1">
-                  <p>Requests: {apiKey.requestCount.toLocaleString()}</p>
-                  <p>Last used: {formatDate(apiKey.lastUsedAt)}</p>
-                  {apiKey.expiresAt && (
-                    <p>
-                      Expires: {formatDate(apiKey.expiresAt)}
-                      {isExpired(apiKey.expiresAt) && ' (Expired)'}
-                    </p>
+                <div className="flex gap-2 ml-4">
+                  {apiKey.isActive && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDeactivateApiKey(apiKey.id)}
+                      disabled={isLoading}
+                    >
+                      Deactivate
+                    </Button>
                   )}
-                </div>
-              </div>
-              <div className="flex gap-2">
-                {apiKey.isActive && (
                   <Button
-                    variant="outline"
+                    variant="destructive"
                     size="sm"
-                    onClick={() => handleDeactivateApiKey(apiKey.id)}
+                    onClick={() => handleDeleteApiKey(apiKey)}
                     disabled={isLoading}
                   >
-                    Deactivate
+                    <Trash2 className="h-4 w-4" />
                   </Button>
-                )}
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleDeleteApiKey(apiKey.id)}
-                  disabled={isLoading}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                </div>
               </div>
             </div>
           ))

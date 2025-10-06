@@ -21,8 +21,6 @@ export class SansaXModule {
    * Configure middleware for API key authentication on Sansa-X endpoints
    */
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(ApiKeyMiddleware)
-      .forRoutes('sansa-x');
+    consumer.apply(ApiKeyMiddleware).forRoutes('sansa-x');
   }
 }

@@ -2,7 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LLMApiCallRecord } from '../entities/llm-api-call-record.entity';
-import { CreateLLMApiCallRecordInput, createLLMApiCallRecord } from '@sansa-dev/s-shared';
+import {
+  CreateLLMApiCallRecordInput,
+  createLLMApiCallRecord,
+} from '@sansa-dev/s-shared';
 
 /**
  * Service for managing LLM API call records
@@ -25,7 +28,9 @@ export class LLMApiCallRecordService {
    * @param input - The input data containing pre-request and post-response payloads
    * @returns The created record
    */
-  async createRecord(input: CreateLLMApiCallRecordInput): Promise<LLMApiCallRecord> {
+  async createRecord(
+    input: CreateLLMApiCallRecordInput,
+  ): Promise<LLMApiCallRecord> {
     const { appId, preRequest, postResponse } = input;
 
     // Create the record using the shared utility function
@@ -197,5 +202,4 @@ export class LLMApiCallRecordService {
 
     return result.affected || 0;
   }
-
 }

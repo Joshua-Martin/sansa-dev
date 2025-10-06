@@ -2,7 +2,13 @@
 
 import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { LayoutDashboard, User, LogOut, TestTube, Activity } from 'lucide-react';
+import {
+  LayoutDashboard,
+  User,
+  LogOut,
+  TestTube,
+  Activity,
+} from 'lucide-react';
 import { useAuth } from '../../../hooks/useAuth';
 import { Avatar, AvatarFallback } from '../../common/avatar';
 

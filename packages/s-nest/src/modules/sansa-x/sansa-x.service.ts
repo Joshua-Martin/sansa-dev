@@ -19,9 +19,7 @@ export class SansaXService {
   // In-memory storage for pre-request data (in production, use Redis/cache)
   private readonly preRequestStore = new Map<string, PreRequestPayload>();
 
-  constructor(
-    private readonly recordService: LLMApiCallRecordService,
-  ) {}
+  constructor(private readonly recordService: LLMApiCallRecordService) {}
 
   /**
    * Handle incoming pre-request payload
@@ -108,7 +106,8 @@ export class SansaXService {
         `Successfully created API call record: id=${payload.id}, appId=${appId}`,
       );
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       const errorStack = error instanceof Error ? error.stack : undefined;
 
       this.logger.error(

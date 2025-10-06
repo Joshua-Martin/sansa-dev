@@ -15,47 +15,8 @@ import {
 import { SansaXService } from './sansa-x.service';
 import { ApiKeyAuthenticatedRequest } from '../../shared/middleware/api-key.middleware';
 import { LLMApiCallRecordService } from '../../shared/database/services/llm-api-call-record.service';
-import {
-  PreRequestPayload,
-  PostResponsePayload,
-} from '@sansa-dev/s-shared';
+import { PreRequestPayload, PostResponsePayload } from '@sansa-dev/s-shared';
 
-/**
- * DTOs for API documentation
- */
-class ApiPreRequestPayload {
-  id: string;
-  name: string;
-  promptVersion: string;
-  model: string;
-  provider: string;
-  userPrompt: string;
-  systemPrompt: string;
-  timestamp: string;
-}
-
-class ApiPostResponsePayload {
-  id: string;
-  name: string;
-  promptVersion: string;
-  model: string;
-  provider: string;
-  userPrompt: string;
-  systemPrompt: string;
-  inputTokenCount: number;
-  outputTokenCount: number;
-  response?: string;
-  timestamp: string;
-  durationMs?: number;
-  error?: {
-    message: string;
-    code?: string;
-  };
-}
-
-class ApiMessageResponse {
-  message: string;
-}
 
 /**
  * Sansa-X Data Ingestion Controller
@@ -84,12 +45,18 @@ export class SansaXController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Receive pre-request data from Sansa-X client',
-    description: 'Stores pre-request data until the corresponding post-response is received',
+    description:
+      'Stores pre-request data until the corresponding post-response is received',
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Pre-request data received successfully',
-    type: ApiMessageResponse,
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
@@ -123,12 +90,18 @@ export class SansaXController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Receive post-response data from Sansa-X client',
-    description: 'Correlates post-response data with pre-request data and creates complete API call records',
+    description:
+      'Correlates post-response data with pre-request data and creates complete API call records',
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Post-response data processed successfully',
-    type: ApiMessageResponse,
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,

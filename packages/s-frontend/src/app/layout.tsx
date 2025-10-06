@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
+import { TooltipProvider } from '../components/common/tooltip';
 import './global.css';
 
 export default function RootLayout({
@@ -26,9 +27,11 @@ export default function RootLayout({
     <html lang="en">
       <body className="dark aviator-font antialiased">
         <QueryClientProvider client={queryClient}>
-          <div className="min-h-screen bg-background text-foreground">
-            {children}
-          </div>
+          <TooltipProvider>
+            <div className="min-h-screen bg-background text-foreground">
+              {children}
+            </div>
+          </TooltipProvider>
         </QueryClientProvider>
       </body>
     </html>

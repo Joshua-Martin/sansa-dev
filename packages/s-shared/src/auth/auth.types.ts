@@ -207,3 +207,40 @@ export interface SessionInfo {
   ipAddress?: string;
   userAgent?: string;
 }
+
+/**
+ * API Key creation request
+ */
+export interface CreateApiKeyRequest {
+  name: string;
+  expiresAt?: Date;
+}
+
+/**
+ * API Key response (includes the secret key - only shown on creation)
+ */
+export interface ApiKeyResponse {
+  id: string;
+  name: string;
+  key: string; // Only included in creation response
+  isActive: boolean;
+  expiresAt: Date | null;
+  lastUsedAt: Date | null;
+  lastUsedIp: string | null;
+  requestCount: number;
+  createdAt: Date;
+}
+
+/**
+ * API Key list item (without the secret key)
+ */
+export interface ApiKeyListItem {
+  id: string;
+  name: string;
+  isActive: boolean;
+  expiresAt: Date | null;
+  lastUsedAt: Date | null;
+  lastUsedIp: string | null;
+  requestCount: number;
+  createdAt: Date;
+}

@@ -37,7 +37,14 @@ import { LLMApiCallRecordService } from './services/llm-api-call-record.service'
           username: configService.get('S_POSTGRES_USERNAME', 'postgres'),
           password: configService.get('S_POSTGRES_PASSWORD', ''),
           database: configService.get('S_POSTGRES_DATABASE', 's-sansa-dev'),
-          entities: [LlmUse, LlmTotalUse, User, RefreshToken, ApiKey, LLMApiCallRecord],
+          entities: [
+            LlmUse,
+            LlmTotalUse,
+            User,
+            RefreshToken,
+            ApiKey,
+            LLMApiCallRecord,
+          ],
           synchronize:
             configService.get('NODE_ENV', 'development') !== 'production',
           logging: false,
@@ -59,9 +66,29 @@ import { LLMApiCallRecordService } from './services/llm-api-call-record.service'
         return dbConfig;
       },
     }),
-    TypeOrmModule.forFeature([LlmUse, LlmTotalUse, User, RefreshToken, ApiKey, LLMApiCallRecord]),
+    TypeOrmModule.forFeature([
+      LlmUse,
+      LlmTotalUse,
+      User,
+      RefreshToken,
+      ApiKey,
+      LLMApiCallRecord,
+    ]),
   ],
-  providers: [LlmUseService, LlmTotalUseService, UserService, ApiKeyService, LLMApiCallRecordService],
-  exports: [TypeOrmModule, LlmUseService, LlmTotalUseService, UserService, ApiKeyService, LLMApiCallRecordService],
+  providers: [
+    LlmUseService,
+    LlmTotalUseService,
+    UserService,
+    ApiKeyService,
+    LLMApiCallRecordService,
+  ],
+  exports: [
+    TypeOrmModule,
+    LlmUseService,
+    LlmTotalUseService,
+    UserService,
+    ApiKeyService,
+    LLMApiCallRecordService,
+  ],
 })
 export class DatabaseModule {}

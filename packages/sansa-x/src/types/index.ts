@@ -37,15 +37,15 @@ export interface LLMApiCallCoreData {
    */
   provider: LLMProvider;
 
-    /**
+  /**
    * The user prompt being sent to the LLM.
    */
-    userPrompt: string;
+  userPrompt: string;
 
-    /**
-     * The system prompt being used for the LLM.
-     */
-    systemPrompt: string;
+  /**
+   * The system prompt being used for the LLM.
+   */
+  systemPrompt: string;
 }
 
 /**
@@ -57,7 +57,7 @@ export type PreRequestPayload = LLMApiCallCoreData & {
    * Timestamp when the request was initiated.
    */
   timestamp: string;
-}
+};
 
 /**
  * Request payload sent after the LLM API call returns.
@@ -96,7 +96,7 @@ export type PostResponsePayload = LLMApiCallCoreData & {
     message: string;
     code?: string;
   };
-}
+};
 
 /**
  * Configuration for the Sansa-X client.
