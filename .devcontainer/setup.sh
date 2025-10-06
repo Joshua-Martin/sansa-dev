@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "Setting up development environment..."
+echo "Setting up Sansa AI Router development environment..."
 
 cd /workspace
 

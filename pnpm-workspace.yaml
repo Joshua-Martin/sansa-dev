@@ -1,9 +1,10 @@
 packages:
-  - 'packages/shared'
-  - 'packages/nest'
-  - 'packages/frontend'
-  - 'packages/landing-page'
-  - 'packages/functions'
+  - 'packages/tb-shared'
+  - 'packages/tb-frontend'
+  - 'packages/tb-nest'
+  - 'packages/s-shared'
+  - 'packages/s-frontend'
+  - 'packages/s-nest'
 
 catalog:
   # Build tools

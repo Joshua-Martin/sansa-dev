@@ -1,3 +1,6 @@
+# Sansa AI Router Development Container
+# Dockerfile for Sansa - Smart AI API Router with dual-backend architecture
+# 
 # [Choice] Node.js version (use -bullseye variants on local arm64/Apple Silicon): 20, 18, 16, 14, 20-bullseye, 18-bullseye, 16-bullseye, 14-bullseye, 20-buster, 18-buster, 16-buster, 14-buster
 # This image supports both AMD64 and ARM64 architectures
 ARG VARIANT=20-bullseye
@@ -21,7 +24,7 @@ ENV LC_ALL en_US.UTF-8
 
 COPY default.cf /usr/local/etc/isolate
 
-# Install package managers and essential tools
+# Install package managers and essential tools for Sansa monorepo
 RUN npm i -g npm@9.9.3
 RUN npm i -g pnpm@9.15.0
 RUN npm i -g cross-env@7.0.3
@@ -39,11 +42,11 @@ RUN apt-get update && apt-get install -y \
     docker-compose \
     && rm -rf /var/lib/apt/lists/*
 
-# Add container management utilities
+# Add container management utilities for running dual backend/frontend services
 RUN npm i -g pm2@5.3.0
 RUN npm i -g concurrently@8.2.0
 
-# Install Firebase CLI
+# Install Firebase CLI for deployment
 RUN npm i -g firebase-tools
 
 # Install Node.js 20.3.0 specifically using nvm

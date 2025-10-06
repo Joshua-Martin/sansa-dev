@@ -17,15 +17,17 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@sansa-dev/shared": ["./packages/shared/src"],
-      "@sansa-dev/shared/*": ["./packages/shared/src/*"]
+      "@sansa-dev/shared": ["packages/s-shared/src"],
+      "@sansa-dev/shared/*": ["packages/s-shared/src/*"]
     }
   },
   "references": [
-    { "path": "./packages/shared" },
-    { "path": "./packages/frontend" },
-    { "path": "./packages/nest" },
-    { "path": "./packages/landing-page" }
+    { "path": "./packages/tb-shared" },
+    { "path": "./packages/tb-frontend" },
+    { "path": "./packages/tb-nest" },
+    { "path": "./packages/s-shared" },
+    { "path": "./packages/s-frontend" },
+    { "path": "./packages/s-nest" }
   ],
   "include": [],
   "exclude": ["node_modules", "dist", "build", "coverage"]

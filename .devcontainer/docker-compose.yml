@@ -20,12 +20,15 @@ services:
       - ..:/workspace:cached
       - /var/run/docker.sock:/var/run/docker.sock # Docker-in-Docker support
       # Keep node_modules separate from host to prevent architecture/version conflicts
-      # Root node_modules for shared dependencies
+      # Root node_modules for monorepo shared dependencies
       - pnpm_root_node_modules:/workspace/node_modules
-      # Individual package node_modules
-      - pnpm_nest_node_modules:/workspace/packages/nest/node_modules
-      - pnpm_frontend_node_modules:/workspace/packages/frontend/node_modules
-      - pnpm_shared_node_modules:/workspace/packages/shared/node_modules
+      # Individual package node_modules for Sansa dual-backend architecture
+      - pnpm_tb_nest_node_modules:/workspace/packages/tb-nest/node_modules
+      - pnpm_tb_frontend_node_modules:/workspace/packages/tb-frontend/node_modules
+      - pnpm_tb_shared_node_modules:/workspace/packages/tb-shared/node_modules
+      - pnpm_s_nest_node_modules:/workspace/packages/s-nest/node_modules
+      - pnpm_s_frontend_node_modules:/workspace/packages/s-frontend/node_modules
+      - pnpm_s_shared_node_modules:/workspace/packages/s-shared/node_modules
 
     environment:
       # Increase Node.js memory limits
@@ -35,28 +38,38 @@ services:
       - MINIO_EXTERNAL_ENDPOINT=http://localhost:9100 # MinIO object storage (external)
       - REGISTRY_ENDPOINT=http://registry:5000 # Container registry (internal)
       - REGISTRY_EXTERNAL_ENDPOINT=http://localhost:5100 # Container registry (external)
-      # Database configuration
-      - DATABASE_HOST=db
-      - DATABASE_PORT=5432
-      - DATABASE_NAME=sansa-dev
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=A79Vm5D4p2VQHOp2gd5
-      # Redis configuration
+      # TB Backend Database Configuration
+      - TB_POSTGRES_HOST=tb-db
+      - TB_POSTGRES_PORT=5432
+      - TB_POSTGRES_DATABASE=tb-sansa-dev
+      - TB_POSTGRES_USERNAME=postgres
+      - TB_POSTGRES_PASSWORD=dev-pw
+      # S Backend Database Configuration
+      - S_POSTGRES_HOST=s-db
+      - S_POSTGRES_PORT=5432
+      - S_POSTGRES_DATABASE=s-sansa-dev
+      - S_POSTGRES_USERNAME=postgres
+      - S_POSTGRES_PASSWORD=dev-pw
+      # Redis configuration (shared across both backends)
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      # JWT configuration (shared)
+      - JWT_SECRET=dev-key
 
-    # Connect the app to the same network as db and redis
+    # Connect the app to the same network as databases and services
     networks:
       - sansa-dev
 
-    # Expose ports for development
+    # Expose ports for dual backend/frontend development
     ports:
-      - '3000:3000' # NestJS backend
-      - '4200:4200' # Vite dev server
-      # Preview container ports will be dynamically allocated by the workspace service
+      - '3000:3000' # S-Nest Backend API
+      - '3001:3001' # TB-Nest Backend API
+      - '4200:4200' # S-Frontend Dev Server
+      - '4201:4201' # TB-Frontend Dev Server
 
     depends_on:
-      - db
+      - tb-db
+      - s-db
       - redis
       - minio
       - registry
@@ -67,19 +80,35 @@ services:
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
-  db:
+  # TB Backend PostgreSQL Database
+  tb-db:
     image: postgres:14.4
     platform: linux/arm64/v8
     environment:
-      POSTGRES_DB: sansa-dev
+      POSTGRES_DB: tb-sansa-dev
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: A79Vm5D4p2VQHOp2gd5
+      POSTGRES_PASSWORD: dev-pw
     networks:
       - sansa-dev
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - tb_postgres_data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+
+  # S Backend PostgreSQL Database
+  s-db:
+    image: postgres:14.4
+    platform: linux/arm64/v8
+    environment:
+      POSTGRES_DB: s-sansa-dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dev-pw
+    networks:
+      - sansa-dev
+    volumes:
+      - s_postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
 
   redis:
     image: redis:7.0.7
@@ -132,12 +161,18 @@ services:
     privileged: true
 
 volumes:
-  postgres_data:
+  # PostgreSQL data volumes for dual-backend architecture
+  tb_postgres_data:
+  s_postgres_data:
+  # Shared service data volumes
   redis_data:
   minio_data:
   registry_data:
-  # pnpm monorepo node_modules volumes
+  # pnpm monorepo node_modules volumes for Sansa dual-backend architecture
   pnpm_root_node_modules:
-  pnpm_nest_node_modules:
-  pnpm_frontend_node_modules:
-  pnpm_shared_node_modules:
+  pnpm_tb_nest_node_modules:
+  pnpm_tb_frontend_node_modules:
+  pnpm_tb_shared_node_modules:
+  pnpm_s_nest_node_modules:
+  pnpm_s_frontend_node_modules:
+  pnpm_s_shared_node_modules:

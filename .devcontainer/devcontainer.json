@@ -1,6 +1,7 @@
-// Update the VARIANT arg in docker-compose.yml to pick a Node.js version
+// Sansa - Smart AI API Router Development Container
+// Supports dual backend architecture (TB & S) with isolated PostgreSQL databases
 {
-  "name": "Demo Agent Dev",
+  "name": "Sansa AI Router Dev",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
@@ -19,7 +20,12 @@
       ]
     }
   },
-  "forwardPorts": [3000, 5173, 5432, 9100, 9101, 5100, 8200],
+  // Port forwarding for dual backend/frontend architecture:
+  // 3000: S-Nest Backend API, 3001: TB-Nest Backend API
+  // 4200: S-Frontend Dev Server, 4201: TB-Frontend Dev Server
+  // 5432: TB PostgreSQL, 5433: S PostgreSQL
+  // 6379: Redis, 9100/9101: MinIO, 5100: Registry, 8200: cAdvisor
+  "forwardPorts": [3000, 3001, 4200, 4201, 5432, 5433, 6379, 9100, 9101, 5100, 8200],
   "postAttachCommand": "/bin/bash .devcontainer/setup.sh",
   "hostRequirements": {
     "cpus": 4,
