@@ -69,6 +69,7 @@ export interface UserProfileResponse {
   lastName: string;
   fullName: string;
   role: UserRole;
+  appId: string;
   isEmailVerified: boolean;
   isActive: boolean;
   lastLoginAt: string | null;
@@ -115,6 +116,7 @@ export interface Principal {
   userId: string;
   email: string;
   role: UserRole;
+  appId: string;
   isEmailVerified: boolean;
   isActive: boolean;
 }

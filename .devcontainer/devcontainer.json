@@ -25,7 +25,9 @@
   // 4200: S-Frontend Dev Server, 4201: TB-Frontend Dev Server
   // 5432: TB PostgreSQL, 5433: S PostgreSQL
   // 6379: Redis, 9100/9101: MinIO, 5100: Registry, 8200: cAdvisor
-  "forwardPorts": [3000, 3001, 4200, 4201, 5432, 5433, 6379, 9100, 9101, 5100, 8200],
+  "forwardPorts": [
+    3000, 3001, 4200, 4201, 5432, 5433, 6379, 9100, 9101, 5100, 8200
+  ],
   "postAttachCommand": "/bin/bash .devcontainer/setup.sh",
   "hostRequirements": {
     "cpus": 4,

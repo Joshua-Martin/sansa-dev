@@ -199,6 +199,7 @@ export class AuthService {
         userId: user.id,
         email: user.email,
         role: user.role,
+        appId: user.appId,
         isEmailVerified: user.isEmailVerified,
         isActive: user.isActive,
       };
@@ -352,6 +353,7 @@ export class AuthService {
       lastName: user.lastName,
       fullName: user.fullName,
       role: user.role,
+      appId: user.appId,
       isEmailVerified: user.isEmailVerified,
       isActive: user.isActive,
       lastLoginAt: user.lastLoginAt ? user.lastLoginAt.toISOString() : null,

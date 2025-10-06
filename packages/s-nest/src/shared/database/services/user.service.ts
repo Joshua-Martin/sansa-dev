@@ -58,6 +58,9 @@ export class UserService {
       emailVerificationTokenExpiry.getHours() + 24,
     );
 
+    // Generate unique appId
+    const appId = crypto.randomUUID();
+
     // Create user entity
     const user = this.userRepository.create({
       email: email.toLowerCase(),
@@ -65,6 +68,7 @@ export class UserService {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       role,
+      appId,
       emailVerificationToken,
       emailVerificationTokenExpiry,
     });

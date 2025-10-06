@@ -5,6 +5,7 @@ packages:
   - 'packages/s-shared'
   - 'packages/s-frontend'
   - 'packages/s-nest'
+  - 'packages/sansa-x'
 
 catalog:
   # Build tools

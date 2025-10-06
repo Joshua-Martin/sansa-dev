@@ -10,6 +10,73 @@ import type {
   UserStats,
 } from '@sansa-dev/s-shared';
 
+// API Key types
+export interface CreateApiKeyRequest {
+  name: string;
+  expiresAt?: string;
+}
+
+export interface ApiKeyResponse {
+  id: string;
+  name: string;
+  key: string; // Only shown on creation
+  isActive: boolean;
+  expiresAt: Date | null;
+  lastUsedAt: Date | null;
+  lastUsedIp: string | null;
+  requestCount: number;
+  createdAt: Date;
+}
+
+export interface ApiKeyListResponse {
+  id: string;
+  name: string;
+  isActive: boolean;
+  expiresAt: Date | null;
+  lastUsedAt: Date | null;
+  lastUsedIp: string | null;
+  requestCount: number;
+  createdAt: Date;
+}
+
+// Monitoring types
+export interface LLMApiCallRecord {
+  id: string;
+  name: string;
+  promptVersion: string;
+  model: string;
+  provider: string;
+  inputTokenCount: number;
+  outputTokenCount: number;
+  response: string | null;
+  requestTimestamp: Date;
+  responseTimestamp: Date;
+  durationMs: number | null;
+  error: any;
+  createdAt: Date;
+}
+
+export interface MonitoringStats {
+  totalCalls: number;
+  successfulCalls: number;
+  failedCalls: number;
+  avgDurationMs: number;
+  totalInputTokens: number;
+  totalOutputTokens: number;
+  totalTokens: number;
+}
+
+export interface GetRecordsOptions {
+  limit?: number;
+  offset?: number;
+  startDate?: Date;
+  endDate?: Date;
+  model?: string;
+  provider?: string;
+  name?: string;
+  promptVersion?: string;
+}
+
 /**
  * Authentication API Service
  *
@@ -27,6 +94,9 @@ export class AuthApi {
     FORGOT_PASSWORD: '/api/v1/auth/forgot-password',
     RESET_PASSWORD: '/api/v1/auth/reset-password',
     STATS: '/api/v1/auth/stats',
+    API_KEYS: '/api/v1/auth/api-keys',
+    MONITORING_RECORDS: '/api/v1/auth/monitoring/records',
+    MONITORING_STATS: '/api/v1/auth/monitoring/stats',
   } as const;
 
   /**
@@ -197,6 +267,107 @@ export class AuthApi {
   }
 
   /**
+   * Create a new API key for Sansa-X integration
+   *
+   * @param createRequest - API key creation data
+   * @returns Promise resolving to created API key (includes secret key)
+   * @throws UnauthorizedException if not authenticated
+   * @throws BadRequestException if validation fails
+   * @throws ConflictException if API key name already exists
+   */
+  static async createApiKey(createRequest: CreateApiKeyRequest): Promise<ApiKeyResponse> {
+    return api.post<ApiKeyResponse>(this.AUTH_ENDPOINTS.API_KEYS, createRequest);
+  }
+
+  /**
+   * Get all API keys for the current user
+   *
+   * @returns Promise resolving to array of API keys
+   * @throws UnauthorizedException if not authenticated
+   */
+  static async getApiKeys(): Promise<ApiKeyListResponse[]> {
+    return api.get<ApiKeyListResponse[]>(this.AUTH_ENDPOINTS.API_KEYS);
+  }
+
+  /**
+   * Deactivate an API key
+   *
+   * @param apiKeyId - ID of the API key to deactivate
+   * @returns Promise resolving to success message
+   * @throws UnauthorizedException if not authenticated
+   * @throws NotFoundException if API key not found
+   * @throws BadRequestException if API key doesn't belong to user
+   */
+  static async deactivateApiKey(apiKeyId: string): Promise<MessageResponse> {
+    return api.put<MessageResponse>(`${this.AUTH_ENDPOINTS.API_KEYS}/${apiKeyId}/deactivate`);
+  }
+
+  /**
+   * Delete an API key
+   *
+   * @param apiKeyId - ID of the API key to delete
+   * @returns Promise resolving to success message
+   * @throws UnauthorizedException if not authenticated
+   * @throws NotFoundException if API key not found
+   * @throws BadRequestException if API key doesn't belong to user
+   */
+  static async deleteApiKey(apiKeyId: string): Promise<MessageResponse> {
+    return api.delete<MessageResponse>(`${this.AUTH_ENDPOINTS.API_KEYS}/${apiKeyId}`);
+  }
+
+  /**
+   * Get LLM API call records for monitoring
+   *
+   * @param options - Query options for filtering records
+   * @returns Promise resolving to array of LLM API call records
+   * @throws UnauthorizedException if not authenticated
+   */
+  static async getMonitoringRecords(options: GetRecordsOptions = {}): Promise<LLMApiCallRecord[]> {
+    const params = new URLSearchParams();
+
+    if (options.limit) params.append('limit', options.limit.toString());
+    if (options.offset) params.append('offset', options.offset.toString());
+    if (options.startDate) params.append('startDate', options.startDate.toISOString());
+    if (options.endDate) params.append('endDate', options.endDate.toISOString());
+    if (options.model) params.append('model', options.model);
+    if (options.provider) params.append('provider', options.provider);
+    if (options.name) params.append('name', options.name);
+    if (options.promptVersion) params.append('promptVersion', options.promptVersion);
+
+    const queryString = params.toString();
+    const url = queryString
+      ? `${this.AUTH_ENDPOINTS.MONITORING_RECORDS}?${queryString}`
+      : this.AUTH_ENDPOINTS.MONITORING_RECORDS;
+
+    return api.get<LLMApiCallRecord[]>(url);
+  }
+
+  /**
+   * Get monitoring statistics
+   *
+   * @param startDate - Optional start date for statistics
+   * @param endDate - Optional end date for statistics
+   * @returns Promise resolving to monitoring statistics
+   * @throws UnauthorizedException if not authenticated
+   */
+  static async getMonitoringStats(
+    startDate?: Date,
+    endDate?: Date,
+  ): Promise<MonitoringStats> {
+    const params = new URLSearchParams();
+
+    if (startDate) params.append('startDate', startDate.toISOString());
+    if (endDate) params.append('endDate', endDate.toISOString());
+
+    const queryString = params.toString();
+    const url = queryString
+      ? `${this.AUTH_ENDPOINTS.MONITORING_STATS}?${queryString}`
+      : this.AUTH_ENDPOINTS.MONITORING_STATS;
+
+    return api.get<MonitoringStats>(url);
+  }
+
+  /**
    * Check if user is currently authenticated
    *
    * @returns boolean indicating authentication status
@@ -261,6 +432,16 @@ export const authApi = {
 
   // Admin functions
   getUserStats: AuthApi.getUserStats.bind(AuthApi),
+
+  // API Key management
+  createApiKey: AuthApi.createApiKey.bind(AuthApi),
+  getApiKeys: AuthApi.getApiKeys.bind(AuthApi),
+  deactivateApiKey: AuthApi.deactivateApiKey.bind(AuthApi),
+  deleteApiKey: AuthApi.deleteApiKey.bind(AuthApi),
+
+  // Monitoring
+  getMonitoringRecords: AuthApi.getMonitoringRecords.bind(AuthApi),
+  getMonitoringStats: AuthApi.getMonitoringStats.bind(AuthApi),
 
   // Token access
   getAccessToken: AuthApi.getAccessToken.bind(AuthApi),

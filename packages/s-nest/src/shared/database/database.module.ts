@@ -5,9 +5,13 @@ import { LlmUse } from './entities/llm-use.entity';
 import { LlmTotalUse } from './entities/llm-total-use.entity';
 import { User } from './entities/user.entity';
 import { RefreshToken } from './entities/refresh-token.entity';
+import { ApiKey } from './entities/api-key.entity';
+import { LLMApiCallRecord } from './entities/llm-api-call-record.entity';
 import { LlmUseService } from './services/llm-use.service';
 import { LlmTotalUseService } from './services/llm-total-use.service';
 import { UserService } from './services/user.service';
+import { ApiKeyService } from './services/api-key.service';
+import { LLMApiCallRecordService } from './services/llm-api-call-record.service';
 
 /**
  * S Backend Database module that configures TypeORM for PostgreSQL connection
@@ -33,12 +37,7 @@ import { UserService } from './services/user.service';
           username: configService.get('S_POSTGRES_USERNAME', 'postgres'),
           password: configService.get('S_POSTGRES_PASSWORD', ''),
           database: configService.get('S_POSTGRES_DATABASE', 's-sansa-dev'),
-          entities: [
-            LlmUse,
-            LlmTotalUse,
-            User,
-            RefreshToken,
-          ],
+          entities: [LlmUse, LlmTotalUse, User, RefreshToken, ApiKey, LLMApiCallRecord],
           synchronize:
             configService.get('NODE_ENV', 'development') !== 'production',
           logging: false,
@@ -60,23 +59,9 @@ import { UserService } from './services/user.service';
         return dbConfig;
       },
     }),
-    TypeOrmModule.forFeature([
-      LlmUse,
-      LlmTotalUse,
-      User,
-      RefreshToken,
-    ]),
+    TypeOrmModule.forFeature([LlmUse, LlmTotalUse, User, RefreshToken, ApiKey, LLMApiCallRecord]),
   ],
-  providers: [
-    LlmUseService,
-    LlmTotalUseService,
-    UserService,
-  ],
-  exports: [
-    TypeOrmModule,
-    LlmUseService,
-    LlmTotalUseService,
-    UserService,
-  ],
+  providers: [LlmUseService, LlmTotalUseService, UserService, ApiKeyService, LLMApiCallRecordService],
+  exports: [TypeOrmModule, LlmUseService, LlmTotalUseService, UserService, ApiKeyService, LLMApiCallRecordService],
 })
 export class DatabaseModule {}

@@ -18,12 +18,7 @@ import { QueueModule } from './queue/queue.module';
  */
 @Global()
 @Module({
-  imports: [
-    ConfigModule,
-    DatabaseModule,
-    UnifiedLLMModule,
-    QueueModule,
-  ],
+  imports: [ConfigModule, DatabaseModule, UnifiedLLMModule, QueueModule],
   providers: [
     RedisService,
     GlobalBlockListService,

@@ -10,7 +10,7 @@ class HealthCheckResponse {
 @ApiTags('system')
 @Controller()
 export class AppController {
-  @Get('/health') 
+  @Get('/health')
   @Public()
   @ApiOkResponse({
     type: HealthCheckResponse,

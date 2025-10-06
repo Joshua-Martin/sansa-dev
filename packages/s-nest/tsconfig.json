@@ -22,8 +22,8 @@
     "types": [],
     "composite": true,
     "paths": {
-      "@sansa-dev/s-shared": ["../tb-shared/src"],
-      "@sansa-dev/s-shared/*": ["../tb-shared/src/*"]
+      "@sansa-dev/s-shared": ["../s-shared/src"],
+      "@sansa-dev/s-shared/*": ["../s-shared/src/*"]
     }
   },
   "include": ["src/**/*"],

@@ -10,7 +10,7 @@ import { OpenAIModel } from 'src/shared/ai-providers/constants/openai.constants'
 import { getModelData } from './model-data';
 
 import {
-  UnifiedLLMRequest, 
+  UnifiedLLMRequest,
   UnifiedLLMService,
   UnifiedMessage,
   UnifiedStreamChunk,
@@ -98,7 +98,8 @@ export class ChatAgentService {
       // Output tokens are 0 for user messages
       const userTokenCountInput = Math.ceil(userMessageContent.length / 4); // Rough approximation
       const modelData = getModelData(OpenAIModel.GPT_4O_MINI);
-      const userTokenCostInput = (userTokenCountInput / 1000000) * modelData!.inputTokenCostPerMillion;
+      const userTokenCostInput =
+        (userTokenCountInput / 1000000) * modelData!.inputTokenCostPerMillion;
       const userMessageCost = userTokenCostInput;
 
       const userMessage = await this.createUserMessage({
@@ -285,10 +286,12 @@ export class ChatAgentService {
     // Use actual token counts if provided, otherwise fall back to approximation
     const actualInputTokens = inputTokens ?? 0; // Assistant messages typically have 0 input tokens
     const actualOutputTokens = outputTokens ?? Math.ceil(content.length / 4);
-    
+
     const modelData = getModelData(OpenAIModel.GPT_4O_MINI);
-    const inputTokenCost = (actualInputTokens / 1000000) * modelData!.inputTokenCostPerMillion;
-    const outputTokenCost = (actualOutputTokens / 1000000) * modelData!.outputTokenCostPerMillion;
+    const inputTokenCost =
+      (actualInputTokens / 1000000) * modelData!.inputTokenCostPerMillion;
+    const outputTokenCost =
+      (actualOutputTokens / 1000000) * modelData!.outputTokenCostPerMillion;
     const assistantMessageCost = inputTokenCost + outputTokenCost;
 
     // Update the message content and token/cost information
@@ -522,10 +525,12 @@ export class ChatAgentService {
       // Use actual token counts if provided, otherwise fall back to approximation
       const actualInputTokens = inputTokens ?? 0;
       const actualOutputTokens = outputTokens ?? Math.ceil(content.length / 4);
-      
+
       const modelData = getModelData(OpenAIModel.GPT_4O_MINI);
-      const inputTokenCost = (actualInputTokens / 1000000) * modelData!.inputTokenCostPerMillion;
-      const outputTokenCost = (actualOutputTokens / 1000000) * modelData!.outputTokenCostPerMillion;
+      const inputTokenCost =
+        (actualInputTokens / 1000000) * modelData!.inputTokenCostPerMillion;
+      const outputTokenCost =
+        (actualOutputTokens / 1000000) * modelData!.outputTokenCostPerMillion;
       const assistantMessageCost = inputTokenCost + outputTokenCost;
 
       const request: CreateLLMMessageRequest = {

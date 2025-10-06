@@ -9,7 +9,7 @@ import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 import { ConfigModule } from '@nestjs/config';
 import { QueueConfigService } from './queue.config';
-  import { RedisService } from '../redis/redis.service';
+import { RedisService } from '../redis/redis.service';
 
 /**
  * Queue module configuration
@@ -38,10 +38,7 @@ import { QueueConfigService } from './queue.config';
       name: 'workspace-cleanup',
     }),
   ],
-  providers: [
-    RedisService,
-    QueueConfigService,
-  ],
+  providers: [RedisService, QueueConfigService],
   exports: [BullModule, QueueConfigService],
 })
 export class QueueModule {}

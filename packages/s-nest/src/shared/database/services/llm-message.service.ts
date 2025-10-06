@@ -47,7 +47,7 @@ export class LLMMessageService {
       messageCost: request.messageCost,
     });
 
-    return this.messageRepository.save(message); 
+    return this.messageRepository.save(message);
   }
 
   /**

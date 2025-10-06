@@ -22,6 +22,9 @@
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist tsconfig.tsbuildinfo"
   },
+  "dependencies": {
+    "@sansa-dev/sansa-x": "workspace:*"
+  },
   "devDependencies": {
     "typescript": "catalog:"
   },

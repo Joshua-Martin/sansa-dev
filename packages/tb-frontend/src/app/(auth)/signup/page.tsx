@@ -210,108 +210,53 @@ const SignUpPage: React.FC = () => {
   };
 
   return (
-      <Card className="shadow-none border-0 bg-none backdrop-none">
-        <CardHeader className="space-y-4 pb-6">
-          <div className="text-center">
-            <CardTitle className="text-2xl font-bold tracking-tight text-cosmo-primary-100">
-              Create your account
-            </CardTitle>
-            <CardDescription className="text-base text-muted-foreground mt-2">
-              Get started with Demo Agent today
-            </CardDescription>
-          </div>
-        </CardHeader>
+    <Card className="shadow-none border-0 bg-none backdrop-none">
+      <CardHeader className="space-y-4 pb-6">
+        <div className="text-center">
+          <CardTitle className="text-2xl font-bold tracking-tight text-cosmo-primary-100">
+            Create your account
+          </CardTitle>
+          <CardDescription className="text-base text-muted-foreground mt-2">
+            Get started with Demo Agent today
+          </CardDescription>
+        </div>
+      </CardHeader>
 
-        <CardContent className="space-y-6">
-          {/* Sign-up error */}
-          {signUpState.error && (
-            <Alert variant="destructive" className="mb-4">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                {getErrorMessage(signUpState.error)}
-              </AlertDescription>
-            </Alert>
-          )}
+      <CardContent className="space-y-6">
+        {/* Sign-up error */}
+        {signUpState.error && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              {getErrorMessage(signUpState.error)}
+            </AlertDescription>
+          </Alert>
+        )}
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* Name Fields Row */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* First Name Field */}
-                <FormField
-                  control={form.control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium text-cosmo-primary-100">
-                        First name
-                      </FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                          <Input
-                            {...field}
-                            type="text"
-                            placeholder="First name"
-                            className="pl-10 h-11 border-border focus:border-primary focus:ring-primary"
-                            disabled={signUpState.isLoading}
-                            autoComplete="given-name"
-                            autoFocus
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Last Name Field */}
-                <FormField
-                  control={form.control}
-                  name="lastName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-medium text-cosmo-primary-100">
-                        Last name
-                      </FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                          <Input
-                            {...field}
-                            type="text"
-                            placeholder="Last name"
-                            className="pl-10 h-11 border-border focus:border-primary focus:ring-primary"
-                            disabled={signUpState.isLoading}
-                            autoComplete="family-name"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              {/* Email Field */}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* Name Fields Row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* First Name Field */}
               <FormField
                 control={form.control}
-                name="email"
+                name="firstName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-sm font-medium text-cosmo-primary-100">
-                      Email address
+                      First name
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
                           {...field}
-                          type="email"
-                          placeholder="Enter your email"
+                          type="text"
+                          placeholder="First name"
                           className="pl-10 h-11 border-border focus:border-primary focus:ring-primary"
                           disabled={signUpState.isLoading}
-                          autoComplete="email"
+                          autoComplete="given-name"
+                          autoFocus
                         />
                       </div>
                     </FormControl>
@@ -320,48 +265,25 @@ const SignUpPage: React.FC = () => {
                 )}
               />
 
-              {/* Password Field */}
+              {/* Last Name Field */}
               <FormField
                 control={form.control}
-                name="password"
+                name="lastName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-sm font-medium text-cosmo-primary-100">
-                      Password
+                      Last name
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
                           {...field}
-                          type={showPassword ? 'text' : 'password'}
-                          placeholder="Create a password"
-                          className="pl-10 pr-10 h-11 border-border focus:border-primary focus:ring-primary"
+                          type="text"
+                          placeholder="Last name"
+                          className="pl-10 h-11 border-border focus:border-primary focus:ring-primary"
                           disabled={signUpState.isLoading}
-                          autoComplete="new-password"
-                          onFocus={() => setIsPasswordFocused(true)}
-                          onBlur={() => {
-                            // Delay hiding to allow clicks on the password requirements
-                            setTimeout(() => setIsPasswordFocused(false), 150);
-                          }}
-                        />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 p-0 hover:bg-transparent"
-                          onClick={() => setShowPassword(!showPassword)}
-                          disabled={signUpState.isLoading}
-                        >
-                          {showPassword ? (
-                            <EyeOff className="h-4 w-4 text-muted-foreground" />
-                          ) : (
-                            <Eye className="h-4 w-4 text-muted-foreground" />
-                          )}
-                        </Button>
-                        <PasswordStrengthIndicator
-                          password={watchPassword}
-                          isVisible={isPasswordFocused}
+                          autoComplete="family-name"
                         />
                       </div>
                     </FormControl>
@@ -369,103 +291,181 @@ const SignUpPage: React.FC = () => {
                   </FormItem>
                 )}
               />
+            </div>
 
-              {/* Confirm Password Field */}
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium text-cosmo-primary-100">
-                      Confirm password
-                    </FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                        <Input
-                          {...field}
-                          type={showConfirmPassword ? 'text' : 'password'}
-                          placeholder="Confirm your password"
-                          className="pl-10 pr-10 h-11 border-border focus:border-primary focus:ring-primary"
-                          disabled={signUpState.isLoading}
-                          autoComplete="new-password"
-                        />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 p-0 hover:bg-transparent"
-                          onClick={() =>
-                            setShowConfirmPassword(!showConfirmPassword)
-                          }
-                          disabled={signUpState.isLoading}
-                        >
-                          {showConfirmPassword ? (
-                            <EyeOff className="h-4 w-4 text-muted-foreground" />
-                          ) : (
-                            <Eye className="h-4 w-4 text-muted-foreground" />
-                          )}
-                        </Button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            {/* Email Field */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium text-cosmo-primary-100">
+                    Email address
+                  </FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                      <Input
+                        {...field}
+                        type="email"
+                        placeholder="Enter your email"
+                        className="pl-10 h-11 border-border focus:border-primary focus:ring-primary"
+                        disabled={signUpState.isLoading}
+                        autoComplete="email"
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                className='w-full font-bold'
-                disabled={signUpState.isLoading}
-              >
-                {signUpState.isLoading ? (
-                  <>
-                    <LoadingSpinner size={16} className="mr-2 text-white" />
-                    Creating account...
-                  </>
-                ) : (
-                  <>
-                    <UserPlus className="mr-2 h-4 w-4" />
-                    Create account
-                  </>
-                )}
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
+            {/* Password Field */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium text-cosmo-primary-100">
+                    Password
+                  </FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                      <Input
+                        {...field}
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Create a password"
+                        className="pl-10 pr-10 h-11 border-border focus:border-primary focus:ring-primary"
+                        disabled={signUpState.isLoading}
+                        autoComplete="new-password"
+                        onFocus={() => setIsPasswordFocused(true)}
+                        onBlur={() => {
+                          // Delay hiding to allow clicks on the password requirements
+                          setTimeout(() => setIsPasswordFocused(false), 150);
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 p-0 hover:bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                        disabled={signUpState.isLoading}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </Button>
+                      <PasswordStrengthIndicator
+                        password={watchPassword}
+                        isVisible={isPasswordFocused}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <CardFooter className="flex flex-col justify-center items-center">
-          <div className="text-center text-sm text-muted-foreground w-full">
-            Already have an account?{' '}
-            <Link
-              href="/signin"
-              className="text-primary hover:text-primary font-medium transition-colors"
+            {/* Confirm Password Field */}
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium text-cosmo-primary-100">
+                    Confirm password
+                  </FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                      <Input
+                        {...field}
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        placeholder="Confirm your password"
+                        className="pl-10 pr-10 h-11 border-border focus:border-primary focus:ring-primary"
+                        disabled={signUpState.isLoading}
+                        autoComplete="new-password"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 p-0 hover:bg-transparent"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        disabled={signUpState.isLoading}
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </Button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              className="w-full font-bold"
+              disabled={signUpState.isLoading}
             >
-              Sign in here
-            </Link>
-          </div>
-          {/* Additional links */}
-          <div className="mt-8 text-center text-xs text-muted-foreground">
-            <p>
-              By creating an account, you agree to our{' '}
-              <a
-                href="#"
-                className="text-primary hover:text-primary transition-colors"
-              >
-                Terms of Service
-              </a>{' '}
-              and{' '}
-              <a
-                href="#"
-                className="text-primary hover:text-primary transition-colors"
-              >
-                Privacy Policy
-              </a>
-            </p>
-          </div>
-        </CardFooter>
-      </Card>
+              {signUpState.isLoading ? (
+                <>
+                  <LoadingSpinner size={16} className="mr-2 text-white" />
+                  Creating account...
+                </>
+              ) : (
+                <>
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  Create account
+                </>
+              )}
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+
+      <CardFooter className="flex flex-col justify-center items-center">
+        <div className="text-center text-sm text-muted-foreground w-full">
+          Already have an account?{' '}
+          <Link
+            href="/signin"
+            className="text-primary hover:text-primary font-medium transition-colors"
+          >
+            Sign in here
+          </Link>
+        </div>
+        {/* Additional links */}
+        <div className="mt-8 text-center text-xs text-muted-foreground">
+          <p>
+            By creating an account, you agree to our{' '}
+            <a
+              href="#"
+              className="text-primary hover:text-primary transition-colors"
+            >
+              Terms of Service
+            </a>{' '}
+            and{' '}
+            <a
+              href="#"
+              className="text-primary hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </a>
+          </p>
+        </div>
+      </CardFooter>
+    </Card>
   );
 };
 

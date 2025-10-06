@@ -9,6 +9,8 @@ import {
   Logger,
   Param,
   Put,
+  Delete,
+  Query,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -19,6 +21,8 @@ import {
 } from '@nestjs/swagger';
 import { AuthService } from '../../shared/auth/auth.service';
 import { UserService } from '../../shared/database/services/user.service';
+import { ApiKeyService, CreateApiKeyParams } from '../../shared/database/services/api-key.service';
+import { LLMApiCallRecordService } from '../../shared/database/services/llm-api-call-record.service';
 import {
   SignUpRequest,
   SignInRequest,
@@ -94,6 +98,7 @@ class ApiUserProfileResponse {
   lastName: string;
   fullName: string;
   role: string;
+  appId: string;
   isEmailVerified: boolean;
   isActive: boolean;
   lastLoginAt: Date | null;
@@ -110,6 +115,60 @@ class ApiMessageResponse {
   message: string;
 }
 
+class ApiCreateApiKeyRequest {
+  name: string;
+  expiresAt?: string;
+}
+
+class ApiApiKeyResponse {
+  id: string;
+  name: string;
+  key: string;
+  isActive: boolean;
+  expiresAt: Date | null;
+  lastUsedAt: Date | null;
+  lastUsedIp: string | null;
+  requestCount: number;
+  createdAt: Date;
+}
+
+class ApiApiKeyListResponse {
+  id: string;
+  name: string;
+  isActive: boolean;
+  expiresAt: Date | null;
+  lastUsedAt: Date | null;
+  lastUsedIp: string | null;
+  requestCount: number;
+  createdAt: Date;
+}
+
+class ApiLLMApiCallRecord {
+  id: string;
+  name: string;
+  promptVersion: string;
+  model: string;
+  provider: string;
+  inputTokenCount: number;
+  outputTokenCount: number;
+  response: string | null;
+  requestTimestamp: Date;
+  responseTimestamp: Date;
+  durationMs: number | null;
+  error: any;
+  createdAt: Date;
+}
+
+class ApiMonitoringStats {
+  totalCalls: number;
+  successfulCalls: number;
+  failedCalls: number;
+  avgDurationMs: number;
+  totalInputTokens: number;
+  totalOutputTokens: number;
+  totalTokens: number;
+}
+
 /**
  * Authentication Controller
  *
@@ -124,6 +183,8 @@ export class AuthController {
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private apiKeyService: ApiKeyService,
+    private recordService: LLMApiCallRecordService,
   ) {}
 
   /**
@@ -224,6 +285,7 @@ export class AuthController {
       lastName: user.lastName,
       fullName: user.fullName,
       role: user.role,
+      appId: user.appId,
       isEmailVerified: user.isEmailVerified,
       isActive: user.isActive,
       lastLoginAt: user.lastLoginAt ? user.lastLoginAt.toISOString() : null,
@@ -267,6 +329,7 @@ export class AuthController {
       lastName: updatedUser.lastName,
       fullName: updatedUser.fullName,
       role: updatedUser.role,
+      appId: updatedUser.appId,
       isEmailVerified: updatedUser.isEmailVerified,
       isActive: updatedUser.isActive,
       lastLoginAt: updatedUser.lastLoginAt
@@ -366,6 +429,195 @@ export class AuthController {
     byRole: Record<string, number>;
   }> {
     return this.userService.getUserStats();
+  }
+
+  /**
+   * Create a new API key for Sansa-X integration
+   */
+  @Post('api-keys')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Create a new API key for Sansa-X integration',
+    description: 'Creates a secure API key that can be used by Sansa-X clients to send monitoring data',
+  })
+  @ApiBody({ type: ApiCreateApiKeyRequest })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'API key created successfully',
+    type: ApiApiKeyResponse,
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Invalid input data',
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'API key name already exists',
+  })
+  async createApiKey(
+    @Req() request: AuthenticatedRequest,
+    @Body() createRequest: { name: string; expiresAt?: string },
+  ): Promise<any> {
+    this.logger.log(`Creating API key for user: ${request.user.userId}`);
+
+    const params: CreateApiKeyParams = {
+      userId: request.user.userId,
+      name: createRequest.name,
+      expiresAt: createRequest.expiresAt ? new Date(createRequest.expiresAt) : undefined,
+    };
+
+    const apiKey = await this.apiKeyService.createApiKey(params);
+    return apiKey;
+  }
+
+  /**
+   * Get all API keys for the current user
+   */
+  @Get('api-keys')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Get all API keys for the current user',
+    description: 'Retrieves a list of all API keys associated with the authenticated user',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'API keys retrieved successfully',
+    type: [ApiApiKeyListResponse],
+  })
+  async getApiKeys(@Req() request: AuthenticatedRequest): Promise<any[]> {
+    return this.apiKeyService.getUserApiKeys(request.user.userId);
+  }
+
+  /**
+   * Deactivate an API key
+   */
+  @Put('api-keys/:id/deactivate')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Deactivate an API key',
+    description: 'Deactivates an API key, preventing further use',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'API key deactivated successfully',
+    type: ApiMessageResponse,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'API key not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'API key does not belong to user',
+  })
+  async deactivateApiKey(
+    @Req() request: AuthenticatedRequest,
+    @Param('id') apiKeyId: string,
+  ): Promise<{ message: string }> {
+    await this.apiKeyService.deactivateApiKey(request.user.userId, apiKeyId);
+    return { message: 'API key deactivated successfully' };
+  }
+
+  /**
+   * Delete an API key
+   */
+  @Delete('api-keys/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Delete an API key',
+    description: 'Permanently deletes an API key',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'API key deleted successfully',
+    type: ApiMessageResponse,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'API key not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'API key does not belong to user',
+  })
+  async deleteApiKey(
+    @Req() request: AuthenticatedRequest,
+    @Param('id') apiKeyId: string,
+  ): Promise<{ message: string }> {
+    await this.apiKeyService.deleteApiKey(request.user.userId, apiKeyId);
+    return { message: 'API key deleted successfully' };
+  }
+
+  /**
+   * Get LLM API call records for the current user
+   */
+  @Get('monitoring/records')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Get LLM API call records for the current user',
+    description: 'Retrieves paginated list of LLM API call records for monitoring and analytics',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Records retrieved successfully',
+    type: [ApiLLMApiCallRecord],
+  })
+  async getMonitoringRecords(
+    @Req() request: AuthenticatedRequest,
+    @Query('limit') limit?: string,
+    @Query('offset') offset?: string,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+    @Query('model') model?: string,
+    @Query('provider') provider?: string,
+    @Query('name') name?: string,
+    @Query('promptVersion') promptVersion?: string,
+  ): Promise<any[]> {
+    const options: any = {};
+
+    if (limit) options.limit = parseInt(limit, 10);
+    if (offset) options.offset = parseInt(offset, 10);
+    if (startDate) options.startDate = new Date(startDate);
+    if (endDate) options.endDate = new Date(endDate);
+    if (model) options.model = model;
+    if (provider) options.provider = provider;
+    if (name) options.name = name;
+    if (promptVersion) options.promptVersion = promptVersion;
+
+    return this.recordService.getRecordsByAppId(request.user.appId, options);
+  }
+
+  /**
+   * Get monitoring statistics for the current user
+   */
+  @Get('monitoring/stats')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Get monitoring statistics for the current user',
+    description: 'Retrieves aggregated statistics for LLM API usage',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Statistics retrieved successfully',
+    type: ApiMonitoringStats,
+  })
+  async getMonitoringStats(
+    @Req() request: AuthenticatedRequest,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+  ): Promise<any> {
+    const options: any = {};
+
+    if (startDate) options.startDate = new Date(startDate);
+    if (endDate) options.endDate = new Date(endDate);
+
+    return this.recordService.getAnalytics(request.user.appId, options);
   }
 
   /**

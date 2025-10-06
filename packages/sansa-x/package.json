@@ -1,0 +1,37 @@
+{
+  "name": "@sansa-dev/sansa-x",
+  "version": "0.1.0",
+  "description": "Framework-agnostic LLM API call monitoring package",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "llm",
+    "monitoring",
+    "api",
+    "tracking",
+    "openai",
+    "anthropic"
+  ],
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "tsc-alias": "^1.8.10"
+  },
+  "peerDependencies": {},
+  "files": [
+    "dist"
+  ]
+}

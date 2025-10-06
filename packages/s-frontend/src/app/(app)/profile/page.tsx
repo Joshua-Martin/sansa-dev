@@ -5,6 +5,7 @@ import { useAuth } from '../../../hooks/useAuth';
 
 import { Card, CardContent } from '../../../components/common/card';
 import PageTitle from '../../../components/custom/ui/page-title';
+import ApiKeysManager from '../../../components/custom/profile/api-keys-manager';
 
 /**
  * Profile Page Component
@@ -70,6 +71,27 @@ const ProfilePage: React.FC = () => {
                       {user?.isEmailVerified ? 'Verified' : 'Pending'}
                     </p>
                   </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">
+                    Application ID
+                  </label>
+                  <p className="text-lg font-mono text-sm">{user?.appId}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* API Keys Section */}
+            <Card className="mt-6">
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold">API Keys</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Manage API keys for Sansa-X LLM monitoring integration
+                    </p>
+                  </div>
+                  <ApiKeysManager />
                 </div>
               </CardContent>
             </Card>

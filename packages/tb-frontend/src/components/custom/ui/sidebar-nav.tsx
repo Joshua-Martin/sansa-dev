@@ -63,7 +63,6 @@ const SidebarNav: React.FC = () => {
           />
         </button>
 
-
         {/* Profile Icon */}
         <button
           onClick={() => navigateTo('/profile')}

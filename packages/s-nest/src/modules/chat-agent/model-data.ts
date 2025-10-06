@@ -17,32 +17,32 @@ export const MODEL_DATA: Record<string, AIModel> = {
   [OpenAIModel.GPT_4O]: {
     provider: AIProvider.OPEN_AI,
     model: OpenAIModel.GPT_4O,
-    inputTokenCostPerMillion: 2.50, // $2.50 per million input tokens
-    outputTokenCostPerMillion: 10.00, // $10.00 per million output tokens
+    inputTokenCostPerMillion: 2.5, // $2.50 per million input tokens
+    outputTokenCostPerMillion: 10.0, // $10.00 per million output tokens
   },
   [OpenAIModel.GPT_4O_MINI]: {
     provider: AIProvider.OPEN_AI,
     model: OpenAIModel.GPT_4O_MINI,
     inputTokenCostPerMillion: 0.15, // $0.15 per million input tokens
-    outputTokenCostPerMillion: 0.60, // $0.60 per million output tokens
+    outputTokenCostPerMillion: 0.6, // $0.60 per million output tokens
   },
   [OpenAIModel.O1_MINI]: {
     provider: AIProvider.OPEN_AI,
     model: OpenAIModel.O1_MINI,
-    inputTokenCostPerMillion: 3.00, // $3.00 per million input tokens
-    outputTokenCostPerMillion: 12.00, // $12.00 per million output tokens
+    inputTokenCostPerMillion: 3.0, // $3.00 per million input tokens
+    outputTokenCostPerMillion: 12.0, // $12.00 per million output tokens
   },
   [OpenAIModel.O1]: {
     provider: AIProvider.OPEN_AI,
     model: OpenAIModel.O1,
-    inputTokenCostPerMillion: 15.00, // $15.00 per million input tokens
-    outputTokenCostPerMillion: 60.00, // $60.00 per million output tokens
+    inputTokenCostPerMillion: 15.0, // $15.00 per million input tokens
+    outputTokenCostPerMillion: 60.0, // $60.00 per million output tokens
   },
   [OpenAIModel.O3_MINI]: {
     provider: AIProvider.OPEN_AI,
     model: OpenAIModel.O3_MINI,
-    inputTokenCostPerMillion: 1.10, // $1.10 per million input tokens
-    outputTokenCostPerMillion: 4.40, // $4.40 per million output tokens
+    inputTokenCostPerMillion: 1.1, // $1.10 per million input tokens
+    outputTokenCostPerMillion: 4.4, // $4.40 per million output tokens
   },
   [OpenAIModel.GPT_4_1_MINI]: {
     provider: AIProvider.OPEN_AI,
@@ -55,14 +55,14 @@ export const MODEL_DATA: Record<string, AIModel> = {
   [AnthropicModel.CLAUDE_3_5_SONNET]: {
     provider: AIProvider.ANTHROPIC,
     model: AnthropicModel.CLAUDE_3_5_SONNET,
-    inputTokenCostPerMillion: 3.00, // $3.00 per million input tokens
-    outputTokenCostPerMillion: 15.00, // $15.00 per million output tokens
+    inputTokenCostPerMillion: 3.0, // $3.00 per million input tokens
+    outputTokenCostPerMillion: 15.0, // $15.00 per million output tokens
   },
   [AnthropicModel.CLAUDE_3_7_SONNET]: {
     provider: AIProvider.ANTHROPIC,
     model: AnthropicModel.CLAUDE_3_7_SONNET,
-    inputTokenCostPerMillion: 3.00, // $3.00 per million input tokens
-    outputTokenCostPerMillion: 15.00, // $15.00 per million output tokens
+    inputTokenCostPerMillion: 3.0, // $3.00 per million input tokens
+    outputTokenCostPerMillion: 15.0, // $15.00 per million output tokens
   },
 };
 
@@ -73,4 +73,4 @@ export const MODEL_DATA: Record<string, AIModel> = {
  */
 export function getModelData(model: string): AIModel | undefined {
   return MODEL_DATA[model];
-} 
+}

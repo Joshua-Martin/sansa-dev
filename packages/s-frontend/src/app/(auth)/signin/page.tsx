@@ -7,7 +7,7 @@ import { Eye, EyeOff, LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import type { SignInRequest } from '@sansa-dev/s-shared';
+import type { SignInRequest } from '../../../../../tb-shared/src';
 import { useAuth } from '../../../hooks/useAuth';
 
 import { Button } from '../../../components/common/button';
@@ -236,7 +236,7 @@ const SignInContent: React.FC = () => {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full h-11 bg-primary hover:bg-primary text-white font-medium shadow-sm transition-all duration-200"
+              className="w-full font-bold"
               disabled={signInState.isLoading}
             >
               {signInState.isLoading ? (

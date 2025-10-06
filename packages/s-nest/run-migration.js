@@ -10,13 +10,13 @@ const fs = require('fs');
 const path = require('path');
 
 async function runMigrations() {
-  // Database configuration from environment variables
+  // Database configuration from environment variables (S Backend specific)
   const client = new Client({
-    host: process.env.POSTGRES_HOST || 'db',
-    port: process.env.POSTGRES_PORT || 5432,
-    user: process.env.POSTGRES_USERNAME || 'postgres',
-    password: process.env.POSTGRES_PASSWORD || 'A79Vm5D4p2VQHOp2gd5',
-    database: process.env.POSTGRES_DATABASE || 'sansa-dev',
+    host: process.env.S_POSTGRES_HOST || 's-db',
+    port: process.env.S_POSTGRES_PORT || 5432,
+    user: process.env.S_POSTGRES_USERNAME || 'postgres',
+    password: process.env.S_POSTGRES_PASSWORD || 'dev-pw',
+    database: process.env.S_POSTGRES_DATABASE || 's-sansa-dev',
   });
 
   try {

@@ -68,7 +68,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     return new Intl.NumberFormat('en-US').format(num);
   };
 
-  const calculateSavingsPercentage = (inputTokens: number, outputTokens: number, actualCost: number): number => {
+  const calculateSavingsPercentage = (
+    inputTokens: number,
+    outputTokens: number,
+    actualCost: number
+  ): number => {
     // Calculate what it would cost at standard rates: $15/M input, $75/M output
     const standardCost = (inputTokens * 15 + outputTokens * 75) / 1000000;
     // Calculate savings percentage
@@ -104,12 +108,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   }
 
   return (
-    <div
-      className={cn(
-        'flex gap-2 px-4 py-3 m-2',
-        className
-      )}
-    >
+    <div className={cn('flex gap-2 px-4 py-3 m-2', className)}>
       {/* System messages: keep existing styling */}
       {isSystem && (
         <div className="mx-4 bg-yellow-50 dark:bg-yellow-950/20 text-sm rounded-lg">
@@ -154,14 +153,20 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
               <div className="space-y-2">
                 <div className="flex items-center justify-center gap-2">
                   <Image
-                    src={getProviderLogo(isPromo && message.tokenCountOutput > 100 ? 'anthropic' : message.provider)}
+                    src={getProviderLogo(
+                      isPromo && message.tokenCountOutput > 100
+                        ? 'anthropic'
+                        : message.provider
+                    )}
                     alt={`${isPromo && message.tokenCountOutput > 100 ? 'anthropic' : message.provider} logo`}
                     width={20}
                     height={20}
                     className="h-5 w-5 object-contain rounded-full"
                   />
                   <span className="text-xs text-foreground font-medium">
-                    {isPromo && message.tokenCountOutput > 100 ? 'claude-opus-4' : message.model}
+                    {isPromo && message.tokenCountOutput > 100
+                      ? 'claude-opus-4'
+                      : message.model}
                   </span>
                 </div>
                 <div className="grid grid-cols-1 gap-1">
@@ -184,7 +189,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                     <span>
                       {formatNumber(
                         isPromo && message.tokenCountOutput > 100
-                          ? message.tokenCountInput + 2400 + message.tokenCountOutput
+                          ? message.tokenCountInput +
+                              2400 +
+                              message.tokenCountOutput
                           : message.tokenCountInput + message.tokenCountOutput
                       )}
                     </span>
@@ -193,16 +200,24 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                     <span className="text-foreground">Cost:</span>
                     <span>
                       {isPromo && message.tokenCountOutput > 100
-                        ? formatCurrency(((message.tokenCountInput + 2400) * 15 + message.tokenCountOutput * 75) / 1000000)
-                        : formatCurrency(message.messageCost)
-                      }
+                        ? formatCurrency(
+                            ((message.tokenCountInput + 2400) * 15 +
+                              message.tokenCountOutput * 75) /
+                              1000000
+                          )
+                        : formatCurrency(message.messageCost)}
                     </span>
                   </div>
                   {isPromo && message.tokenCountOutput < 100 && (
                     <div className="flex items-center justify-between text-xs border-t border-border pt-1">
                       <span className="text-foreground">Savings:</span>
                       <span className="text-green-600 font-medium">
-                        {calculateSavingsPercentage(message.tokenCountInput, message.tokenCountOutput, message.messageCost)}%
+                        {calculateSavingsPercentage(
+                          message.tokenCountInput,
+                          message.tokenCountOutput,
+                          message.messageCost
+                        )}
+                        %
                       </span>
                     </div>
                   )}

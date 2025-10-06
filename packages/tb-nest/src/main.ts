@@ -18,7 +18,7 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { Logger } from '@nestjs/common'; 
+import { Logger } from '@nestjs/common';
 import {
   ExceptionFilter,
   Catch,
@@ -368,8 +368,12 @@ async function bootstrap(): Promise<void> {
       isDev ? '(Development)' : '(Production)'
     }`,
   );
-  appLogger.log(`📚 TB API Docs available at: ${protocol}://${host}:${port}/docs`);
-  appLogger.log(`🗄️  TB Database: ${process.env.TB_POSTGRES_HOST}:${process.env.TB_POSTGRES_PORT}/${process.env.TB_POSTGRES_DATABASE}`);
+  appLogger.log(
+    `📚 TB API Docs available at: ${protocol}://${host}:${port}/docs`,
+  );
+  appLogger.log(
+    `🗄️  TB Database: ${process.env.TB_POSTGRES_HOST}:${process.env.TB_POSTGRES_PORT}/${process.env.TB_POSTGRES_DATABASE}`,
+  );
 }
 
 bootstrap().catch((err) => {

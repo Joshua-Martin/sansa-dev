@@ -8,7 +8,11 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { LLMMessageRole, LLMMessageStatus, AIProvider } from '@sansa-dev/s-shared';
+import {
+  LLMMessageRole,
+  LLMMessageStatus,
+  AIProvider,
+} from '@sansa-dev/s-shared';
 
 /**
  * Entity for LLM chat messages
@@ -40,7 +44,7 @@ export class LLMMessage {
     default: 'completed',
   })
   status: LLMMessageStatus;
- 
+
   @Column({ type: 'varchar', length: 255 })
   model: string;
 
@@ -56,13 +60,31 @@ export class LLMMessage {
   @Column({ type: 'int', name: 'token_count_output', default: 0 })
   tokenCountOutput: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 6, name: 'token_cost_input', default: 0 })
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 6,
+    name: 'token_cost_input',
+    default: 0,
+  })
   tokenCostInput: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 6, name: 'token_cost_output', default: 0 })
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 6,
+    name: 'token_cost_output',
+    default: 0,
+  })
   tokenCostOutput: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 6, name: 'message_cost', default: 0 })
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 6,
+    name: 'message_cost',
+    default: 0,
+  })
   messageCost: number;
 
   @CreateDateColumn({ name: 'created_at' })
@@ -137,5 +159,4 @@ export class LLMMessage {
   updateContent(newContent: string): void {
     this.content = newContent;
   }
-
 }

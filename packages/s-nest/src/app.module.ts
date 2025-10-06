@@ -10,9 +10,10 @@ import { UnifiedLLMModule } from './shared/ai-providers/unified/unified-llm.modu
 import { CacheModule } from '@nestjs/cache-manager';
 import { AuthModule } from './modules/auth/auth.module';
 import { ChatAgentModule } from './modules/chat-agent/chat-agent.module';
-import { JwtAuthGuard } from './shared/guards/jwt-auth.guard';
+import { SansaXModule } from './modules/sansa-x/sansa-x.module';
+import { JwtAuthGuard } from './shared/guards/jwt-auth.guard'; 
 import { RbacGuard } from './shared/guards/rbac.guard';
-
+ 
 /**
  * Root module of the application that imports and configures all other modules
  *
@@ -40,6 +41,7 @@ import { RbacGuard } from './shared/guards/rbac.guard';
     UnifiedLLMModule,
     AuthModule,
     ChatAgentModule,
+    SansaXModule,
   ],
   controllers: [AppController],
   providers: [

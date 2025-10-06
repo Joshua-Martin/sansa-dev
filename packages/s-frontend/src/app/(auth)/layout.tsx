@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 
 /**
@@ -31,46 +30,45 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
   brandingContent,
 }) => {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-background">
-      {/* Light mode background */}
-      <Image
-        src="/wave-blk.png"
-        alt="Aviator Logo"
-        width={1920}
-        height={1080}
-        className="absolute top-0 left-0 w-full h-full opacity-60 dark:hidden"
-      />
-      {/* Dark mode background */}
-      <Image
-        src="/wave-white.png"
-        alt="Aviator Logo"
-        width={1920}
-        height={1080}
-        className="absolute top-0 left-0 w-full h-full opacity-60 hidden dark:block"
-      />
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="grid grid-cols-[1fr_3fr_1fr] grid-rows-[1fr_3fr_1fr] h-screen w-screen shadow-xl overflow-hidden bg-background">
+        {/* Top row - no top borders */}
+        <div className="border-r border-b border-accent-border"></div>
+        <div className="border-b border-accent-border"></div>
+        <div className="border-l border-b border-accent-border"></div>
 
-      <div className="w-full max-w-7xl mx-auto relative p-10">
-        <div className="bg-none rounded-3xl shadow-xl overflow-hidden flex min-h-[600px] relative">
-          {/* Left panel - Aviator branding */}
-          <div className="w-1/2 flex flex-col items-center justify-center relative bg-primary p-10">
-            {/* Custom branding content or default */}
-            {brandingContent ? (
-              brandingContent
-            ) : (
-              <div className="space-y-4 text-center">
-                <h1 className="text-4xl font-bold text-white leading-tight">
-                  {title}
-                </h1>
-                <p className="text-white text-lg leading-relaxed">{subtitle}</p>
-              </div>
-            )}
-          </div>
+        {/* Middle row - Left (no left border) */}
+        <div className="border-r border-accent-border"></div>
 
-          {/* Right panel - Sign in form */}
-          <div className="w-1/2 flex items-center justify-center bg-background/80">
-            <div className="w-full p-4">{children}</div>
+        {/* Middle row - Center (main content) */}
+        <div className="flex items-center justify-center">
+          <div className="w-full h-full max-w-7xl flex">
+            <div className="w-1/2 flex flex-col items-center justify-center relative text-foreground p-8">
+              {/* Custom branding content or default */}
+              {brandingContent ? (
+                brandingContent
+              ) : (
+                <div className="space-y-4 text-center">
+                  <h1 className="text-4xl font-bold leading-tight">{title}</h1>
+                  <p className="text-lg leading-relaxed">{subtitle}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Right panel - Sign in form */}
+            <div className="w-1/2 flex items-center justify-center bg-background/80">
+              <div className="w-full p-4">{children}</div>
+            </div>
           </div>
         </div>
+
+        {/* Middle row - Right (no right border) */}
+        <div className="border-l border-accent-border"></div>
+
+        {/* Bottom row - no bottom borders */}
+        <div className="border-r border-t border-accent-border"></div>
+        <div className="border-t border-accent-border"></div>
+        <div className="border-l border-t border-accent-border"></div>
       </div>
     </div>
   );

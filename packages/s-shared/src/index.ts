@@ -13,3 +13,6 @@ export * from './chat-agent';
 
 // Application-level types
 export * from './app';
+
+// Sansa-X LLM tracking types
+export * from './sansa-x';

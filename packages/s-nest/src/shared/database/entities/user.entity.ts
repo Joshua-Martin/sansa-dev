@@ -39,6 +39,14 @@ export class User {
   })
   role: UserRole;
 
+  /**
+   * Unique application identifier for this user.
+   * Used for API key association and multi-tenant tracking.
+   */
+  @Column({ unique: true, length: 36 })
+  @Index()
+  appId: string;
+
   @Column({ default: false })
   isEmailVerified: boolean;
 

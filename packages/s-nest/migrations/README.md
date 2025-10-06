@@ -29,17 +29,19 @@ Migrations are executed in alphabetical/numerical order based on filename. Use t
 
 ### Current Migrations
 
--none
+- `001-add-appid-to-users.sql` - Adds appId field to user table for multi-tenant tracking
+- `002-create-api-key-table.sql` - Creates api_key table for Sansa-X API key management
+- `003-create-llm-api-call-record-table.sql` - Creates llm_api_call_record table for monitoring data storage
 
 ## Environment Variables
 
 The migration runner uses these environment variables (with defaults):
 
-- `POSTGRES_HOST` (default: 'db')
-- `POSTGRES_PORT` (default: 5432)
-- `POSTGRES_USERNAME` (default: 'postgres')
-- `POSTGRES_PASSWORD` (default: 'A79Vm5D4p2VQHOp2gd5')
-- `POSTGRES_DATABASE` (default: 'sansa-dev')
+- `S_POSTGRES_HOST` (default: 's-db')
+- `S_POSTGRES_PORT` (default: 5432)
+- `S_POSTGRES_USERNAME` (default: 'postgres')
+- `S_POSTGRES_PASSWORD` (default: 'dev-pw')
+- `S_POSTGRES_DATABASE` (default: 's-sansa-dev')
 
 ## Creating New Migrations
 

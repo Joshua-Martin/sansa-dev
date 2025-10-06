@@ -33,12 +33,7 @@ import { UserService } from './services/user.service';
           username: configService.get('TB_POSTGRES_USERNAME', 'postgres'),
           password: configService.get('TB_POSTGRES_PASSWORD', ''),
           database: configService.get('TB_POSTGRES_DATABASE', 'tb-sansa-dev'),
-          entities: [
-            LlmUse,
-            LlmTotalUse,
-            User,
-            RefreshToken,
-          ],
+          entities: [LlmUse, LlmTotalUse, User, RefreshToken],
           synchronize:
             configService.get('NODE_ENV', 'development') !== 'production',
           logging: false,
@@ -60,23 +55,9 @@ import { UserService } from './services/user.service';
         return dbConfig;
       },
     }),
-    TypeOrmModule.forFeature([
-      LlmUse,
-      LlmTotalUse,
-      User,
-      RefreshToken,
-    ]),
+    TypeOrmModule.forFeature([LlmUse, LlmTotalUse, User, RefreshToken]),
   ],
-  providers: [
-    LlmUseService,
-    LlmTotalUseService,
-    UserService,
-  ],
-  exports: [
-    TypeOrmModule,
-    LlmUseService,
-    LlmTotalUseService,
-    UserService,
-  ],
+  providers: [LlmUseService, LlmTotalUseService, UserService],
+  exports: [TypeOrmModule, LlmUseService, LlmTotalUseService, UserService],
 })
 export class DatabaseModule {}

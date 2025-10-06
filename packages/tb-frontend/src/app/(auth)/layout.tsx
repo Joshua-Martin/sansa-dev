@@ -49,9 +49,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
                 brandingContent
               ) : (
                 <div className="space-y-4 text-center">
-                  <h1 className="text-4xl font-bold leading-tight">
-                    {title}
-                  </h1>
+                  <h1 className="text-4xl font-bold leading-tight">{title}</h1>
                   <p className="text-lg leading-relaxed">{subtitle}</p>
                 </div>
               )}

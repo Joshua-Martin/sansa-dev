@@ -236,7 +236,7 @@ const SignInContent: React.FC = () => {
             {/* Submit Button */}
             <Button
               type="submit"
-              className='w-full font-bold'
+              className="w-full font-bold"
               disabled={signInState.isLoading}
             >
               {signInState.isLoading ? (

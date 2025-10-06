@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { LayoutDashboard, User, LogOut, TestTube } from 'lucide-react';
+import { LayoutDashboard, User, LogOut, TestTube, Activity } from 'lucide-react';
 import { useAuth } from '../../../hooks/useAuth';
 import { Avatar, AvatarFallback } from '../../common/avatar';
 
@@ -77,6 +77,26 @@ const SidebarNav: React.FC = () => {
             size={24}
             className={`${
               isActive('/lab')
+                ? 'text-primary-foreground'
+                : 'text-muted-foreground group-hover:text-foreground'
+            } transition-colors duration-200`}
+          />
+        </button>
+
+        {/* Monitoring Icon */}
+        <button
+          onClick={() => navigateTo('/monitoring')}
+          className={`p-3 rounded-lg transition-colors duration-200 group ${
+            isActive('/monitoring')
+              ? 'bg-primary text-primary-foreground'
+              : 'hover:bg-muted'
+          }`}
+          title="Monitoring"
+        >
+          <Activity
+            size={24}
+            className={`${
+              isActive('/monitoring')
                 ? 'text-primary-foreground'
                 : 'text-muted-foreground group-hover:text-foreground'
             } transition-colors duration-200`}
