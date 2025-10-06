@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import type { LLMMessage } from '@sansa-dev/shared';
+import type { LLMMessage } from '@sansa-dev/s-shared';
 import { cn } from '../../../lib/utils/utils';
 import { MarkdownRenderer } from '../../common/markdown-renderer';
 

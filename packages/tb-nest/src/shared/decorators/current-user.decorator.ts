@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthenticatedRequest } from '../guards/jwt-auth.guard';
-import { Principal } from '../../../../tb-shared/src';
+import { Principal } from '@sansa-dev/tb-shared';
 import { Socket } from 'socket.io';
 
 /**

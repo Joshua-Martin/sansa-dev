@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ContextApiService } from '../../lib/context/context-api.service';
-import type { Context } from '@sansa-dev/shared';
+import type { Context } from '@sansa-dev/s-shared';
 
 export function useContextData(workspaceId: string) {
   const [context, setContext] = useState<Context | null>(null);

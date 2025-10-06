@@ -11,7 +11,7 @@ import {
 import { JwtAuthGuard } from '../../shared/guards/jwt-auth.guard';
 import { ChatAgentService } from './chat-agent.service';
 import { LLMThreadService } from '../../shared/database/services/llm-thread.service';
-import { CreateLLMThreadRequest } from '../../../../tb-shared/src';
+import { CreateLLMThreadRequest } from '@sansa-dev/tb-shared';
 
 /**
  * REST API Controller for Chat Agent

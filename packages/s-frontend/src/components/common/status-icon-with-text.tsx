@@ -1,5 +1,5 @@
 import { cn } from '../../lib/utils/utils';
-import { isNil } from '@cosmo/shared';
+import { isNil } from '@cosmo/s-shared';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 

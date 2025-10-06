@@ -17,7 +17,7 @@ import type {
   ThreadLeftEvent,
   WebSocketErrorEvent,
   ErrorEvent,
-} from '@sansa-dev/shared';
+} from '@sansa-dev/s-shared';
 import {
   chatAgentWebSocket,
   type ConnectionState,

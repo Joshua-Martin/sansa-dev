@@ -6,7 +6,7 @@ import {
   LLMMessageRole,
   CreateLLMMessageRequest,
   UpdateLLMMessageRequest,
-} from '../../../../../tb-shared/src';
+} from '@sansa-dev/s-shared';
 import { UnifiedMessage } from 'src/shared/ai-providers';
 
 /**

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { ProductOverviewApiService } from '../../lib/context/product-overview-api.service';
-import type { ProductOverview } from '@sansa-dev/shared';
+import type { ProductOverview } from '@sansa-dev/s-shared';
 
 export function useProductOverview(workspaceId: string) {
   const [overview, setOverview] = useState<ProductOverview | null>(null);

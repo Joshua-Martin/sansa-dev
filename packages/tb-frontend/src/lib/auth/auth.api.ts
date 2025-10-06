@@ -8,7 +8,7 @@ import type {
   TokenResponse,
   MessageResponse,
   UserStats,
-} from '../../../../tb-shared/src';
+} from '../../../../shared/src';
 
 /**
  * Authentication API Service

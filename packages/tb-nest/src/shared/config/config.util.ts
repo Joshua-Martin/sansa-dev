@@ -135,11 +135,11 @@ export class ConfigUtil {
 
     try {
       // Database Configuration
-      this.getRequiredEnv('POSTGRES_HOST', 'PostgreSQL host address');
-      this.getRequiredNumericEnv('POSTGRES_PORT', 'PostgreSQL port number');
-      this.getRequiredEnv('POSTGRES_USERNAME', 'PostgreSQL username');
-      this.getRequiredEnv('POSTGRES_PASSWORD', 'PostgreSQL password');
-      this.getRequiredEnv('POSTGRES_DATABASE', 'PostgreSQL database name');
+      this.getRequiredEnv('TB_POSTGRES_HOST', 'PostgreSQL host address');
+      this.getRequiredNumericEnv('TB_POSTGRES_PORT', 'PostgreSQL port number');
+      this.getRequiredEnv('TB_POSTGRES_USERNAME', 'PostgreSQL username');
+      this.getRequiredEnv('TB_POSTGRES_PASSWORD', 'PostgreSQL password');
+      this.getRequiredEnv('TB_POSTGRES_DATABASE', 'PostgreSQL database name');
 
       // JWT Configuration
       this.getRequiredEnv('JWT_SECRET', 'JWT signing secret');
@@ -161,13 +161,13 @@ export class ConfigUtil {
    */
   static getDatabaseConfig() {
     return {
-      host: this.getRequiredEnv('POSTGRES_HOST'),
-      port: this.getRequiredNumericEnv('POSTGRES_PORT'),
-      username: this.getRequiredEnv('POSTGRES_USERNAME'),
-      password: this.getRequiredEnv('POSTGRES_PASSWORD'),
-      database: this.getRequiredEnv('POSTGRES_DATABASE'),
+      host: this.getRequiredEnv('TB_POSTGRES_HOST'),
+      port: this.getRequiredNumericEnv('TB_POSTGRES_PORT'),
+      username: this.getRequiredEnv('TB_POSTGRES_USERNAME'),
+      password: this.getRequiredEnv('TB_POSTGRES_PASSWORD'),
+      database: this.getRequiredEnv('TB_POSTGRES_DATABASE'),
       ssl: this.getBooleanEnv(
-        'POSTGRES_SSL',
+        'TB_POSTGRES_SSL',
         false,
         'PostgreSQL SSL connection',
       ),

@@ -6,7 +6,7 @@ This implementation replaces approximate token counting with **actual token coun
 
 ## What Changed
 
-### 1. AI Provider Layer (`packages/nest/src/shared/ai-providers/`)
+### 1. AI Provider Layer (`packages/nest/src/tb-shared/ai-providers/`)
 
 #### Types Updated
 - **`unified.types.ts`**: Added `UnifiedUsage` type with `inputTokens` and `outputTokens` fields
@@ -26,7 +26,7 @@ This implementation replaces approximate token counting with **actual token coun
 - **`base-openai.service.ts`**: Extracts usage from OpenAI Response API in both streaming and non-streaming responses
 - **`base-anthropic.service.ts`**: No changes needed (already returns usage in Message type)
 
-### 2. Database Layer (`packages/nest/src/shared/database/`)
+### 2. Database Layer (`packages/nest/src/tb-shared/database/`)
 
 #### Entity Changes (`llm-message.entity.ts`)
 **Removed:**
@@ -41,7 +41,7 @@ This implementation replaces approximate token counting with **actual token coun
 
 All new columns map to snake_case in database: `token_count_input`, `token_count_output`, etc.
 
-### 3. Shared Types (`packages/shared/src/chat-agent/`)
+### 3. Shared Types (`packages/tb-shared/src/chat-agent/`)
 
 #### Updated Types (`message.types.ts`)
 - `LLMMessage`: Now has separate `tokenCountInput` and `tokenCountOutput` fields
@@ -180,18 +180,18 @@ The migration handles existing data automatically:
 ## Files Modified
 
 ### Backend
-- `packages/nest/src/shared/ai-providers/types/unified.types.ts`
-- `packages/nest/src/shared/ai-providers/types/openai.types.ts`
-- `packages/nest/src/shared/ai-providers/utils/anthropic.utils.ts`
-- `packages/nest/src/shared/ai-providers/utils/openai.utils.ts`
-- `packages/nest/src/shared/ai-providers/base/base-openai.service.ts`
-- `packages/nest/src/shared/database/entities/llm-message.entity.ts`
+- `packages/nest/src/tb-shared/ai-providers/types/unified.types.ts`
+- `packages/nest/src/tb-shared/ai-providers/types/openai.types.ts`
+- `packages/nest/src/tb-shared/ai-providers/utils/anthropic.utils.ts`
+- `packages/nest/src/tb-shared/ai-providers/utils/openai.utils.ts`
+- `packages/nest/src/tb-shared/ai-providers/base/base-openai.service.ts`
+- `packages/nest/src/tb-shared/database/entities/llm-message.entity.ts`
 - `packages/nest/src/modules/chat-agent/chat-agent.service.ts`
 - `packages/nest/src/modules/chat-agent/chat-agent.gateway.ts`
 - `packages/nest/package.json`
 
 ### Shared
-- `packages/shared/src/chat-agent/message.types.ts`
+- `packages/tb-shared/src/chat-agent/message.types.ts`
 
 ### Frontend
 - `packages/frontend/src/components/custom/chat/chat-message.tsx`

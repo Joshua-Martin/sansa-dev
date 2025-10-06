@@ -9,7 +9,7 @@ import type {
   ListWorkspacesRequest,
   UpdateWorkspaceRequest,
   SaveWorkspaceResponse,
-} from '@sansa-dev/shared';
+} from '@sansa-dev/s-shared';
 
 /**
  * Workspace Hook State

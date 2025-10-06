@@ -17,7 +17,7 @@ import type {
   ThreadLeftEvent,
   WebSocketErrorEvent,
   ErrorEvent,
-} from '../../../tb-shared/src';
+} from '../../../shared/src';
 import {
   chatAgentWebSocket,
   type ConnectionState,

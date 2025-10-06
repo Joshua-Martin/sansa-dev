@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-import { UserRole } from '../../../../../tb-shared/src';
+import { UserRole } from '@sansa-dev/tb-shared';
 
 /**
  * Entity for user accounts and authentication

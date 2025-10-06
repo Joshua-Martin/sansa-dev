@@ -14,7 +14,7 @@ import {
   AuthResponse,
   Principal,
   CreateUserParams,
-} from '../../../../tb-shared/src';
+} from '@sansa-dev/tb-shared';
 
 /**
  * Authentication Service

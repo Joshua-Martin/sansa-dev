@@ -52,7 +52,7 @@
     "@types/bull": "^4.10.4",
     "@types/dockerode": "^3.3.43",
     "@types/uuid": "^10.0.0",
-    "@sansa-dev/shared": "workspace:*",
+    "@sansa-dev/s-shared": "workspace:*",
     "axios": "^1.9.0",
     "bcrypt": "^6.0.0",
     "bull": "^4.16.5",

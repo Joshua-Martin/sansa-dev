@@ -7,7 +7,7 @@ import {
   SetMetadata,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Permission, UserRole } from '../../../../tb-shared/src';
+import { Permission, UserRole } from '@sansa-dev/tb-shared';
 import { AuthenticatedRequest, IS_PUBLIC_KEY } from './jwt-auth.guard';
 
 /**

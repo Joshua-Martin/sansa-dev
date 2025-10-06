@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import type { LLMMessage } from '@sansa-dev/shared';
+import type { LLMMessage } from '@sansa-dev/s-shared';
 import type { StreamingMessage } from '../../../hooks/useChatAgent';
 import { cn } from '../../../lib/utils/utils';
 import { ScrollArea } from '../../common/scroll-area';

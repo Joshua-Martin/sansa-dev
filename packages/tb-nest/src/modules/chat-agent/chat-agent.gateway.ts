@@ -14,7 +14,7 @@ import {
   WebSocketErrorEvent,
   WebSocketErrorFactory,
   errorToWebSocketError,
-} from '../../../../tb-shared/src';
+} from '@sansa-dev/tb-shared';
 import { Logger } from '@nestjs/common';
 import { JwtService } from '../../shared/auth/jwt.service';
 import {

@@ -10,7 +10,7 @@ import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { AuthService } from '../auth/auth.service';
 import { JwtService } from '../auth/jwt.service';
-import { Principal } from '../../../../tb-shared/src';
+import { Principal } from '@sansa-dev/s-shared';
 
 /**
  * Custom request interface with user principal

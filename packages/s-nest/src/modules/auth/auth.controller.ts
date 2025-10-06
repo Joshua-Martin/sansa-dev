@@ -25,7 +25,7 @@ import {
   AuthResponse,
   UserProfileResponse,
   UpdateUserParams,
-} from '../../../../tb-shared/src';
+} from '@sansa-dev/s-shared';
 import {
   JwtAuthGuard,
   AuthenticatedRequest,

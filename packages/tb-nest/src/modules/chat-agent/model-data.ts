@@ -5,7 +5,7 @@
  * Used by the chat service to calculate token costs and total message costs.
  */
 
-import { AIModel, AIProvider } from '../../../../tb-shared/src';
+import { AIModel, AIProvider } from '@sansa-dev/tb-shared';
 import { AnthropicModel } from '../../shared/ai-providers/constants/anthropic.constants';
 import { OpenAIModel } from '../../shared/ai-providers/constants/openai.constants';
 

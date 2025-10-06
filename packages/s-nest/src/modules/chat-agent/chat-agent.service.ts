@@ -4,7 +4,7 @@ import {
   CreateLLMThreadRequest,
   LLMMessageRole,
   AIProvider,
-} from '../../../../tb-shared/src';
+} from '@sansa-dev/s-shared';
 import { Injectable, Logger } from '@nestjs/common';
 import { OpenAIModel } from 'src/shared/ai-providers/constants/openai.constants';
 import { getModelData } from './model-data';

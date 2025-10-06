@@ -13,7 +13,7 @@ import type {
   ThreadLeftEvent,
   UIStateUpdateEvent,
   WebSocketErrorEvent,
-} from '../../../../tb-shared/src';
+} from '../../../../shared/src';
 import { tokenManager } from '../api';
 
 /**

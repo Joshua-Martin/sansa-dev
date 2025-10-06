@@ -8,7 +8,7 @@ import type {
   TokenResponse,
   MessageResponse,
   UserStats,
-} from '@sansa-dev/shared';
+} from '@sansa-dev/s-shared';
 
 /**
  * Authentication API Service

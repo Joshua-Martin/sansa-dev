@@ -1,4 +1,4 @@
-import { isNil } from '@cosmo/shared';
+import { isNil } from '@cosmo/s-shared';
 import { useState, useRef, useCallback } from 'react';
 
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';

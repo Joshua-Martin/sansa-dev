@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { AlertCircle, Wifi, WifiOff } from 'lucide-react';
-import type { LLMThread } from '@sansa-dev/shared';
+import type { LLMThread } from '@sansa-dev/s-shared';
 import type { ConnectionState } from '../../../lib/chat-agent/websocket.service';
 import { cn } from '../../../lib/utils/utils';
 import { Alert, AlertDescription } from '../../common/alert';

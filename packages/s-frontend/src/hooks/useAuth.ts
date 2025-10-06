@@ -14,7 +14,7 @@ import type {
   UpdateUserParams,
   MessageResponse,
   UserStats,
-} from '@sansa-dev/shared';
+} from '@sansa-dev/s-shared';
 
 /**
  * Query keys for React Query cache management

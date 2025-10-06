@@ -1,6 +1,6 @@
 'use client';
 
-import { isNil } from '@cosmo/shared';
+import { isNil } from '@cosmo/tb-shared';
 import * as React from 'react';
 
 import { cn } from '../../lib/utils/utils';

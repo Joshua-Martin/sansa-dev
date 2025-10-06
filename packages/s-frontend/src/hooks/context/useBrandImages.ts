@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { BrandImageApiService } from '../../lib/context/brand-image-api.service';
-import type { BrandImage } from '@sansa-dev/shared';
+import type { BrandImage } from '@sansa-dev/s-shared';
 
 export function useBrandImages(workspaceId: string) {
   const [images, setImages] = useState<BrandImage[]>([]);

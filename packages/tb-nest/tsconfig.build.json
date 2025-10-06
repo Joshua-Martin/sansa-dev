@@ -3,8 +3,8 @@
   "compilerOptions": {
     "outDir": "./dist",
     "paths": {
-      "@sansa-dev/shared": ["../shared/dist"],
-      "@sansa-dev/shared/*": ["../shared/dist/*"]
+      "@sansa-dev/tb-shared": ["../tb-shared/dist"],
+      "@sansa-dev/tb-shared/*": ["../tb-shared/dist/*"]
     }
   },
   "include": ["src/**/*"],

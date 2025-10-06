@@ -7,7 +7,7 @@ import { Eye, EyeOff, LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import type { SignInRequest } from '@sansa-dev/shared';
+import type { SignInRequest } from '@sansa-dev/s-shared';
 import { useAuth } from '../../../hooks/useAuth';
 
 import { Button } from '../../../components/common/button';

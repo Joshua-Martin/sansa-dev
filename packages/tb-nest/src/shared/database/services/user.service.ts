@@ -12,7 +12,7 @@ import {
   CreateUserParams,
   UpdateUserParams,
   UserRole,
-} from '../../../../../tb-shared/src';
+} from '@sansa-dev/tb-shared';
 
 /**
  * Service for managing user operations

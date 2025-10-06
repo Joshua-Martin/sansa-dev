@@ -14,7 +14,7 @@ import type {
   UpdateUserParams,
   MessageResponse,
   UserStats,
-} from '../../../tb-shared/src';
+} from '../../../shared/src';
 
 /**
  * Query keys for React Query cache management

@@ -13,7 +13,7 @@ import type {
   ThreadLeftEvent,
   UIStateUpdateEvent,
   WebSocketErrorEvent,
-} from '@sansa-dev/shared';
+} from '@sansa-dev/s-shared';
 import { tokenManager } from '../api';
 
 /**

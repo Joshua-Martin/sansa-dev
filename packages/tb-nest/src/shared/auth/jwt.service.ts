@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as crypto from 'crypto';
-import { JwtPayload, DecodedToken, UserRole } from '../../../../tb-shared/src';
+import { JwtPayload, DecodedToken, UserRole } from '@sansa-dev/tb-shared';
 
 /**
  * JWT Service for token management

@@ -9,7 +9,7 @@ import {
   OneToMany,
   JoinColumn,
 } from 'typeorm';
-import { LLMThreadStatus } from '../../../../../tb-shared/src';
+import { LLMThreadStatus } from '@sansa-dev/s-shared';
 import { User } from './user.entity';
 
 /**

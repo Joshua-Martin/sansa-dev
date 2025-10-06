@@ -7,7 +7,7 @@ import {
   LLMThreadStatus,
   CreateLLMThreadRequest,
   UpdateLLMThreadRequest,
-} from '../../../../../tb-shared/src';
+} from '@sansa-dev/s-shared';
 
 /**
  * Service for managing LLM chat threads

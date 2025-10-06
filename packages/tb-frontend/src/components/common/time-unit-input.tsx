@@ -1,4 +1,4 @@
-import { isNil } from '@cosmo/shared';
+import { isNil } from '@cosmo/tb-shared';
 import React, { useRef } from 'react';
 
 import { Input } from './input';

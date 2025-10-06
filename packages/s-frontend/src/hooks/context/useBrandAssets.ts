@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { BrandAssetApiService } from '../../lib/context/brand-asset-api.service';
-import type { BrandAsset } from '@sansa-dev/shared';
+import type { BrandAsset } from '@sansa-dev/s-shared';
 
 export function useBrandAssets(workspaceId: string) {
   const [assets, setAssets] = useState<BrandAsset[]>([]);

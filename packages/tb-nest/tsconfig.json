@@ -22,11 +22,11 @@
     "types": [],
     "composite": true,
     "paths": {
-      "@sansa-dev/shared": ["../tb-shared/src"],
-      "@sansa-dev/shared/*": ["../tb-shared/src/*"]
+      "@sansa-dev/tb-shared": ["../tb-shared/src"],
+      "@sansa-dev/tb-shared/*": ["../tb-shared/src/*"]
     }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.spec.ts"],
-  "references": [{ "path": "../shared" }]
+  "references": [{ "path": "../tb-shared" }]
 }

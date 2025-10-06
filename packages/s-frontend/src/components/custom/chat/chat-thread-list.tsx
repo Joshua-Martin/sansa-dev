@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Plus, MessageSquare, Clock, Trash2 } from 'lucide-react';
-import type { LLMThread } from '@sansa-dev/shared';
+import type { LLMThread } from '@sansa-dev/s-shared';
 import { cn } from '../../../lib/utils/utils';
 import { Button } from '../../common/button';
 import { ScrollArea } from '../../common/scroll-area';

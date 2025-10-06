@@ -8,7 +8,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { LLMMessageRole, LLMMessageStatus, AIProvider } from '../../../../../tb-shared/src';
+import { LLMMessageRole, LLMMessageStatus, AIProvider } from '@sansa-dev/tb-shared';
 
 /**
  * Entity for LLM chat messages

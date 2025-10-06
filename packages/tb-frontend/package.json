@@ -34,7 +34,7 @@
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
-    "@sansa-dev/shared": "workspace:*",
+    "@sansa-dev/tb-shared": "workspace:*",
     "@tanstack/react-query": "^5.17.15",
     "@tanstack/react-query-devtools": "^5.17.18",
     "axios": "^1.6.7",

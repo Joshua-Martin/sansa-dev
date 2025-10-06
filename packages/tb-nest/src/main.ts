@@ -320,9 +320,10 @@ async function bootstrap(): Promise<void> {
   if (isDev) {
     app.enableCors({
       origin: (origin, callback) => {
+        const frontendPort = process.env.TB_FRONTEND_PORT || 4201;
         // Development origins
         const devOrigins = [
-          'http://localhost:4200',
+          `http://localhost:${frontendPort}`,
           'http://127.0.0.1:4200',
           /^http:\/\/192\.168\.1\.(1[0-9]|[1-9]):\d+$/, // Local network IPs
         ];

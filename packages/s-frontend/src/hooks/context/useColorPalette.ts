@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { ColorPaletteApiService } from '../../lib/context/color-palette-api.service';
-import type { ColorPalette } from '@sansa-dev/shared';
+import type { ColorPalette } from '@sansa-dev/s-shared';
 
 export function useColorPalette(workspaceId: string) {
   const [palette, setPalette] = useState<ColorPalette | null>(null);

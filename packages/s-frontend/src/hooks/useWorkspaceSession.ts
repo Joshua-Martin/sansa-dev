@@ -12,7 +12,7 @@ import type {
   CreateWorkspaceResponse,
   SaveWorkspaceResponse,
   HMREvent,
-} from '@sansa-dev/shared';
+} from '@sansa-dev/s-shared';
 
 /**
  * Session State Interface
