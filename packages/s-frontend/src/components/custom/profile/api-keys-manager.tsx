@@ -13,7 +13,6 @@ import {
   DialogFooter,
   DialogDescription,
 } from '../../common/dialog';
-import { Alert, AlertDescription } from '../../common/alert';
 import { Badge } from '../../common/badge';
 import { CopyButton } from '../../common/copy-button';
 import { Trash2, Plus, Eye, EyeOff } from 'lucide-react';
@@ -41,6 +40,7 @@ const ApiKeysManager: React.FC = () => {
   // Load API keys on component mount
   useEffect(() => {
     loadApiKeys();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadApiKeys = async () => {
@@ -49,6 +49,7 @@ const ApiKeysManager: React.FC = () => {
       const keys = await authApi.getApiKeys();
       setApiKeys(keys);
     } catch (error) {
+      console.error('Failed to load API keys', error);
       toast({
         title: 'Error',
         description: 'Failed to load API keys',
