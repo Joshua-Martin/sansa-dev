@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import type { LLMMessage } from '../../../../../tb-shared/src';
 import { cn } from '../../../lib/utils/utils';
@@ -30,6 +30,32 @@ export interface ChatMessageProps {
    */
   className?: string;
 }
+
+/**
+ * Promo comparison data structure
+ */
+interface PromoComparisonData {
+  defaultModel: string;
+  defaultProvider: string;
+  defaultContent: string;
+  defaultTokenCountInput: number;
+  defaultTokenCountOutput: number;
+  defaultTokenCostInput: number;
+  defaultTokenCostOutput: number;
+  defaultMessageCost: number;
+}
+
+/**
+ * Type guard to check if a message has promo comparison data
+ *
+ * @param message - The message to check
+ * @returns True if the message has promo comparison data
+ */
+const hasPromoComparison = (
+  message: LLMMessage
+): message is LLMMessage & { promoComparison: PromoComparisonData } => {
+  return 'promoComparison' in message;
+};
 
 /**
  * ChatMessage Component
@@ -96,6 +122,10 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     }
   };
 
+  useEffect(() => {
+    console.log(JSON.stringify(message, null, 2));
+  }, [message]);
+
   // Don't render empty assistant messages unless they're streaming
   // Exception: Show pending assistant messages that might receive streaming content
   if (
@@ -119,111 +149,227 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       {/* User messages */}
       {isUser && (
         <>
-          <div className="bg-primary dark:bg-muted dark:border dark:border-border rounded-xl mr-10 w-fit text-primary-foreground dark:text-foreground px-3 py-2">
-            <span>{displayContent}</span>
-          </div>
           {/* Empty space to align with assistant message stats */}
           <div className="flex-[0_0_25%]"></div>
+          <div className="bg-primary dark:bg-muted dark:border dark:border-border rounded-xl ml-auto w-fit text-primary-foreground dark:text-foreground px-3 py-2">
+            <span>{displayContent}</span>
+          </div>
         </>
       )}
 
       {/* Assistant messages */}
       {isAssistant && (
         <>
-          {/* Message content */}
-          <div className="flex-1 bg-muted border border-border rounded-lg px-3 py-2">
-            <div className="text-foreground">
-              <MarkdownRenderer
-                content={displayContent || ''}
-                className={cn(
-                  'prose prose-sm max-w-none dark:prose-invert',
-                  // Additional styling for chat messages
-                  '[&_*]:text-current [&_.text-primary]:text-current [&_.text-primary-foreground]:text-current'
-                )}
-              />
-              {isStreaming && (
-                <span className="inline-block w-2 h-4 ml-1 bg-current animate-pulse" />
-              )}
-            </div>
-          </div>
-
-          {/* Assistant message stats */}
-          {message.status === 'completed' && (
-            <div className="flex-[0_0_25%] bg-muted border border-border rounded-lg px-3 py-2 text-foreground">
-              <div className="space-y-2">
-                <div className="flex items-center justify-center gap-2">
-                  <Image
-                    src={getProviderLogo(
-                      isPromo && message.tokenCountOutput > 100
-                        ? 'anthropic'
-                        : message.provider
-                    )}
-                    alt={`${isPromo && message.tokenCountOutput > 100 ? 'anthropic' : message.provider} logo`}
-                    width={20}
-                    height={20}
-                    className="h-5 w-5 object-contain rounded-full"
-                  />
-                  <span className="text-xs text-foreground font-medium">
-                    {isPromo && message.tokenCountOutput > 100
-                      ? 'claude-opus-4'
-                      : message.model}
-                  </span>
-                </div>
-                <div className="grid grid-cols-1 gap-1">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-foreground">Input:</span>
-                    <span>
-                      {formatNumber(
-                        isPromo && message.tokenCountOutput > 100
-                          ? message.tokenCountInput + 2400
-                          : message.tokenCountInput
-                      )}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-foreground">Output:</span>
-                    <span>{formatNumber(message.tokenCountOutput)}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs border-t border-border pt-1">
-                    <span className="text-foreground">Total:</span>
-                    <span>
-                      {formatNumber(
-                        isPromo && message.tokenCountOutput > 100
-                          ? message.tokenCountInput +
-                              2400 +
-                              message.tokenCountOutput
-                          : message.tokenCountInput + message.tokenCountOutput
-                      )}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs border-t border-border pt-1">
-                    <span className="text-foreground">Cost:</span>
-                    <span>
-                      {isPromo && message.tokenCountOutput > 100
-                        ? formatCurrency(
-                            ((message.tokenCountInput + 2400) * 15 +
-                              message.tokenCountOutput * 75) /
-                              1000000
-                          )
-                        : formatCurrency(message.messageCost)}
-                    </span>
-                  </div>
-                  {isPromo && message.tokenCountOutput < 100 && (
-                    <div className="flex items-center justify-between text-xs border-t border-border pt-1">
-                      <span className="text-foreground">Savings:</span>
-                      <span className="text-green-600 font-medium">
-                        {calculateSavingsPercentage(
-                          message.tokenCountInput,
-                          message.tokenCountOutput,
-                          message.messageCost
-                        )}
-                        %
+          {/* Check if this is a promo comparison message */}
+          {isPromo && hasPromoComparison(message) ? (
+            // Stacked comparison view - routed model on top, default below
+            <div className="flex-1 space-y-2">
+              {/* Routed Model (GPT-4o-mini) - normal styling */}
+              <div className="flex gap-2">
+                {/* Message stats */}
+                <div className="flex-[0_0_25%] bg-muted border border-border rounded-lg px-3 py-2 text-foreground">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-center gap-2">
+                      <Image
+                        src={getProviderLogo(message.provider)}
+                        alt={`${message.provider} logo`}
+                        width={20}
+                        height={20}
+                        className="h-5 w-5 object-contain rounded-full"
+                      />
+                      <span className="text-xs text-foreground font-medium">
+                        {message.model}
                       </span>
                     </div>
+                    <div className="grid grid-cols-1 gap-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-foreground">Input:</span>
+                        <span>{formatNumber(message.tokenCountInput)}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-foreground">Output:</span>
+                        <span>{formatNumber(message.tokenCountOutput)}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs border-t border-border pt-1">
+                        <span className="text-foreground">Total:</span>
+                        <span>
+                          {formatNumber(
+                            message.tokenCountInput + message.tokenCountOutput
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs border-t border-border pt-1">
+                        <span className="text-foreground">Cost:</span>
+                        <span>
+                          {formatCurrency(message.messageCost)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Message content */}
+                <div className="flex-1 bg-muted border border-border rounded-lg px-3 py-2">
+                  <div className="text-foreground">
+                    <MarkdownRenderer
+                      content={displayContent || ''}
+                      className={cn(
+                        'prose prose-sm max-w-none dark:prose-invert',
+                        '[&_*]:text-current [&_.text-primary]:text-current [&_.text-primary-foreground]:text-current'
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+   
+
+              {/* Default Model (Claude Opus 4) - normal styling */}
+                <div className="flex gap-2">
+                {/* Message stats */}
+                <div className="flex-[0_0_25%] bg-muted border border-border rounded-lg px-3 py-2 text-foreground">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-center gap-2">
+                      <Image
+                        src={getProviderLogo(
+                          message.promoComparison.defaultProvider
+                        )}
+                        alt={`${message.promoComparison.defaultProvider} logo`}
+                        width={20}
+                        height={20}
+                        className="h-5 w-5 object-contain rounded-full"
+                      />
+                      <span className="text-xs text-foreground font-medium">
+                        {message.promoComparison.defaultModel}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-foreground">Cost:</span>
+                      <span>
+                        {formatCurrency(
+                          message.promoComparison.defaultMessageCost
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Message content */}
+                <div className="flex-1 bg-muted border border-border rounded-lg px-3 py-2">
+                  <div className="text-foreground">
+                    <MarkdownRenderer
+                      content={message.promoComparison.defaultContent}
+                      className={cn(
+                        'prose prose-sm max-w-none dark:prose-invert',
+                        '[&_*]:text-current [&_.text-primary]:text-current [&_.text-primary-foreground]:text-current'
+                      )}
+                    />
+                  </div>
+                </div>
+                </div>
+      
+            </div>
+          ) : (
+            // Normal assistant message view (no comparison)
+            <>
+              {/* Assistant message stats or placeholder for alignment */}
+              {message.status === 'completed' ? (
+                <div className="flex-[0_0_25%] bg-muted border border-border rounded-lg px-3 py-2 text-foreground">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-center gap-2">
+                      <Image
+                        src={getProviderLogo(
+                          isPromo && message.tokenCountOutput > 100
+                            ? 'anthropic'
+                            : message.provider
+                        )}
+                        alt={`${isPromo && message.tokenCountOutput > 100 ? 'anthropic' : message.provider} logo`}
+                        width={20}
+                        height={20}
+                        className="h-5 w-5 object-contain rounded-full"
+                      />
+                      <span className="text-xs text-foreground font-medium">
+                        {isPromo && message.tokenCountOutput > 100
+                          ? 'claude-opus-4'
+                          : message.model}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-foreground">Input:</span>
+                        <span>
+                          {formatNumber(
+                            isPromo && message.tokenCountOutput > 100
+                              ? message.tokenCountInput + 2400
+                              : message.tokenCountInput
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-foreground">Output:</span>
+                        <span>{formatNumber(message.tokenCountOutput)}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs border-t border-border pt-1">
+                        <span className="text-foreground">Total:</span>
+                        <span>
+                          {formatNumber(
+                            isPromo && message.tokenCountOutput > 100
+                              ? message.tokenCountInput +
+                                  2400 +
+                                  message.tokenCountOutput
+                              : message.tokenCountInput +
+                                  message.tokenCountOutput
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs border-t border-border pt-1">
+                        <span className="text-foreground">Cost:</span>
+                        <span>
+                          {isPromo && message.tokenCountOutput > 100
+                            ? formatCurrency(
+                                ((message.tokenCountInput + 2400) * 15 +
+                                  message.tokenCountOutput * 75) /
+                                  1000000
+                              )
+                            : formatCurrency(message.messageCost)}
+                        </span>
+                      </div>
+                      {isPromo && message.tokenCountOutput < 100 && (
+                        <div className="flex items-center justify-between text-xs border-t border-border pt-1">
+                          <span className="text-foreground">Savings:</span>
+                          <span className="text-green-600 font-medium">
+                            {calculateSavingsPercentage(
+                              message.tokenCountInput,
+                              message.tokenCountOutput,
+                              message.messageCost
+                            )}
+                            %
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex-[0_0_25%]"></div>
+              )}
+
+              {/* Message content */}
+              <div className="flex-1 bg-muted border border-border rounded-lg px-3 py-2">
+                <div className="text-foreground">
+                  <MarkdownRenderer
+                    content={displayContent || ''}
+                    className={cn(
+                      'prose prose-sm max-w-none dark:prose-invert',
+                      // Additional styling for chat messages
+                      '[&_*]:text-current [&_.text-primary]:text-current [&_.text-primary-foreground]:text-current'
+                    )}
+                  />
+                  {isStreaming && (
+                    <span className="inline-block w-2 h-4 ml-1 bg-current animate-pulse" />
                   )}
                 </div>
               </div>
-            </div>
+            </>
           )}
         </>
       )}

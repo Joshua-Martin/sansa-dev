@@ -1,5 +1,4 @@
 import React from 'react';
-import PageTitle from '../../../components/custom/ui/page-title';
 import { ChatMain } from '../../../components/custom/chat';
 
 /**
